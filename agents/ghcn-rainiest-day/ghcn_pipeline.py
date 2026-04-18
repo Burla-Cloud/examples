@@ -49,7 +49,7 @@ COUNTRIES_URL = "https://www.ncei.noaa.gov/pub/data/ghcn/daily/ghcnd-countries.t
 
 TOP_PER_YEAR = 100
 TOP_GLOBAL = 500
-MAP_TOP_N = 50
+MAP_TOP_N = 100  # distinct stations (leaderboard is Koumac-heavy; dedup before plotting)
 MIN_OBS_PER_COUNTRY_DECADE = 1_000  # filter micro-sampled country-decades from rankings
 MIN_STATIONS_PER_COUNTRY_DECADE = 3
 
@@ -406,7 +406,7 @@ def reduce_years(part_paths: List[str]) -> str:
     _write_decade_csv(results / "rainiest_by_decade.csv", rainy_top)
     _write_decade_csv(results / "driest_by_decade.csv", dry_top)
 
-    _render_map(enriched, decade_rows, results / "map.html")
+    _render_map(_best_per_station(enriched), decade_rows, results / "map.html")
 
     summary = {
         "total_rows_scanned": total_rows,
@@ -589,7 +589,7 @@ _MAP_TITLE_HTML = """
 ">
     <div style="font-weight: 700; font-size: 15px;">Global Rainiest Days Ever</div>
     <div style="color: #475569; margin-top: 2px;">
-        Top {n} single-day rainfall events from NOAA GHCN-Daily
+        Top {n} distinct stations by wettest single day from NOAA GHCN-Daily
         &nbsp;&middot;&nbsp; {rows_human} PRCP observations across {years} year-files
     </div>
 </div>
@@ -603,13 +603,14 @@ _MAP_LEGEND_HTML = """
     padding: 10px 14px; border-radius: 10px;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    font-size: 12px; line-height: 1.55;
+    font-size: 12px; line-height: 1.6;
 ">
-    <div style="font-weight: 700; margin-bottom: 6px;">Rank</div>
-    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#7f1d1d;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #1</div>
-    <div><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#dc2626;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #2-10</div>
-    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f97316;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #11-25</div>
-    <div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #26-50</div>
+    <div style="font-weight: 700; margin-bottom: 6px;">Rank (by station)</div>
+    <div><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#7f1d1d;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #1</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#dc2626;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #2-10</div>
+    <div><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#ea580c;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #11-25</div>
+    <div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #26-50</div>
+    <div><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#eab308;border:2px solid #fff;vertical-align:middle;"></span> &nbsp; #51-100</div>
 </div>
 """
 
@@ -620,18 +621,22 @@ def _rank_color(rank: int) -> str:
     if rank <= 10:
         return "#dc2626"
     if rank <= 25:
-        return "#f97316"
-    return "#f59e0b"
+        return "#ea580c"
+    if rank <= 50:
+        return "#f59e0b"
+    return "#eab308"
 
 
 def _rank_radius(rank: int) -> int:
     if rank == 1:
-        return 16
+        return 18
     if rank <= 10:
-        return 12
+        return 13
     if rank <= 25:
-        return 9
-    return 7
+        return 10
+    if rank <= 50:
+        return 8
+    return 6
 
 
 def _fmt_date(yyyymmdd: str) -> str:
@@ -660,14 +665,18 @@ def _render_map(enriched: List[dict], decade_rows: List[dict], out_path: Path) -
         return
 
     m = folium.Map(
-        location=(0, 0), zoom_start=2,
+        location=(15, 10), zoom_start=2, min_zoom=2, max_zoom=10,
         tiles="CartoDB positron",
-        world_copy_jump=True, prefer_canvas=True,
+        prefer_canvas=True,
+        control_scale=True,
     )
     folium.TileLayer("CartoDB dark_matter", name="Dark", show=False).add_to(m)
     folium.TileLayer("OpenStreetMap", name="OSM", show=False).add_to(m)
 
-    fg = folium.FeatureGroup(name=f"Top {len(top)} rainiest days", show=True).add_to(m)
+    fg = folium.FeatureGroup(
+        name=f"Top {len(top)} distinct stations",
+        show=True,
+    ).add_to(m)
 
     for r in top:
         name = _clean_name(r.get("name"))
@@ -706,9 +715,9 @@ def _render_map(enriched: List[dict], decade_rows: List[dict], out_path: Path) -
     lats = [r["lat"] for r in top]
     lons = [r["lon"] for r in top]
     m.fit_bounds(
-        [[max(min(lats) - 5, -85), min(lons) - 5],
-         [min(max(lats) + 5, 85), max(lons) + 5]],
-        padding=(20, 20),
+        [[max(min(lats) - 8, -70), max(min(lons) - 8, -170)],
+         [min(max(lats) + 8, 75), min(max(lons) + 8, 185)]],
+        padding=(30, 30),
     )
 
     decades_spanned = len({r["decade"] for r in decade_rows}) if decade_rows else 0
