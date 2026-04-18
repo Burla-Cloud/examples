@@ -9,7 +9,10 @@ Run via the starter kit so the right venv + cluster are used:
 from __future__ import annotations
 
 import base64
+import os
 from pathlib import Path
+
+os.environ.setdefault("DISABLE_BURLA_TELEMETRY", "True")
 
 
 def read_results(_: int) -> dict:

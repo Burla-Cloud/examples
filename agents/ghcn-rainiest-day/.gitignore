@@ -5,7 +5,6 @@ __pycache__/
 
 local_shared/
 *.csv.gz
-ghcnd-stations.txt
-ghcnd-countries.txt
 
+local_cache/
 results_local/

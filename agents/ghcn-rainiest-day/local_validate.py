@@ -1,9 +1,11 @@
-"""Local smoke test: run the map + reduce pipeline on a couple of years,
-without Burla, with SHARED_DIR pointed at a local sandbox.
+"""Smoke test: run the map + reduce pipeline on a couple of years locally.
+
+Drops SHARED_DIR onto a local sandbox so nothing touches Burla. Invokes the
+same top-level functions that Burla calls remotely.
 
 Usage:
-    SHARED_DIR=./local_shared python local_validate.py
-    SHARED_DIR=./local_shared python local_validate.py 1995 2000
+    python local_validate.py                 # defaults to 1995 2000
+    python local_validate.py 1995 2000 2020
 """
 
 from __future__ import annotations
@@ -17,61 +19,62 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import ghcn_pipeline as gp
-import stations as st
 
 
 def main() -> int:
-    years_raw = sys.argv[1:] or ["1995", "2000"]
-    years = [int(y) for y in years_raw]
+    years = [int(y) for y in (sys.argv[1:] or ["1995", "2000"])]
 
     os.environ.setdefault("SHARED_DIR", str(HERE / "local_shared"))
-    os.environ.setdefault("GHCN_CACHE_DIR", str(HERE / "local_cache"))
-
     print(f"SHARED_DIR={os.environ['SHARED_DIR']}")
-    print(f"GHCN_CACHE_DIR={os.environ['GHCN_CACHE_DIR']}")
     print(f"years={years}")
 
-    print("== warming station metadata (one-time ~10MB download) ==")
+    print("== warming station metadata (bundled snapshot) ==")
+    station_table = gp._load_stations_inline()
+    assert len(station_table) > 100_000, f"unexpectedly small station table: {len(station_table)}"
     sample_id = "USW00023183"
-    hit = st.lookup(sample_id)
-    assert hit is not None, f"expected station {sample_id} to resolve"
-    assert hit["name"].startswith("PHOENIX"), f"unexpected name for {sample_id}: {hit['name']}"
-    print(f"stations ok. {sample_id} -> {hit['name']}, {hit['country']}")
+    hit = station_table.get(sample_id)
+    assert hit and hit["name"].startswith("PHOENIX"), f"unexpected name for {sample_id}: {hit}"
+    print(f"  ok. {len(station_table):,} stations; {sample_id} -> {hit['name']}, {hit['country']}")
 
     part_paths = []
     for y in years:
         print(f"== process_year({y}) ==")
         p = gp.process_year(y)
-        data = json.loads(Path(p).read_text())
-        assert data["ok"], f"year {y} failed: {data.get('error')}"
-        assert data["rows_seen"] > 1000, f"year {y} suspiciously few rows: {data['rows_seen']}"
-        assert data["prcp_valid"] > 0, f"year {y} zero valid PRCP"
-        assert len(data["top"]) > 0, f"year {y} empty top"
-        top1 = data["top"][0]
-        assert top1["prcp_mm"] > 0, f"year {y} top1 is not > 0"
-        assert top1["date"].startswith(str(y)), f"year {y} top1 date out of year: {top1['date']}"
-        assert len(top1["station_id"]) == 11, f"year {y} bad station id: {top1['station_id']}"
+        part = json.loads(Path(p).read_text())
+        assert part["ok"], f"year {y} failed: {part.get('error')}"
+        assert part["rows_seen"] > 1_000, f"year {y} too few rows: {part['rows_seen']}"
+        assert part["prcp_valid"] > 0, f"year {y} zero PRCP"
+        assert part["top"], f"year {y} empty top"
+        assert part["country_stats"], f"year {y} empty country_stats"
+        top1 = part["top"][0]
+        assert top1["date"].startswith(str(y)), f"year {y} top1 date: {top1['date']}"
+        cs = part["country_stats"]
+        biggest_cc = max(cs, key=lambda c: cs[c]["obs_days"])
         print(
-            f"  ok. rows_seen={data['rows_seen']:,} prcp_valid={data['prcp_valid']:,} "
-            f"top1={top1['prcp_mm']} mm at {top1['station_id']} on {top1['date']}"
+            f"  ok. rows_seen={part['rows_seen']:,} prcp_valid={part['prcp_valid']:,} "
+            f"countries={len(cs)} top1={top1['prcp_mm']} mm at {top1['station_id']} "
+            f"biggest={biggest_cc} ({cs[biggest_cc]['obs_days']:,} obs_days)"
         )
         part_paths.append(p)
 
     print("== reduce_years ==")
-    results_dir = gp.reduce_years(part_paths)
-    rd = Path(results_dir)
-    top_result = json.loads((rd / "top_result.json").read_text())
-    assert top_result["prcp_mm"] > 0, "top_result has no rainfall"
-    assert top_result["station_id"], "top_result missing station"
-    assert (rd / "top_500.csv").exists(), "top_500.csv not written"
-    assert (rd / "map.html").exists(), "map.html not written"
-    summary = json.loads((rd / "run_summary.json").read_text())
-    print(f"  summary: {json.dumps(summary, indent=2)[:500]}")
+    results_dir = Path(gp.reduce_years(part_paths))
+    for name in [
+        "top_result.json", "top_500.csv", "top_by_station.csv", "map.html",
+        "run_summary.json", "country_decade_stats.csv",
+        "rainiest_by_decade.md", "rainiest_by_decade.csv",
+        "driest_by_decade.md", "driest_by_decade.csv",
+    ]:
+        f = results_dir / name
+        assert f.exists() and f.stat().st_size > 0, f"missing or empty: {f}"
+        print(f"  {name:<32} {f.stat().st_size:>8,} bytes")
+
+    top_result = json.loads((results_dir / "top_result.json").read_text())
+    assert top_result["prcp_mm"] > 0
     print(
         f"HEADLINE (local, {len(years)} yrs): {top_result['prcp_mm']} mm at "
         f"{top_result.get('name') or top_result['station_id']}, "
-        f"{top_result.get('country') or top_result.get('country_code')} on "
-        f"{top_result['date']}"
+        f"{top_result.get('country') or top_result.get('country_code')} on {top_result['date']}"
     )
     print("LOCAL_OK")
     return 0
