@@ -1,0 +1,21 @@
+{
+  "rank": 1,
+  "station_id": "NC000091577",
+  "name": "KOUMAC (NLLE-CALEDO",
+  "country": "New Caledonia [France]",
+  "country_code": "NC",
+  "state": null,
+  "lat": -20.567,
+  "lon": 164.283,
+  "elev_m": 18.0,
+  "date": "19760117",
+  "prcp_mm": 1750.0,
+  "year_file": 1976,
+  "mflag": "",
+  "sflag": "I",
+  "obs_time": "",
+  "source": "NOAA GHCN-Daily (by_year CSVs, quality-filtered)",
+  "citation": "Menne et al. 2012, J. Atmos. Oceanic Tech. 29, 897-910; dataset DOI 10.7289/V5D21VHZ",
+  "note": "Largest single-day PRCP in NOAA's global station network. Station data only (not a complete gridded Earth sample). Rows with non-empty Q-FLAG and -9999 sentinels excluded. Single-day PRCP only (multiday MDPR totals excluded).",
+  "generated_at_utc": "2026-04-18T05:09:38.812041+00:00"
+}
