@@ -699,6 +699,17 @@ def _render_map(enriched: List[dict], decade_rows: List[dict], out_path: Path) -
             </div>
         </div>
         """
+        tooltip_html = (
+            f"<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',"
+            f" Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.45;\">"
+            f"<div style=\"color:#64748b;font-size:10px;letter-spacing:0.05em;\">RANK</div>"
+            f"<div style=\"font-weight:700;color:#0f172a;\">#{r['rank']} &nbsp; "
+            f"<span style=\"color:#b91c1c;\">{r['prcp_mm']:.1f} mm</span> "
+            f"<span style=\"color:#64748b;font-weight:400;\">({inches:.1f} in)</span></div>"
+            f"<div style=\"color:#334155;margin-top:2px;\">{_fmt_date(r.get('date') or '')}</div>"
+            f"<div style=\"color:#475569;\">{name}</div>"
+            f"</div>"
+        )
         folium.CircleMarker(
             location=(r["lat"], r["lon"]),
             radius=_rank_radius(r["rank"]),
@@ -709,7 +720,7 @@ def _render_map(enriched: List[dict], decade_rows: List[dict], out_path: Path) -
             fill_opacity=0.78,
             opacity=1.0,
             popup=folium.Popup(popup_html, max_width=340),
-            tooltip=f"#{r['rank']} - {r['prcp_mm']:.0f} mm - {name}",
+            tooltip=folium.Tooltip(tooltip_html, sticky=True),
         ).add_to(fg)
 
     lats = [r["lat"] for r in top]
