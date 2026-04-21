@@ -46,8 +46,8 @@ def run_chunk(chunk_id: int, n: int, p: dict) -> dict:
     }
 
 
-# 2,000 chunks -> 2,000 workers running 500k sims each in parallel
-results = remote_parallel_map(run_chunk, tasks, func_cpu=1, func_ram=2)
+# 2,000 chunks -> Burla grows the cluster on demand and runs them in parallel
+results = remote_parallel_map(run_chunk, tasks, func_cpu=1, func_ram=2, grow=True)
 
 total_n = sum(r["n"] for r in results)
 total_sum = sum(r["sum"] for r in results)
