@@ -81,13 +81,13 @@ pd.DataFrame(reports).to_csv("alignment_report.csv", index=False)
 
 ## Why This Is Better
 
-**vs Nextflow on AWS Batch** — Nextflow + Batch requires a compute environment, a job queue, a container image, an S3 work dir, and the Nextflow DSL. Burla is a Python function and a list.
+**vs Nextflow on AWS Batch** - Nextflow + Batch requires a compute environment, a job queue, a container image, an S3 work dir, and the Nextflow DSL. Burla is a Python function and a list.
 
-**vs Snakemake** — Snakemake is great for complex DAGs but overkill for "run the same command per sample." You don't need a rule graph here.
+**vs Snakemake** - Snakemake is great for complex DAGs but overkill for "run the same command per sample." You don't need a rule graph here.
 
-**vs Ray** — Ray wasn't built for shelling out to `bwa` on 2,500 independent machines. You still need the binaries on every worker.
+**vs Ray** - Ray wasn't built for shelling out to `bwa` on 2,500 independent machines. You still need the binaries on every worker.
 
-**vs AWS Batch directly** — no job definition, no job queue, no compute env, no custom AMI. Burla workers already have a working shell.
+**vs AWS Batch directly** - no job definition, no job queue, no compute env, no custom AMI. Burla workers already have a working shell.
 
 ## How It Works
 
@@ -102,6 +102,6 @@ You pass a list of sample descriptors. Burla runs `align_sample(job)` on 2,500 w
 
 ## When NOT To Use This
 
-- Joint genotyping across all samples at once — that step needs cross-sample coordination; do per-sample GVCFs with Burla, then run the joint step on one big machine.
-- Interactive Jupyter-style exploration on a single BAM — use a local notebook.
-- Pipelines where sample A's output is needed to start sample B's work — Burla tasks are independent.
+- Joint genotyping across all samples at once - that step needs cross-sample coordination; do per-sample GVCFs with Burla, then run the joint step on one big machine.
+- Interactive Jupyter-style exploration on a single BAM - use a local notebook.
+- Pipelines where sample A's output is needed to start sample B's work - Burla tasks are independent.
