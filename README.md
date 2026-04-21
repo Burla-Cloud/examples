@@ -60,8 +60,8 @@ def compute_ndvi(tile_id: str) -> dict:
     return {"tile_id": tile_id, "mean_ndvi": float(ndvi.mean()), "pixels": int(ndvi.size)}
 
 
-# 2,000 tiles -> 2,000 workers running in parallel, each with 2 CPUs and 8 GB RAM
-results = remote_parallel_map(compute_ndvi, tile_ids, func_cpu=2, func_ram=8)
+# 2,000 tiles -> Burla grows the cluster on demand and processes them in parallel
+results = remote_parallel_map(compute_ndvi, tile_ids, func_cpu=2, func_ram=8, grow=True)
 
 import pandas as pd
 pd.DataFrame(results).to_csv("ndvi_report.csv", index=False)

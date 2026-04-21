@@ -42,7 +42,7 @@ def compute_ndvi(tile_id: str) -> dict:
 
 
 # 2,000 tiles -> 2,000 workers running in parallel, each with 2 CPUs and 8 GB RAM
-results = remote_parallel_map(compute_ndvi, tile_ids, func_cpu=2, func_ram=8)
+results = remote_parallel_map(compute_ndvi, tile_ids, func_cpu=2, func_ram=8, grow=True)
 
 import pandas as pd
 pd.DataFrame(results).to_csv("ndvi_report.csv", index=False)
