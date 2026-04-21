@@ -1,25 +1,23 @@
-# The Weirdest Art in History — a Burla demo
+# The Met's Hidden Twins — a Burla demo
 
-Fetch **every Met Museum CC0 artwork with a published image** (≈192 K pieces
-from the 470 K-item Open Access collection), run CLIP ViT-B/32 over all of
-them, and ask the data two questions with answers no curator knows in advance:
+**Live site: <https://jmp1062.github.io/met-weirdest-art/>**
 
-1. **Which artworks look like nothing else in the Met?** — k-th-nearest-neighbor
-   distance in 512-dimensional CLIP space. The winners are the true visual
-   outliers, regardless of medium or department.
-2. **Which artworks, separated by thousands of years and half the planet,
-   look like each other anyway?** — top cosine-similarity pairs across the
-   whole embedded set, constrained to artworks from different centuries.
+We fetched **every Met Museum CC0 artwork with a published image** (≈192 K
+pieces from the 470 K-item Open Access collection), ran CLIP ViT-B/32 over all
+of them, and asked the pixels one question: *which artworks, separated by
+thousands of years and half the planet, look like each other anyway?*
 
 No tags, no curator metadata. The neighborhoods fall out of the pixels.
 
-## Headline
+## The headline
 
-> **The closest "hidden twin" in Met history is a pair of objects
-> 49 centuries apart, with a cosine similarity of 0.932.** An Etruscan bronze
-> (~8th c. BCE, object [186597](https://www.metmuseum.org/art/collection/search/186597)) and a
-> Greek ceramic (4th c. BCE, object [244170](https://www.metmuseum.org/art/collection/search/244170))
-> that CLIP — a model trained on random internet images — correctly sees as
+> The closest "hidden twin" in Met history is a pair of objects
+> **49 centuries apart**, with a cosine similarity of **0.932**: a
+> 19th-century Birmingham silverware case (object
+> [186597](https://www.metmuseum.org/art/collection/search/186597)) and a
+> Bronze Age Cypriot dagger blade (object
+> [244170](https://www.metmuseum.org/art/collection/search/244170)) that
+> CLIP — a model trained on random internet images — correctly sees as
 > visually nearly identical despite no one in the Met ever filing them
 > together.
 
@@ -29,12 +27,23 @@ No tags, no curator metadata. The neighborhoods fall out of the pixels.
 | Embedding model | `Qdrant/clip-ViT-B-32-vision` (512-d, ONNX via fastembed) |
 | Images fetched from CRDImages CDN | 191,922 (~420 GB at source) |
 | Shards on `/workspace/shared` | 428 |
-| Cross-century "hidden twins" surfaced | 30 |
-| k-th-NN visual outliers surfaced | 24 |
+| Cross-century "hidden twins" surfaced | **30** |
+| Tightest match (cosine) | **0.959** |
+| Biggest time gap | **49 centuries** |
 | Serial equivalent compute | **~4–12 h** (single IP gets rate-limited by the CDN first) |
 | **Burla wall-clock (discover + fetch + embed + reduce)** | **~45–60 min** |
 | Reduce stage only | **49.7 s** |
 | Peak parallel workers | 4–8 (intentionally capped to be polite to the CDN) |
+
+## What's in this repo
+
+- **`index.html`** — the shareable single-page gallery. All 30 pairs rendered
+  inline with images and metadata, hero diptych, full methodology, honest
+  caveats. This is what we link.
+- **`met_weirdest.py`** — one script: discover + fetch + embed + reduce.
+- **`met_weirdest_out/`** — raw artifacts from the latest run (parquet shards,
+  summary.json, and two HTML subpages: `twins.html` is the standalone gallery
+  and `weirdest.html` is a bonus ranking of CLIP outliers).
 
 ## Top-5 hidden twins
 
@@ -43,38 +52,32 @@ CRDImages CDN; the Met collection pages are linked off the object IDs.
 
 | # | Cosine | Gap | Object A (`/search/ID`) | Object B (`/search/ID`) |
 |:---:|---:|:---:|:---|:---|
-| 1 | **0.932** | **49 centuries** | 186597 — Etruscan bronze | 244170 — Greek ceramic |
-| 2 | 0.916 | 49 centuries | 568276 — Egyptian statuette | 63150 — Asian figurine |
-| 3 | 0.917 | 48 centuries | 559252 — Egyptian amulet | 73260 — Asian pendant |
-| 4 | 0.917 | 48 centuries | 551048 — Egyptian figurine | 202864 — American 19th c. artifact |
-| 5 | 0.905 | 48 centuries | 202860 — American 19th c. | 551048 — Egyptian figurine |
+| 1 | **0.932** | **49 centuries** | 186597 — Knife and fork case, British 19c | 244170 — Cypriot dagger blade, ca. 3000 BCE |
+| 14 | **0.956** | 45 centuries | 244387 — Cypriot bronze pin, ca. 2500 BCE | 7106 — Tiffany Studios soldering bar, 1900 |
+| 21 | **0.949** | 43 centuries | 49139 — Chinese Neolithic Hu vase, ca. 2400 BCE | 4575 — American pitcher, 1814 |
+| 6 | 0.933 | 47 centuries | 552016 — Egyptian jar, ca. 2500 BCE | 487245 — Danish Kähler vase, 1922 |
+| 30 | **0.959** | 41 centuries | 501743 — British Natural Horn, 1790 | 324455 — Hattian sword/dagger, ca. 2300 BCE |
 
-The cross-civilization convergence (Egyptian / Greek / Asian / American) is
-honest: ancient small-form sculpture converges on a short list of visual
-archetypes (seated figures, standing figures, animal heads in profile), and
-CLIP recognizes the archetype regardless of origin.
+The full gallery of 30 pairs (with images inline) lives at
+`index.html`. A standalone plain version is at `met_weirdest_out/twins.html`.
 
-Full gallery with side-by-side images: `met_weirdest_out/twins.html`.
+## Why these pairs exist
 
-## Top-5 outliers (nothing looks like them)
+CLIP is a general-purpose vision model trained on random internet images.
+It doesn't know that pair #10 is a sacred Banshan funerary jar and a
+19th-century Philadelphia pitcher — it sees two round things with handles
+photographed from the same angle. Two-thirds of the top 30 are essentially
+"round vessel meets round vessel."
 
-Ranked by the cosine similarity of each artwork's 10th-NN in 512-d CLIP
-space — higher "isolation" = lonelier neighborhood.
+Also relevant: the Met photographs every artifact against a neutral gray
+ground with soft overhead lighting. That uniform staging is part of what
+the model is keying on. This isn't a bug; it's an honest feature of the
+dataset, and it's part of the reason the demo works as cleanly as it does.
 
-| # | Isolation | Title | Dept. / Period |
-|:---:|---:|:---|:---|
-| 1 | 0.46 | **Hat** (object 112709) | Costume Institute, ca. 1840, American |
-| 2 | 0.45 | Palmer Cox's Famous Brownie Books (339135) | Drawings & Prints, 1895 |
-| 3 | 0.44 | Yvette Guilbert (333802) | Drawings & Prints |
-| 4 | 0.44 | Smileage (728107) | Prints & Posters |
-| 5 | 0.41 | Sampler made at the Westtown Quaker School (18824) | Textiles |
-
-Most of the top-24 "outliers" are either photographic studio plates
-(overhead shots of single garments on black), broadside posters with heavy
-typography, or reference samples (Quaker school embroidery) — each a
-different visual language that the CLIP space genuinely has no neighbors for.
-
-Full gallery: `met_weirdest_out/weirdest.html`.
+The point of the demo isn't that these artifacts are stylistically related —
+they're not. The point is that the visual nearness exists *despite* total
+historical unrelatedness, and that a cluster built purely from pixels,
+with no metadata, can surface it.
 
 ## Why the Met Open Access
 
@@ -86,7 +89,7 @@ Full gallery: `met_weirdest_out/weirdest.html`.
   CSV-derived filenames, committed once, re-fetched in parallel.
 - The department diversity (arms & armor, European paintings, Egyptian,
   Asian, photography, costume, prints, musical instruments, ...) means the
-  outlier/twin questions actually have interesting answers.
+  twins question actually has interesting answers.
 
 **Limitations the demo does not hide:**
 
@@ -98,11 +101,10 @@ Full gallery: `met_weirdest_out/weirdest.html`.
    pulls. We work around this with exponential backoff *and* by keeping
    concurrency at 4–8 workers with 8–16 HTTP threads each — a single
    laptop's IP would be blocked within the first hour.
-3. CLIP ViT-B/32 is trained on general web text and image pairs; it is
-   *very good* at "looks like" but *not good* at "is stylistically from
-   the same school". The top twins are correctly "visually identical";
-   they are not "art-historically related". That's the interesting part:
-   the visual nearness exists despite total historical unrelatedness.
+3. CLIP ViT-B/32 is *very good* at "looks like" but *not good* at "is
+   stylistically from the same school." The top twins are correctly
+   "visually identical"; they are not "art-historically related." That's
+   the interesting part.
 
 ## Data source
 
@@ -130,9 +132,8 @@ Three stages, one script:
   successfully-fetched image, L2-normalizes, and writes a 512-d vector
   shard.
 - **Reduce — `reduce_met`** (1 worker, 16 CPU, 64 GB). Loads every vector
-  shard, builds a FAISS IVF cosine index over all 192 K vectors, searches
-  10-NN for the outlier ranking, and does a targeted cross-century
-  similarity search for the twins. Renders `weirdest.html` + `twins.html`.
+  shard, builds a FAISS IVF cosine index over all 192 K vectors, and does a
+  targeted cross-century similarity search for the twins.
 
 ## How to run
 
@@ -147,19 +148,12 @@ REDUCE_ONLY=1 python met_weirdest.py
 MET_MAX_OBJECTS=5000 python met_weirdest.py
 ```
 
-## Artifacts (in `met_weirdest_out/`)
-
-| File | Contents |
-|---|---|
-| `twins.html` | Top 30 cross-century visual twins (side-by-side images) |
-| `weirdest.html` | Top 24 k-th-NN outliers (image + department + period) |
-| `summary.json` | Counts, timings, top previews |
-
 ## Files
 
 ```
+index.html                 single-page shareable gallery (all 30 pairs inline)
 met_weirdest.py            discover + fetch + embed + reduce in one script
-met_weirdest_out/          artifacts from the latest run
+met_weirdest_out/          artifacts from the latest run (parquet, JSON, HTML)
 requirements.txt           burla + fastembed + Pillow + faiss-cpu + ...
 ```
 
