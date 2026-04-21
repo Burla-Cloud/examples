@@ -52,7 +52,7 @@ def align_sample(job: dict) -> dict:
 
 
 # 2,500 samples -> 2,500 workers each running bwa+samtools in parallel
-reports = remote_parallel_map(align_sample, sample_jobs, func_cpu=4, func_ram=16)
+reports = remote_parallel_map(align_sample, sample_jobs, func_cpu=4, func_ram=16, grow=True)
 
 import pandas as pd
 pd.DataFrame(reports).to_csv("alignment_report.csv", index=False)

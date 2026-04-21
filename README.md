@@ -72,8 +72,8 @@ def align_sample(job: dict) -> dict:
     return {"sample_id": sid, "bam_bytes": size, "elapsed_s": round(time.time() - t0, 1)}
 
 
-# 2,500 samples -> 2,500 workers each running bwa+samtools in parallel
-reports = remote_parallel_map(align_sample, sample_jobs, func_cpu=4, func_ram=16)
+# 2,500 samples -> Burla grows the cluster on demand and runs bwa+samtools in parallel
+reports = remote_parallel_map(align_sample, sample_jobs, func_cpu=4, func_ram=16, grow=True)
 
 import pandas as pd
 pd.DataFrame(reports).to_csv("alignment_report.csv", index=False)
