@@ -1,4 +1,6 @@
 import pyarrow.dataset as ds
+import torch  # noqa: F401 -- top-level import so Burla installs torch on workers
+import transformers  # noqa: F401 -- top-level import so Burla installs transformers on workers
 from burla import remote_parallel_map
 
 dataset = ds.dataset("s3://my-bucket/reviews/", format="parquet")
