@@ -29,10 +29,9 @@ params = {"S0": 100.0, "K": 95.0, "T": 1.0, "r": 0.01, "sigma": 0.3}
 tasks = [(i, PER_CHUNK, params) for i in range(N_CHUNKS)]
 
 
-def run_chunk(task: tuple) -> dict:
+def run_chunk(chunk_id: int, n: int, p: dict) -> dict:
     import numpy as np
 
-    chunk_id, n, p = task
     rng = np.random.default_rng(seed=42 + chunk_id)
 
     Z = rng.standard_normal(n)
