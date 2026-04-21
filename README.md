@@ -66,11 +66,11 @@ df.to_csv("parquet_scan_report.csv", index=False)
 
 ## Why This Is Better
 
-**vs Ray** — no `ray.init`, no head node, no actor classes. `scan_parquet_file` is a plain function. No tuning the Ray scheduler to not OOM on 5,000 tasks.
+**vs Ray** - no `ray.init`, no head node, no actor classes. `scan_parquet_file` is a plain function. No tuning the Ray scheduler to not OOM on 5,000 tasks.
 
-**vs Dask** — `dask.dataframe.read_parquet` is great for one logical table, not for independent per-file jobs. You don't need a scheduler process, cluster manager, or `dask-worker` fleet for this.
+**vs Dask** - `dask.dataframe.read_parquet` is great for one logical table, not for independent per-file jobs. You don't need a scheduler process, cluster manager, or `dask-worker` fleet for this.
 
-**vs AWS Batch** — no Dockerfile, no ECR push, no job definition, no compute environment, no queue. Cold starts on Batch are minutes; Burla workers are already warm.
+**vs AWS Batch** - no Dockerfile, no ECR push, no job definition, no compute environment, no queue. Cold starts on Batch are minutes; Burla workers are already warm.
 
 ## How It Works
 
@@ -85,6 +85,6 @@ You call `remote_parallel_map(fn, keys)`. Burla ships your function and the inpu
 
 ## When NOT To Use This
 
-- You need to shuffle or join across files — use Spark or DuckDB.
-- The files are small (<1 MB each) and there are only a few hundred — local threads are faster.
-- You need sub-second interactive queries — use a query engine, not a batch map.
+- You need to shuffle or join across files - use Spark or DuckDB.
+- The files are small (<1 MB each) and there are only a few hundred - local threads are faster.
+- You need sub-second interactive queries - use a query engine, not a batch map.
