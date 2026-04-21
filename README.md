@@ -20,6 +20,7 @@ No Dockerfile. No cluster config. No job YAML. The exact same function runs loca
 
 ```python
 import boto3
+import pandas as pd
 import pyarrow.parquet as pq
 from burla import remote_parallel_map
 
@@ -58,7 +59,6 @@ def scan_parquet_file(key: str) -> dict:
 # 5,000 parquet files -> 5,000 workers running in parallel
 stats = remote_parallel_map(scan_parquet_file, parquet_keys, func_cpu=1, func_ram=4)
 
-import pandas as pd
 df = pd.DataFrame(stats)
 print(df.describe())
 df.to_csv("parquet_scan_report.csv", index=False)
