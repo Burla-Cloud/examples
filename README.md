@@ -56,8 +56,8 @@ def scan_parquet_file(key: str) -> dict:
     }
 
 
-# 5,000 parquet files -> 5,000 workers running in parallel
-stats = remote_parallel_map(scan_parquet_file, parquet_keys, func_cpu=1, func_ram=4)
+# 5,000 parquet files -> Burla grows the cluster on demand and runs them in parallel
+stats = remote_parallel_map(scan_parquet_file, parquet_keys, func_cpu=1, func_ram=4, grow=True)
 
 df = pd.DataFrame(stats)
 print(df.describe())
