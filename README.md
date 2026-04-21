@@ -38,6 +38,10 @@ def apply_on_chunk(user_ids: list[str]) -> pd.DataFrame:
     import pandas as pd
     import pyarrow.dataset as ds
 
+    # Force numpy-backed strings instead of arrow-backed (pandas 3.x default)
+    # so downstream .apply / .values paths stay purely numpy.
+    pd.set_option("future.infer_string", False)
+
     dataset = ds.dataset("s3://my-bucket/events/", format="parquet")
     df = dataset.filter(ds.field("user_id").isin(user_ids)).to_table().to_pandas()
 
