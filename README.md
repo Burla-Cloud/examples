@@ -20,6 +20,8 @@ No Scrapy setup, no Kubernetes, no queue.
 
 ```python
 import random
+import httpx  # noqa: F401 -- top-level import so Burla installs httpx on workers
+import selectolax  # noqa: F401 -- top-level import so Burla installs selectolax on workers
 from burla import remote_parallel_map
 
 with open("urls.txt") as f:
