@@ -1,0 +1,694 @@
+<!doctype html><meta charset=utf-8><title>The Met's Hidden Twins</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         max-width: 1180px; margin: 40px auto; padding: 0 20px; line-height: 1.55; color: #0f172a; }
+  h1 { font-size: 34px; margin-bottom: 4px; }
+  h2 { font-size: 20px; margin-top: 32px; margin-bottom: 6px; }
+  .sub { color: #64748b; margin-top: 0; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin: 18px 0; }
+  .card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff;
+          box-shadow: 0 1px 2px rgba(15,23,42,0.06); display: flex; flex-direction: column; }
+  .card img { width: 100%; height: 260px; object-fit: cover; display: block; background: #f1f5f9; }
+  .card .body { padding: 12px 14px; font-size: 13px; flex: 1; }
+  .card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+  .card h3 { font-size: 14px; margin: 4px 0 6px 0; }
+  .card .meta { color: #475569; font-size: 12px; margin: 2px 0; }
+  .twin { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid #e2e8f0;
+          border-radius: 12px; overflow: hidden; margin: 14px 0; background: #fff;
+          box-shadow: 0 1px 2px rgba(15,23,42,0.06); }
+  .twin .side { padding: 10px 14px; }
+  .twin img { width: 100%; height: 260px; object-fit: cover; background: #f1f5f9; display: block; }
+  .twin .hdr { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px;
+               background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: 12px; color: #334155; }
+  .chip { background: #e0f2fe; color: #075985; border-radius: 999px; padding: 2px 10px; font-size: 11px; }
+  .footer { color: #94a3b8; font-size: 12px; margin-top: 40px; }
+  a { color: #2563eb; text-decoration: none; } a:hover { text-decoration: underline; }
+</style>
+
+<h1>The Met's Hidden Twins</h1>
+<p class=sub>The 30 most visually similar artwork pairs in the Met's
+191,922-piece public domain collection that were NOT flagged as related by
+the museum — different centuries, different departments, different cultures,
+but nearly identical to CLIP.</p>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#1</b>  · cosine similarity <b>0.932</b></div>
+    <div><span class=chip>49 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/186597' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/DP258669.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/244170' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/DP9028.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · British, Birmingham, after possibly German original</div>
+      <h3>Knife and fork case</h3>
+      <div class=meta>19th century, after ca. 1500 original  · Elkington & Co.</div>
+    </div>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cypriot</div>
+      <h3>Dagger blade</h3>
+      <div class=meta>ca. 3000–2000 BCE  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#2</b>  · cosine similarity <b>0.916</b></div>
+    <div><span class=chip>49 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/568276' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/13-182-15.JPG' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/63150' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/36_120_494.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Shouldered bowl with a collared rim</h3>
+      <div class=meta>ca. 2960–2649 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · Japan</div>
+      <h3>Untitled</h3>
+      <div class=meta>ca. 1820  · Sōhei Ikasa</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#3</b>  · cosine similarity <b>0.917</b></div>
+    <div><span class=chip>48 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/559252' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/14.4.91_EGDP020599.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/73260' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/2006_475_B.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Linen fragment</h3>
+      <div class=meta>ca. 2880–2465 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · India (Rajasthan, Mewar)</div>
+      <h3>Untitled</h3>
+      <div class=meta>ca. 1825  · Ghasi</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#4</b>  · cosine similarity <b>0.917</b></div>
+    <div><span class=chip>48 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/551048' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/12.187.52_EGDP015379.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/202864' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/DP-1717-014.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Bed (bier)</h3>
+      <div class=meta>ca. 2960–2770 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · British, London</div>
+      <h3>Miniature fender</h3>
+      <div class=meta>ca. 1720–30  · David Clayton</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#5</b>  · cosine similarity <b>0.905</b></div>
+    <div><span class=chip>48 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/202860' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/DP-1717-007.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/551048' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/12.187.52_EGDP015379.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · British, London</div>
+      <h3>Miniature trivet</h3>
+      <div class=meta>ca. 1720–30  · David Clayton</div>
+    </div>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Bed (bier)</h3>
+      <div class=meta>ca. 2960–2770 B.C.  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#6</b>  · cosine similarity <b>0.933</b></div>
+    <div><span class=chip>47 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/552016' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/28-2-11.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/487245' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ma/web-large/sf22.228.3.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Jar</h3>
+      <div class=meta>ca. 2649–2100 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Modern and Contemporary Art  · Danish (Nästved)</div>
+      <h3>Vase with lid</h3>
+      <div class=meta>ca. 1922  · Herman A. Kähler|Kähler Potteries</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#7</b>  · cosine similarity <b>0.923</b></div>
+    <div><span class=chip>47 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/632258' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/DP322100.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/63111' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/DP257940.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cycladic</div>
+      <h3>Terracotta box of a pyxis (small box)</h3>
+      <div class=meta>ca. 3000–2800 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · Japan</div>
+      <h3>Untitled</h3>
+      <div class=meta>17th century  · Hon'ami Kōetsu</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#8</b>  · cosine similarity <b>0.944</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/550160' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/2001.726.2.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/63188' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/36_120_530.JPG' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Bowl</h3>
+      <div class=meta>ca. 2649–2100 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · Japan</div>
+      <h3>Untitled</h3>
+      <div class=meta>ca. 1817  · Mitani Rinsō</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#9</b>  · cosine similarity <b>0.922</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/322483' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/DT855.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/14510' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP230766.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · —</div>
+      <h3>Vase with overlapping pattern and three bands of palm trees</h3>
+      <div class=meta>ca. mid- to late 3rd millennium BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Vase</h3>
+      <div class=meta>1882–85  · Chesapeake Pottery</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#10</b>  · cosine similarity <b>0.920</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/49135' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/201719.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/5853' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/194154.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Asian Art  · China</div>
+      <h3>新石器時代馬家窯文化 半山類型彩陶罐|Jar (Guan)</h3>
+      <div class=meta>Banshan phase (ca. 2650–2350 BCE)  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Pitcher</h3>
+      <div class=meta>1828–38  · Tucker Factory</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#11</b>  · cosine similarity <b>0.915</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/652154' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ph/web-large/DP203022.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/547738' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/66-99-80.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Photographs  · —</div>
+      <h3>(3) [Persepolis (?)]</h3>
+      <div class=meta>1840s–60s  · Luigi Pesce</div>
+    </div>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Relief Fragment depicting offering bearers from the mastaba of Idut, daughter of King Unis (?)</h3>
+      <div class=meta>ca. 2649–2100 B.C.  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#12</b>  · cosine similarity <b>0.911</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/547395' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/01.4.31_EGDP011693.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/662961' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/aa/web-large/DP701267.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Tweezers</h3>
+      <div class=meta>ca. 2650 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Arms and Armor  · Malaysian, Kampung Payang and Sumatran, Aceh</div>
+      <h3>Sword (&lt;i&gt;Rudus&lt;/i&gt;) and Scabbard</h3>
+      <div class=meta>dated 1835  · Muhammad Salih of Terumon</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#13</b>  · cosine similarity <b>0.903</b></div>
+    <div><span class=chip>46 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/329070' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/DT11911.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/639661' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP331101.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Hattian</div>
+      <h3>Ewer decorated with concentric circles</h3>
+      <div class=meta>ca. 2700–2000 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Wine pot</h3>
+      <div class=meta>1882  · Dominick & Haff</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#14</b>  · cosine similarity <b>0.956</b></div>
+    <div><span class=chip>45 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/244387' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/DP20019.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/7106' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP241960.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cypriot</div>
+      <h3>Bronze pin</h3>
+      <div class=meta>ca. 2500–1600 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Sample of soldering bar lead from Tiffany Studios</h3>
+      <div class=meta>1900–1907  · Tiffany Studios</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#15</b>  · cosine similarity <b>0.940</b></div>
+    <div><span class=chip>45 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/257424' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/268483.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/62674' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/16209.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cycladic</div>
+      <h3>Marble bowl</h3>
+      <div class=meta>ca. 2700–2400 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · Japan</div>
+      <h3>Untitled</h3>
+      <div class=meta>18th century  · Nonomura Ninsei</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#16</b>  · cosine similarity <b>0.923</b></div>
+    <div><span class=chip>45 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/327371' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/sd1988_323_2.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/1927' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/174929.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · —</div>
+      <h3>Fragmentary goblet</h3>
+      <div class=meta>ca. mid-3rd millennium BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Chalice</h3>
+      <div class=meta>ca. 1813–56  · Israel Trask</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#17</b>  · cosine similarity <b>0.905</b></div>
+    <div><span class=chip>45 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/199778' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/138040.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/327387' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/ss1989_2_2.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · German, Nuremberg</div>
+      <h3>Hunting scene</h3>
+      <div class=meta>ca. 1570–80  · Pankraz Labenwolf</div>
+    </div>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · —</div>
+      <h3>Cylinder seal</h3>
+      <div class=meta>ca. 2900–2700 BCE  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#18</b>  · cosine similarity <b>0.900</b></div>
+    <div><span class=chip>45 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/323673' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/ME38_40_356.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/194540' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/224543.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Iran</div>
+      <h3>Amulet</h3>
+      <div class=meta>ca. 2500–1750 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · probably Italian, Pesaro</div>
+      <h3>Dish</h3>
+      <div class=meta>late 19th or early 20th century  · Marcantonio Raimondi|Raphael (Raffaello Sanzio or Santi)|Ferruccio Mengaroni</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#19</b>  · cosine similarity <b>0.917</b></div>
+    <div><span class=chip>44 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/327393' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/sd1989_281_4.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/591850' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/li/web-large/li543.1N48 M97 Q.R.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Sumerian</div>
+      <h3>Standing male worshiper</h3>
+      <div class=meta>ca. 2500–2350 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The Libraries  · Boston: J. R. Osgood, 1885–1903</div>
+      <h3>A Descriptive Atlas of the Cesnola Collection of Cypriote Antiquities in the Metropolitan Museum of Art, New York (1885–</h3>
+      <div class=meta>1885–1904  · Ernst Curtius|Luigi Palma di Cesnola</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#20</b>  · cosine similarity <b>0.901</b></div>
+    <div><span class=chip>44 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/640519' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP322117.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/243897' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/DP121284.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Plate</h3>
+      <div class=meta>1838  · Conrad Ranninger</div>
+    </div>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cypriot</div>
+      <h3>Gabbro mace head</h3>
+      <div class=meta>ca. 2500–1900 BCE  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#21</b>  · cosine similarity <b>0.949</b></div>
+    <div><span class=chip>43 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/49139' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/147118.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/4575' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/41182.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Asian Art  · China</div>
+      <h3>新石器時代  良渚文化黑陶壺|Vase (Hu)</h3>
+      <div class=meta>ca. 2400–2000 BC  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Pitcher</h3>
+      <div class=meta>1814–28  · Peleg Armstrong and Erastus Wentworth</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#22</b>  · cosine similarity <b>0.928</b></div>
+    <div><span class=chip>43 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/40082' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/1992_165_1_L35736.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/2325' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/151680.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Asian Art  · China</div>
+      <h3>新石器時代馬家窯文化 馬厰類型彩陶罐|Jar (Guan)</h3>
+      <div class=meta>Machang phase (ca. 2350–2050 BCE)  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Covered Box</h3>
+      <div class=meta>1898–1902  · Louis C. Tiffany|Tiffany Glass and Decorating Company</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#23</b>  · cosine similarity <b>0.923</b></div>
+    <div><span class=chip>43 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/319215' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ao/web-large/DT258621.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/256549' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/gr/web-large/DP116325.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Arts of Africa, Oceania, and the Americas  · —</div>
+      <h3>Jar</h3>
+      <div class=meta>ca. 1910  · Nampeyo</div>
+    </div>
+    <div class=side>
+      <div class=label>Greek and Roman Art  · Cycladic</div>
+      <h3>Terracotta jar</h3>
+      <div class=meta>ca. 2300–1900 BCE  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#24</b>  · cosine similarity <b>0.940</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/323712' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/ME39_60_4.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/62903' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/as/web-large/17_118_79.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Iran</div>
+      <h3>Beaker</h3>
+      <div class=meta>ca. 2400–2170 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Asian Art  · Japan</div>
+      <h3>Untitled</h3>
+      <div class=meta>ca. 1675  · Ichinyu</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#25</b>  · cosine similarity <b>0.930</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/327427' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/DT866.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/8255' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP240644.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Bactria-Margiana Archaeological Complex</div>
+      <h3>Beaker with birds on the rim</h3>
+      <div class=meta>ca. late 3rd–early 2nd millennium BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>The American Wing  · American</div>
+      <h3>Tazza</h3>
+      <div class=meta>1880–88  · Boston & Sandwich Glass Company</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#26</b>  · cosine similarity <b>0.911</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/543906' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/64.260.JPG' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/237745' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/DP311987.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Kneeling captive</h3>
+      <div class=meta>ca. 2246–2152 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>European Sculpture and Decorative Arts  · French, Paris</div>
+      <h3>Crouching Flora</h3>
+      <div class=meta>ca. 1863  · Jean-Baptiste Carpeaux</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#27</b>  · cosine similarity <b>0.902</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/316490' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ao/web-large/1991.17.18_back.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/543912' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/58.123_01.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Arts of Africa, Oceania, and the Americas  · Edo</div>
+      <h3>Plaque: Two Portuguese Merchants</h3>
+      <div class=meta>16th–17th century  · Edo artist</div>
+    </div>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Corner of niche from the tomb of Akhtihotep</h3>
+      <div class=meta>ca. 2575–2551 B.C.  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#28</b>  · cosine similarity <b>0.902</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/324445' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/HB55_137_6.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/503840' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/mi/web-large/211322.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Hattian</div>
+      <h3>Bull's horns</h3>
+      <div class=meta>ca. 2300–2000 BCE  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Musical Instruments  · German</div>
+      <h3>Half Moon (bugle or flügelhorn) in D</h3>
+      <div class=meta>1813  · Erdmuthe Juliane Liebel</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#29</b>  · cosine similarity <b>0.902</b></div>
+    <div><span class=chip>42 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/549541' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/DT2860.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/310764' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ao/web-large/DT9711.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Egyptian Art  · —</div>
+      <h3>Recumbent Lion</h3>
+      <div class=meta>ca. 2575–2450 B.C.  · Unknown</div>
+    </div>
+    <div class=side>
+      <div class=label>Arts of Africa, Oceania, and the Americas  · Edo</div>
+      <h3>Leopard</h3>
+      <div class=meta>1550–1680  · Edo artist</div>
+    </div>
+  </div>
+</div>
+<div class=twin>
+  <div class=hdr>
+    <div><b>#30</b>  · cosine similarity <b>0.959</b></div>
+    <div><span class=chip>41 centuries apart</span></div>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <a href='https://www.metmuseum.org/art/collection/search/501743' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/mi/web-large/202798.jpg' alt=''/></a>
+    <a href='https://www.metmuseum.org/art/collection/search/324455' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/an/web-large/ME55_137_16.jpg' alt=''/></a>
+  </div>
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:0;'>
+    <div class=side>
+      <div class=label>Musical Instruments  · British</div>
+      <h3>Natural Horn</h3>
+      <div class=meta>1790–1830  · John Köhler</div>
+    </div>
+    <div class=side>
+      <div class=label>Ancient Near Eastern Art  · Hattian</div>
+      <h3>Sword or dagger</h3>
+      <div class=meta>ca. 2300–2000 BCE  · Unknown</div>
+    </div>
+  </div>
+</div>
+<div class=footer>Generated 2026-04-19T22:13:37+00:00. Source: Met Museum Open Access via Burla.</div>
