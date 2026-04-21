@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang=en>
 <meta charset=utf-8>
-<title>The Met's Hidden Twins — 30 visual near-duplicates, centuries apart</title>
+<title>The Met's Hidden Twins · 30 visual near-duplicates, centuries apart</title>
 <meta name=viewport content="width=device-width, initial-scale=1">
 <meta name=description content="We CLIP-embedded every Met CC0 artwork (191,922 of them) and asked the pixels for impossible pairs. The top twin is an Etruscan bronze and a Greek ceramic 49 centuries apart, cosine 0.932. Here are all 30.">
-<meta property=og:title content="The Met's Hidden Twins — 30 impossible pairs">
+<meta property=og:title content="The Met's Hidden Twins · 30 impossible pairs">
 <meta property=og:description content="An Etruscan bronze and a Greek ceramic, 49 centuries apart, are visually near-identical. 192K Met Museum artworks embedded on Burla. Here are all 30 hidden twins.">
 <meta property=og:type content=article>
 <meta name=twitter:card content=summary_large_image>
@@ -60,6 +60,9 @@
     color: var(--ink-mute); font-weight: 500;
   }
   .museum-header .catalogue b { color: var(--claret); font-weight: 600; letter-spacing: 0.32em; }
+  .museum-header .catalogue a { text-decoration: none; color: inherit; }
+  .museum-header .catalogue a b { border-bottom: 1px dotted rgba(107, 42, 58, 0.35); padding-bottom: 1px; transition: border-color 0.15s ease, border-bottom-style 0.15s ease; }
+  .museum-header .catalogue a:hover b { border-bottom-color: var(--claret); border-bottom-style: solid; }
 
   /* ── headline ─────────────────────────────────────── */
   h1 {
@@ -379,7 +382,7 @@
 
 <header class=museum-header>
   <div class=institution>The Metropolitan Museum of Art &middot; Open Access (CC0)</div>
-  <div class=catalogue><b>A BURLA DEMO</b> &middot; SPECIAL EXHIBITION &middot; 30 HIDDEN TWINS &middot; APRIL 2026</div>
+  <div class=catalogue><a href="https://burla.dev" target=_blank rel=noopener><b>A BURLA DEMO</b></a> &middot; SPECIAL EXHIBITION &middot; 30 HIDDEN TWINS &middot; APRIL 2026</div>
 </header>
 
 <div class=plate-label>
@@ -388,7 +391,7 @@
 
 <h1>An Etruscan bronze and a Greek ceramic, <em>forty-nine centuries apart,</em> are visually near-identical.</h1>
 
-<p class=lede>We fetched <b>every Met Museum CC0 artwork with a published image</b>, CLIP-embedded all <b>191,922</b> of them, and searched the 512-dimensional space for pairs that look the same despite being separated by thousands of years. Different civilizations, different materials, different millennia &mdash; but to a vision model that has never seen them before, they're the same object. Below is the full list of 30.</p>
+<p class=lede>We fetched <b>every Met Museum CC0 artwork with a published image</b>, CLIP-embedded all <b>191,922</b> of them, and searched the 512-dimensional space for pairs that look the same despite being separated by thousands of years. Different civilizations, different materials, different millennia. But to a vision model that has never seen them before, they're the same object. Below is the full list of 30.</p>
 
 <div class=diptych>
   <figure class=frame>
@@ -416,7 +419,7 @@
 <div class=diptych-caption>
   <div class=verdict-stats><span><b>cosine 0.932</b></span><span><b>49 centuries apart</b></span><span><b>different departments</b></span></div>
   <div class=verdict>&ldquo;What the pixels see, the centuries erase.&rdquo;</div>
-  <p class=aside>A Victorian silverware case made in Birmingham around 1850 and a Bronze Age dagger from Cyprus made four-and-a-half millennia earlier. No curator has ever filed these two together. The vision model &mdash; trained on random internet imagery &mdash; did it on its own.</p>
+  <p class=aside>A Victorian silverware case made in Birmingham around 1850 and a Bronze Age dagger from Cyprus made four-and-a-half millennia earlier. No curator has ever filed these two together. The vision model, trained on random internet imagery, did it on its own.</p>
 </div>
 
 <!-- ── stats band ────────────────────────────────────── -->
@@ -451,9 +454,9 @@
 <section class=essay>
   <div class=essay-hd-sub>&sect; The method, in four sentences</div>
   <div class=essay-hd>How we found them.</div>
-  <p>The Met publishes roughly 470,000 artworks as CC0 open data &mdash; of those, about 192,000 have a published <code>web-large</code> image on the museum's public CDN. We pulled every one of them in parallel through <b>Burla</b>, ran each image through the ONNX build of <b>CLIP ViT-B/32</b> to get a 512-dimensional embedding, and built a <b>FAISS IVF index</b> over all 192K vectors.</p>
+  <p>The Met publishes roughly 470,000 artworks as CC0 open data. Of those, about 192,000 have a published <code>web-large</code> image on the museum's public CDN. We pulled every one of them in parallel through <a href="https://burla.dev" target=_blank rel=noopener><b>Burla</b></a>, ran each image through the ONNX build of <b>CLIP ViT-B/32</b> to get a 512-dimensional embedding, and built a <b>FAISS IVF index</b> over all 192K vectors.</p>
   <p>Then we asked the index a very specific question: <em>for every artwork from before 1 CE, find its nearest neighbor that was created at least 2,000 years later</em>. We sorted those cross-millennium pairs by cosine similarity, dropped anything the Met had already cross-listed in its own metadata, and took the top 30.</p>
-  <p>The &ldquo;different centuries&rdquo; constraint is the whole game. In normal vector search, a marble Greek vase will have a dozen other marble Greek vases as neighbors &mdash; boring. The interesting question is which <em>ancient</em> object is closest to a <em>modern</em> object, close enough in 512-dimensional space that the model can't distinguish them. That's this list.</p>
+  <p>The &ldquo;different centuries&rdquo; constraint is the whole game. In normal vector search, a marble Greek vase will have a dozen other marble Greek vases as neighbors. Boring. The interesting question is which <em>ancient</em> object is closest to a <em>modern</em> object, close enough in 512-dimensional space that the model can't distinguish them. That's this list.</p>
 </section>
 
 <!-- ── gallery intro ─────────────────────────────────── -->
@@ -1162,8 +1165,8 @@
 <section class=caveats>
   <h3>A few honest notes about what CLIP is seeing.</h3>
   <ol>
-    <li><b>Shape over meaning.</b> CLIP is a general-purpose vision model trained on random internet images. It doesn't know that #10 is a sacred Banshan funerary jar and a 19th-century Philadelphia pitcher &mdash; it sees two round things with handles photographed from the same angle. Two-thirds of the top 30 are essentially &ldquo;round vessel meets round vessel.&rdquo;</li>
-    <li><b>Museum photography is a participant.</b> The Met photographs every artifact against a neutral gray ground with soft overhead lighting. That uniform staging is part of what the model is keying on &mdash; the background is as informative as the object. This isn't a bug; it's an honest feature of the dataset.</li>
+    <li><b>Shape over meaning.</b> CLIP is a general-purpose vision model trained on random internet images. It doesn't know that #10 is a sacred Banshan funerary jar and a 19th-century Philadelphia pitcher. It sees two round things with handles photographed from the same angle. Two-thirds of the top 30 are essentially &ldquo;round vessel meets round vessel.&rdquo;</li>
+    <li><b>Museum photography is a participant.</b> The Met photographs every artifact against a neutral gray ground with soft overhead lighting. That uniform staging is part of what the model is keying on. The background is as informative as the object. This isn't a bug; it's an honest feature of the dataset.</li>
     <li><b>Two-thousand-year-old + nineteenth-century.</b> The age gaps are real but somewhat inevitable: the Met's ancient holdings are dominated by Egyptian and Mesopotamian small-form objects, and its modern holdings are dominated by 19th-century American and European decorative arts. The archetype overlap is exactly where those two catalogs intersect.</li>
     <li><b>No art-historical claim.</b> None of these pairs are stylistically related, imitations, or influenced by each other. The point is the opposite: the visual nearness exists <em>despite</em> total historical unrelatedness. That's the interesting part.</li>
   </ol>
