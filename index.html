@@ -1,84 +1,231 @@
 <!doctype html>
+<html lang=en>
 <meta charset=utf-8>
 <title>Fossils of the arXiv — a Burla demo</title>
 <meta name=viewport content="width=device-width, initial-scale=1">
-<meta property=og:title content="Fossils of the arXiv — a Burla demo">
-<meta property=og:description content="The loneliest paper in science is a dataset of Norwegian corporate tax filings. We clustered 2.71M arXiv abstracts in 25 minutes to find out.">
+<meta name=description content="We embedded 2,710,783 arXiv abstracts and asked the geometry which topics went extinct, which appeared overnight, and which paper is the loneliest of all.">
+<meta property=og:title content="Fossils of the arXiv">
+<meta property=og:description content="The loneliest paper in science is a dataset of Norwegian corporate tax filings. We clustered 2.71M arXiv abstracts to find out.">
+<meta name=twitter:card content=summary_large_image>
+<link rel=preconnect href=https://fonts.googleapis.com>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel=stylesheet>
 <style>
-  :root { color-scheme: light dark; --fg: #0f172a; --sub: #64748b; --bg: #fff; --card: #fff; --border: #e2e8f0; --accent: #2563eb; --chip: #e0f2fe; --chip-fg: #075985; }
-  @media (prefers-color-scheme: dark) {
-    :root { --fg: #e2e8f0; --sub: #94a3b8; --bg: #0b1120; --card: #111c2e; --border: #1e293b; --accent: #60a5fa; --chip: #082f49; --chip-fg: #7dd3fc; }
+  :root {
+    color-scheme: light;
+    --paper: #f4efe5;
+    --paper-edge: #e8e0cf;
+    --ink: #161310;
+    --ink-soft: #4a443b;
+    --rust: #7a3d25;
+    --rust-soft: #a45834;
+    --olive: #5d6b56;
+    --rule: #ccc2ad;
   }
-  * { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-         max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; line-height: 1.55;
-         color: var(--fg); background: var(--bg); }
-  .eyebrow { color: var(--sub); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
-  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 10px 0 12px; letter-spacing: -0.02em; }
-  .sub { color: var(--sub); font-size: 17px; margin: 0 0 32px; max-width: 720px; }
-  .hero { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; background: var(--card); box-shadow: 0 1px 3px rgba(15,23,42,0.04); margin: 0 0 32px; }
-  .hero .label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
-  .hero blockquote { margin: 10px 0 4px; font-size: 22px; line-height: 1.35; color: var(--fg); }
-  .hero blockquote b { background: linear-gradient(120deg, transparent 0%, transparent 20%, rgba(37, 99, 235, 0.12) 20%, rgba(37, 99, 235, 0.12) 95%, transparent 95%); padding: 0 4px; }
-  .hero .detail { color: var(--sub); font-size: 14px; margin-top: 8px; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 40px; }
-  .stat { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
-  .stat .k { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat .v { font-size: 22px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
-  .stat .v small { font-size: 13px; color: var(--sub); font-weight: 400; margin-left: 4px; }
-  h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -0.01em; }
-  .reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .report { border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; background: var(--card); text-decoration: none; color: var(--fg); display: block; transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease; }
-  .report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); border-color: var(--accent); }
-  .report .chip { display: inline-block; background: var(--chip); color: var(--chip-fg); border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-  .report h3 { margin: 10px 0 6px; font-size: 18px; }
-  .report p { margin: 0; color: var(--sub); font-size: 14px; }
-  .footer { color: var(--sub); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
-  a.plain { color: var(--accent); text-decoration: none; }
-  a.plain:hover { text-decoration: underline; }
-  code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--paper); }
+  body {
+    font-family: 'Newsreader', 'Source Serif Pro', Georgia, serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(122, 61, 37, 0.035), transparent 40%),
+      radial-gradient(circle at 80% 85%, rgba(93, 107, 86, 0.035), transparent 45%),
+      var(--paper);
+    min-height: 100vh;
+    padding: 64px 24px 96px;
+  }
+  .page { max-width: 680px; margin: 0 auto; }
+  .meta-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .meta-top b { color: var(--ink); letter-spacing: 0.22em; font-weight: 600; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: clamp(38px, 6vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  h1 em { font-style: italic; color: var(--rust); }
+  .lede { font-size: 20px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 42px; }
+  .lede b { color: var(--ink); font-weight: 500; }
+  .rule { border: 0; height: 1px; background: var(--rule); margin: 42px 0; }
+  .rule-ornament {
+    display: flex; align-items: center; gap: 14px;
+    margin: 48px 0 36px;
+    color: var(--rust-soft);
+  }
+  .rule-ornament::before, .rule-ornament::after {
+    content: ''; flex: 1; border-top: 1px solid var(--rule);
+  }
+  .rule-ornament span {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  }
+  blockquote.finding {
+    border-left: 3px solid var(--rust);
+    padding: 4px 0 4px 24px;
+    margin: 28px 0;
+    font-size: 24px;
+    line-height: 1.45;
+    font-weight: 400;
+  }
+  blockquote.finding em { font-style: italic; color: var(--rust); }
+  blockquote.finding .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  .byline {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 14px;
+  }
+  .byline a { color: var(--rust); text-decoration: underline; text-decoration-color: rgba(122,61,37,0.35); text-underline-offset: 3px; }
+  .data-table {
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    font-size: 14px;
+    margin: 36px 0;
+  }
+  .data-table td { padding: 10px 0; border-bottom: 1px dashed var(--rule); vertical-align: baseline; }
+  .data-table td:first-child { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; font-weight: 600; width: 48%; }
+  .data-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: var(--ink); font-size: 15px; }
+  .data-table td:last-child small { font-weight: 400; color: var(--ink-soft); margin-left: 2px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--rust);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .finding-entry {
+    padding: 24px 0 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .finding-entry:last-of-type { border-bottom: 1px solid var(--rule); }
+  .finding-entry h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 2px 0 10px;
+    color: var(--ink);
+  }
+  .finding-entry h2 a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .finding-entry h2 a:hover { border-bottom-color: var(--rust); color: var(--rust); }
+  .finding-entry p { color: var(--ink-soft); font-size: 17px; margin-bottom: 6px; }
+  .finding-entry .readmore {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rust);
+    display: inline-block;
+    margin-top: 8px;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .finding-entry .readmore:hover { color: var(--ink); }
+  .footnote {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.7;
+  }
+  .footnote a { color: var(--rust); }
+  .footnote code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; background: rgba(122,61,37,0.07); padding: 1px 5px; border-radius: 2px; }
+  .dropcap::first-letter {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    float: left;
+    font-size: 62px;
+    line-height: 0.85;
+    padding: 8px 10px 0 0;
+    color: var(--rust);
+  }
 </style>
 
-<div class=eyebrow>A Burla demo · data-first linguistic archaeology</div>
-<h1>The loneliest paper in science is about <em>Norwegian corporate tax filings</em>.</h1>
-<p class=sub>We embedded <b>every single arXiv abstract ever posted</b> — 2,710,783 of them — with MiniLM-L6-v2, clustered them into 400 topics, and let the geometry surface three things without asking: the topics that collapsed, the topics that appeared overnight, and the one paper that sits furthest from anything anyone else has ever written.</p>
+<div class=page>
 
-<div class=hero>
-  <div class=label>Headline</div>
-  <blockquote><b>arXiv:2203.12842 — "Financial statements of companies in Norway".</b><br>
-  Its 5th-nearest neighbor across 2.71 M papers has cosine similarity 0.138. No other paper on arXiv is remotely about the same thing.</blockquote>
-  <div class=detail>Posted 2022-03-24 · Categories: econ.GN, q-fin.EC · <a class=plain href='https://arxiv.org/abs/2203.12842' target=_blank>arxiv.org/abs/2203.12842 ↗</a></div>
+<div class=meta-top>
+  <span><b>THE ARXIV REVIEW</b></span>
+  <span>VOL. I · APRIL 2026</span>
+  <span>A BURLA DEMO</span>
 </div>
 
-<div class=stats>
-  <div class=stat><div class=k>Abstracts embedded</div><div class=v>2,710,783</div></div>
-  <div class=stat><div class=k>Clusters (k-means)</div><div class=v>400</div></div>
-  <div class=stat><div class=k>Burla wall-clock</div><div class=v>~25 <small>min</small></div></div>
-  <div class=stat><div class=k>Serial-equivalent</div><div class=v>~75–90 <small>min</small></div></div>
-  <div class=stat><div class=k>Reduce stage</div><div class=v>142 <small>s</small></div></div>
-  <div class=stat><div class=k>Peak parallel workers</div><div class=v>16</div></div>
+<div class=eyebrow>Linguistic archaeology</div>
+<h1>The loneliest paper in science is about <em>Norwegian corporate tax filings.</em></h1>
+
+<p class="lede dropcap">We embedded <b>every single arXiv abstract ever posted</b> — 2,710,783 of them — with MiniLM-L6-v2, clustered the lot into 400 topics, and asked the 384-dimensional geometry three questions whose answers no one at arXiv has ever curated: which topics collapsed, which appeared overnight, and which single paper sits the furthest from anything else anyone has ever written.</p>
+
+<blockquote class=finding>
+  <span class=mono>arXiv:2203.12842</span> &middot; <em>"Financial statements of companies in Norway."</em> Its fifth-nearest neighbor across 2.71 M papers has cosine similarity <b>0.138</b>. Nothing else is remotely about the same thing.
+  <div class=byline>Posted 2022-03-24 &middot; Categories: <code>econ.GN</code>, <code>q-fin.EC</code> &middot; <a href="https://arxiv.org/abs/2203.12842" target=_blank>arxiv.org/abs/2203.12842</a></div>
+</blockquote>
+
+<div class="rule-ornament"><span>Methodology &amp; compute</span></div>
+
+<table class=data-table>
+  <tr><td>Abstracts embedded</td><td>2,710,783</td></tr>
+  <tr><td>Embedding model</td><td>all-MiniLM-L6-v2 <small>· 384-d</small></td></tr>
+  <tr><td>Clusters (MiniBatch k-means)</td><td>400</td></tr>
+  <tr><td>Burla wall-clock</td><td>~25 <small>min</small></td></tr>
+  <tr><td>Serial-equivalent</td><td>~75–90 <small>min</small></td></tr>
+  <tr><td>Reduce stage alone</td><td>142 <small>s</small></td></tr>
+  <tr><td>Peak parallel workers</td><td>16</td></tr>
+</table>
+
+<div class="rule-ornament"><span>Three findings</span></div>
+
+<article class=finding-entry>
+  <span class=section-num>§1 — Fossils</span>
+  <h2><a href="arxiv_fossils_out/extinct.html">Ten research topics that peaked, then quietly collapsed</a></h2>
+  <p>Measured by the ratio of last-5-year paper rate to peak-year rate. #1 is 2000s-era Randall-Sundrum braneworld cosmology, now running at <b>16.7%</b> of its peak. #3 is pandemic-era epidemic modelling, already at 19.7%.</p>
+  <a class=readmore href="arxiv_fossils_out/extinct.html">Read the full list ↗</a>
+</article>
+
+<article class=finding-entry>
+  <span class=section-num>§2 — Newborns</span>
+  <h2><a href="arxiv_fossils_out/emergent.html">Ten topics that appeared essentially overnight</a></h2>
+  <p>Clusters where the majority of their all-time papers were written in the last 24 months. #1 is LLM evaluation, safety, and alignment — <b>55.3%</b> of its entire history is from the last two years.</p>
+  <a class=readmore href="arxiv_fossils_out/emergent.html">Read the full list ↗</a>
+</article>
+
+<article class=finding-entry>
+  <span class=section-num>§3 — The outlier</span>
+  <h2><a href="arxiv_fossils_out/loneliest.html">The single paper furthest from anything else in science</a></h2>
+  <p>The one arXiv paper whose closest neighbor is further away than any other paper's closest neighbor. It's not what anyone predicted — and its abstract is not about machine learning.</p>
+  <a class=readmore href="arxiv_fossils_out/loneliest.html">Read the case ↗</a>
+</article>
+
+<div class=footnote>
+  <p>Source: the full arXiv metadata snapshot (Cornell University / Hugging Face, refreshed monthly). Embeddings: <code>sentence-transformers/all-MiniLM-L6-v2</code> (ONNX via <code>fastembed</code>). Index: <code>faiss.IndexIVFFlat</code> with inner-product metric. Clustering: <code>sklearn.MiniBatchKMeans(k=400)</code>. Orchestration: <a href="https://burla.dev" target=_blank>Burla</a>'s <code>remote_parallel_map</code> — three stages, one worker for discovery, sixteen for embedding, one for reduce.</p>
+  <p>Source code &amp; artifacts: <a href="https://github.com/Jmp1062/arxiv-fossils" target=_blank>github.com/Jmp1062/arxiv-fossils</a></p>
 </div>
 
-<h2>The reports</h2>
-<div class=reports>
-  <a class=report href='arxiv_fossils_out/extinct.html'>
-    <span class=chip>10 topics</span>
-    <h3>Fossils of science</h3>
-    <p>Research clusters that peaked, then quietly collapsed. #1 is 2000s-era Randall-Sundrum braneworld cosmology, now running at 16.7% of its peak rate.</p>
-  </a>
-  <a class=report href='arxiv_fossils_out/emergent.html'>
-    <span class=chip>10 topics</span>
-    <h3>Newborn sciences</h3>
-    <p>Clusters where more than half of the all-time papers were written in the last 24 months. #1 is LLM evaluation + safety + alignment, at 55.3%.</p>
-  </a>
-  <a class=report href='arxiv_fossils_out/loneliest.html'>
-    <span class=chip>the outlier</span>
-    <h3>The loneliest paper</h3>
-    <p>The single arXiv paper whose closest neighbor is still further away than any other paper's. It's not what anyone predicted.</p>
-  </a>
 </div>
-
-<div class=footer>
-  <p>Source: arXiv metadata snapshot · Embeddings: <code>sentence-transformers/all-MiniLM-L6-v2</code> via fastembed · Index: FAISS IVF · Orchestration: <a class=plain href='https://burla.dev' target=_blank>Burla</a> <code>remote_parallel_map</code>.</p>
-  <p>Code, README, and full artifacts: <a class=plain href='https://github.com/Jmp1062/arxiv-fossils' target=_blank>github.com/Jmp1062/arxiv-fossils ↗</a></p>
-</div>
+</html>
