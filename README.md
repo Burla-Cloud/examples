@@ -51,7 +51,7 @@ def enrich_chunk(ids: list[str]) -> list[dict]:
     return out
 
 
-# 2,000 tasks, capped to 1,000 workers running in parallel => global ~1,000 req/sec
+# Burla grows the cluster on demand and caps live workers at 1,000 => global ~1,000 req/sec
 results = remote_parallel_map(
     enrich_chunk,
     chunks,
@@ -59,6 +59,7 @@ results = remote_parallel_map(
     func_ram=2,
     max_parallelism=1000,
     generator=True,
+    grow=True,
 )
 
 import json

@@ -38,6 +38,7 @@ results = remote_parallel_map(
     func_ram=2,
     max_parallelism=1000,
     generator=True,
+    grow=True,
 )
 
 import json
