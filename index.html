@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>NYC Ghost Neighborhoods — a Burla demo</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta property=og:title content="NYC Ghost Neighborhoods — a Burla demo">
+<meta property=og:description content="2.76 billion NYC taxi trips, processed in 15 seconds. Every one of 264 taxi zones classified as alive, dying, reborn, or haunted — purely by its own time series.">
+<style>
+  :root { color-scheme: light dark; --fg: #0f172a; --sub: #64748b; --bg: #fff; --card: #fff; --border: #e2e8f0; --accent: #2563eb; --chip: #e0f2fe; --chip-fg: #075985; --warn: #fef3c7; --warn-fg: #92400e; --good: #dcfce7; --good-fg: #166534; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e2e8f0; --sub: #94a3b8; --bg: #0b1120; --card: #111c2e; --border: #1e293b; --accent: #60a5fa; --chip: #082f49; --chip-fg: #7dd3fc; --warn: #422006; --warn-fg: #fbbf24; --good: #052e16; --good-fg: #86efac; }
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+         max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; line-height: 1.55;
+         color: var(--fg); background: var(--bg); }
+  .eyebrow { color: var(--sub); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 10px 0 12px; letter-spacing: -0.02em; }
+  .sub { color: var(--sub); font-size: 17px; margin: 0 0 32px; max-width: 720px; }
+  .hero { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; background: var(--card); box-shadow: 0 1px 3px rgba(15,23,42,0.04); margin: 0 0 32px; }
+  .hero .label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .hero blockquote { margin: 10px 0 4px; font-size: 22px; line-height: 1.35; color: var(--fg); }
+  .hero blockquote b { background: linear-gradient(120deg, transparent 0%, transparent 20%, rgba(37, 99, 235, 0.12) 20%, rgba(37, 99, 235, 0.12) 95%, transparent 95%); padding: 0 4px; }
+  .hero .detail { color: var(--sub); font-size: 14px; margin-top: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 40px; }
+  .stat { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
+  .stat .k { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .v { font-size: 22px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
+  .stat .v small { font-size: 13px; color: var(--sub); font-weight: 400; margin-left: 4px; }
+  h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -0.01em; }
+  .zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .zone { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
+  .zone .chip { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .zone h3 { margin: 8px 0 4px; font-size: 17px; }
+  .zone p { margin: 0; color: var(--sub); font-size: 13px; }
+  .chip.ghost { background: var(--warn); color: var(--warn-fg); }
+  .chip.emergent { background: var(--good); color: var(--good-fg); }
+  .chip.reborn { background: var(--chip); color: var(--chip-fg); }
+  .cta { display: inline-block; margin: 20px 0; padding: 12px 20px; border-radius: 999px; background: var(--accent); color: white; text-decoration: none; font-weight: 600; font-size: 15px; }
+  .cta:hover { opacity: 0.9; }
+  .footer { color: var(--sub); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  a.plain { color: var(--accent); text-decoration: none; }
+  a.plain:hover { text-decoration: underline; }
+  code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+
+<div class=eyebrow>A Burla demo · 2.76B rows in 15 seconds</div>
+<h1>Every NYC taxi trip ever released, classified by what happened to its neighborhood.</h1>
+<p class=sub>We processed <b>2,758,715,765 NYC taxi &amp; for-hire trips</b> across 168 months on Burla and sorted every one of the 264 TLC taxi zones into six categories — stable, emergent, cooling, warming, ghost, resurrected — purely by what its own trip-per-month time series looks like. No curated "interesting zones" list. Just the data.</p>
+
+<div class=hero>
+  <div class=label>Headline</div>
+  <blockquote>The biggest <b>emergent</b> zone is <b>Far Rockaway</b> — 43.9 trips/month in 2011, <b>42,053 trips/month</b> today. A <b>958×</b> ride-volume explosion.</blockquote>
+  <div class=detail>All twelve top-emergent zones are in the outer boroughs. Uber/Lyft literally built a second taxi system where yellow cabs had refused to go.</div>
+</div>
+
+<div class=stats>
+  <div class=stat><div class=k>Trips scanned</div><div class=v>2.76<small>B</small></div></div>
+  <div class=stat><div class=k>Months</div><div class=v>168</div></div>
+  <div class=stat><div class=k>TLC zones</div><div class=v>264</div></div>
+  <div class=stat><div class=k>Burla wall-clock</div><div class=v>~15 <small>s</small></div></div>
+  <div class=stat><div class=k>Serial-equivalent</div><div class=v>~30–60 <small>min</small></div></div>
+  <div class=stat><div class=k>Peak workers</div><div class=v>168</div></div>
+</div>
+
+<a class=cta href='nyc_ghost_out/index.html'>Open the full report →</a>
+
+<h2>A few things we didn't expect</h2>
+<div class=zones>
+  <div class=zone>
+    <span class="chip ghost">Ghost</span>
+    <h3>Central Park, 40% of peak</h3>
+    <p>From 219,763 trips/mo in May 2011 to 86,952/mo today. Classic Manhattan yellow-cab cannibalization by FHV — the neighborhood is still alive, the yellow-cab line isn't.</p>
+  </div>
+  <div class=zone>
+    <span class="chip emergent">Emergent</span>
+    <h3>Brownsville, 769× growth</h3>
+    <p>156 trips/mo at birth → 120,262 recent. The outer boroughs aren't gentrifying; they're being served by a different taxi system for the first time.</p>
+  </div>
+  <div class=zone>
+    <span class="chip reborn">Resurrected</span>
+    <h3>LaGuardia, 82% back</h3>
+    <p>From 609K trips/mo pre-pandemic → 10,717 in April 2020 → 502,846 today. Airports are back. Midtown (64–66% back) isn't. That's remote work, in one number.</p>
+  </div>
+</div>
+
+<div class=footer>
+  <p>Source: NYC TLC public trip-record archive (yellow + green + FHV + HVFHS parquet) · Map + reduce: Burla <code>remote_parallel_map</code> — one task per (taxi_type, year, month), 371 tasks in parallel.</p>
+  <p>Code, README, and full artifacts: <a class=plain href='https://github.com/Jmp1062/nyc-ghost-neighborhoods' target=_blank>github.com/Jmp1062/nyc-ghost-neighborhoods ↗</a></p>
+</div>
