@@ -1,0 +1,84 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>Fossils of the arXiv — a Burla demo</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta property=og:title content="Fossils of the arXiv — a Burla demo">
+<meta property=og:description content="The loneliest paper in science is a dataset of Norwegian corporate tax filings. We clustered 2.71M arXiv abstracts in 25 minutes to find out.">
+<style>
+  :root { color-scheme: light dark; --fg: #0f172a; --sub: #64748b; --bg: #fff; --card: #fff; --border: #e2e8f0; --accent: #2563eb; --chip: #e0f2fe; --chip-fg: #075985; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e2e8f0; --sub: #94a3b8; --bg: #0b1120; --card: #111c2e; --border: #1e293b; --accent: #60a5fa; --chip: #082f49; --chip-fg: #7dd3fc; }
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+         max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; line-height: 1.55;
+         color: var(--fg); background: var(--bg); }
+  .eyebrow { color: var(--sub); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 10px 0 12px; letter-spacing: -0.02em; }
+  .sub { color: var(--sub); font-size: 17px; margin: 0 0 32px; max-width: 720px; }
+  .hero { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; background: var(--card); box-shadow: 0 1px 3px rgba(15,23,42,0.04); margin: 0 0 32px; }
+  .hero .label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .hero blockquote { margin: 10px 0 4px; font-size: 22px; line-height: 1.35; color: var(--fg); }
+  .hero blockquote b { background: linear-gradient(120deg, transparent 0%, transparent 20%, rgba(37, 99, 235, 0.12) 20%, rgba(37, 99, 235, 0.12) 95%, transparent 95%); padding: 0 4px; }
+  .hero .detail { color: var(--sub); font-size: 14px; margin-top: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 40px; }
+  .stat { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
+  .stat .k { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .v { font-size: 22px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
+  .stat .v small { font-size: 13px; color: var(--sub); font-weight: 400; margin-left: 4px; }
+  h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -0.01em; }
+  .reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .report { border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; background: var(--card); text-decoration: none; color: var(--fg); display: block; transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease; }
+  .report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); border-color: var(--accent); }
+  .report .chip { display: inline-block; background: var(--chip); color: var(--chip-fg); border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .report h3 { margin: 10px 0 6px; font-size: 18px; }
+  .report p { margin: 0; color: var(--sub); font-size: 14px; }
+  .footer { color: var(--sub); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  a.plain { color: var(--accent); text-decoration: none; }
+  a.plain:hover { text-decoration: underline; }
+  code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+
+<div class=eyebrow>A Burla demo · data-first linguistic archaeology</div>
+<h1>The loneliest paper in science is about <em>Norwegian corporate tax filings</em>.</h1>
+<p class=sub>We embedded <b>every single arXiv abstract ever posted</b> — 2,710,783 of them — with MiniLM-L6-v2, clustered them into 400 topics, and let the geometry surface three things without asking: the topics that collapsed, the topics that appeared overnight, and the one paper that sits furthest from anything anyone else has ever written.</p>
+
+<div class=hero>
+  <div class=label>Headline</div>
+  <blockquote><b>arXiv:2203.12842 — "Financial statements of companies in Norway".</b><br>
+  Its 5th-nearest neighbor across 2.71 M papers has cosine similarity 0.138. No other paper on arXiv is remotely about the same thing.</blockquote>
+  <div class=detail>Posted 2022-03-24 · Categories: econ.GN, q-fin.EC · <a class=plain href='https://arxiv.org/abs/2203.12842' target=_blank>arxiv.org/abs/2203.12842 ↗</a></div>
+</div>
+
+<div class=stats>
+  <div class=stat><div class=k>Abstracts embedded</div><div class=v>2,710,783</div></div>
+  <div class=stat><div class=k>Clusters (k-means)</div><div class=v>400</div></div>
+  <div class=stat><div class=k>Burla wall-clock</div><div class=v>~25 <small>min</small></div></div>
+  <div class=stat><div class=k>Serial-equivalent</div><div class=v>~75–90 <small>min</small></div></div>
+  <div class=stat><div class=k>Reduce stage</div><div class=v>142 <small>s</small></div></div>
+  <div class=stat><div class=k>Peak parallel workers</div><div class=v>16</div></div>
+</div>
+
+<h2>The reports</h2>
+<div class=reports>
+  <a class=report href='arxiv_fossils_out/extinct.html'>
+    <span class=chip>10 topics</span>
+    <h3>Fossils of science</h3>
+    <p>Research clusters that peaked, then quietly collapsed. #1 is 2000s-era Randall-Sundrum braneworld cosmology, now running at 16.7% of its peak rate.</p>
+  </a>
+  <a class=report href='arxiv_fossils_out/emergent.html'>
+    <span class=chip>10 topics</span>
+    <h3>Newborn sciences</h3>
+    <p>Clusters where more than half of the all-time papers were written in the last 24 months. #1 is LLM evaluation + safety + alignment, at 55.3%.</p>
+  </a>
+  <a class=report href='arxiv_fossils_out/loneliest.html'>
+    <span class=chip>the outlier</span>
+    <h3>The loneliest paper</h3>
+    <p>The single arXiv paper whose closest neighbor is still further away than any other paper's. It's not what anyone predicted.</p>
+  </a>
+</div>
+
+<div class=footer>
+  <p>Source: arXiv metadata snapshot · Embeddings: <code>sentence-transformers/all-MiniLM-L6-v2</code> via fastembed · Index: FAISS IVF · Orchestration: <a class=plain href='https://burla.dev' target=_blank>Burla</a> <code>remote_parallel_map</code>.</p>
+  <p>Code, README, and full artifacts: <a class=plain href='https://github.com/Jmp1062/arxiv-fossils' target=_blank>github.com/Jmp1062/arxiv-fossils ↗</a></p>
+</div>
