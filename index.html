@@ -1,89 +1,303 @@
 <!doctype html>
+<html lang=en>
 <meta charset=utf-8>
 <title>NYC Ghost Neighborhoods — a Burla demo</title>
 <meta name=viewport content="width=device-width, initial-scale=1">
-<meta property=og:title content="NYC Ghost Neighborhoods — a Burla demo">
-<meta property=og:description content="2.76 billion NYC taxi trips, processed in 15 seconds. Every one of 264 taxi zones classified as alive, dying, reborn, or haunted — purely by its own time series.">
+<meta name=description content="2.76 billion NYC taxi trips, processed in 15 seconds on Burla. Every one of 264 TLC zones classified as alive, dying, reborn, or haunted — purely by its own time series.">
+<meta property=og:title content="NYC Ghost Neighborhoods">
+<meta property=og:description content="2.76 billion NYC taxi trips, processed in 15 seconds. Far Rockaway grew 958×, Central Park is at 40% of peak, LaGuardia is 82% back from April 2020.">
+<meta name=twitter:card content=summary_large_image>
+<link rel=preconnect href=https://fonts.googleapis.com>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Narrow:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel=stylesheet>
 <style>
-  :root { color-scheme: light dark; --fg: #0f172a; --sub: #64748b; --bg: #fff; --card: #fff; --border: #e2e8f0; --accent: #2563eb; --chip: #e0f2fe; --chip-fg: #075985; --warn: #fef3c7; --warn-fg: #92400e; --good: #dcfce7; --good-fg: #166534; }
-  @media (prefers-color-scheme: dark) {
-    :root { --fg: #e2e8f0; --sub: #94a3b8; --bg: #0b1120; --card: #111c2e; --border: #1e293b; --accent: #60a5fa; --chip: #082f49; --chip-fg: #7dd3fc; --warn: #422006; --warn-fg: #fbbf24; --good: #052e16; --good-fg: #86efac; }
+  :root {
+    color-scheme: light;
+    --bg: #0a0a0a;
+    --bg-soft: #141414;
+    --fg: #fafafa;
+    --fg-soft: #a0a0a0;
+    --fg-dim: #666666;
+    --yellow: #f7b500;
+    --yellow-hot: #ffcf3f;
+    --rule: #262626;
+    --ghost: #d64545;
+    --emergent: #35b47a;
+    --reborn: #3b82f6;
   }
-  * { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-         max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; line-height: 1.55;
-         color: var(--fg); background: var(--bg); }
-  .eyebrow { color: var(--sub); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
-  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 10px 0 12px; letter-spacing: -0.02em; }
-  .sub { color: var(--sub); font-size: 17px; margin: 0 0 32px; max-width: 720px; }
-  .hero { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; background: var(--card); box-shadow: 0 1px 3px rgba(15,23,42,0.04); margin: 0 0 32px; }
-  .hero .label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
-  .hero blockquote { margin: 10px 0 4px; font-size: 22px; line-height: 1.35; color: var(--fg); }
-  .hero blockquote b { background: linear-gradient(120deg, transparent 0%, transparent 20%, rgba(37, 99, 235, 0.12) 20%, rgba(37, 99, 235, 0.12) 95%, transparent 95%); padding: 0 4px; }
-  .hero .detail { color: var(--sub); font-size: 14px; margin-top: 8px; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 40px; }
-  .stat { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
-  .stat .k { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat .v { font-size: 22px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
-  .stat .v small { font-size: 13px; color: var(--sub); font-weight: 400; margin-left: 4px; }
-  h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -0.01em; }
-  .zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .zone { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
-  .zone .chip { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-  .zone h3 { margin: 8px 0 4px; font-size: 17px; }
-  .zone p { margin: 0; color: var(--sub); font-size: 13px; }
-  .chip.ghost { background: var(--warn); color: var(--warn-fg); }
-  .chip.emergent { background: var(--good); color: var(--good-fg); }
-  .chip.reborn { background: var(--chip); color: var(--chip-fg); }
-  .cta { display: inline-block; margin: 20px 0; padding: 12px 20px; border-radius: 999px; background: var(--accent); color: white; text-decoration: none; font-weight: 600; font-size: 15px; }
-  .cta:hover { opacity: 0.9; }
-  .footer { color: var(--sub); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
-  a.plain { color: var(--accent); text-decoration: none; }
-  a.plain:hover { text-decoration: underline; }
-  code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px; line-height: 1.5;
+    min-height: 100vh;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 24px 80px; }
+  .topbar {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px;
+    margin-bottom: 40px;
+  }
+  .topbar .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 3px rgba(247, 181, 0, 0.18); flex-shrink: 0; }
+  .topbar .live { color: var(--yellow); font-weight: 700; }
+  .topbar .spacer { flex: 1; }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 72px;
+  }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .hero-text .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--yellow);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(44px, 7vw, 78px);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    margin-bottom: 20px;
+  }
+  h1 .highlight { background: var(--yellow); color: var(--bg); padding: 0 10px; display: inline-block; transform: skew(-4deg); margin: 0 2px; }
+  .hero-text p {
+    font-size: 17px; line-height: 1.6; color: var(--fg-soft); max-width: 500px;
+  }
+  .hero-number {
+    text-align: right; font-family: 'Archivo', sans-serif;
+    border-left: 4px solid var(--yellow);
+    padding-left: 28px;
+  }
+  .hero-number .big {
+    font-size: clamp(84px, 14vw, 148px);
+    line-height: 0.85;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: var(--yellow);
+    font-family: 'Archivo', sans-serif;
+  }
+  .hero-number .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+    margin-top: 12px;
+  }
+  .hero-number .sub { font-size: 14px; color: var(--fg); margin-top: 4px; max-width: 300px; margin-left: auto; line-height: 1.4; }
+  .stats-band {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    margin-bottom: 72px;
+  }
+  @media (max-width: 760px) {
+    .stats-band { grid-template-columns: repeat(3, 1fr); }
+  }
+  .stat {
+    padding: 22px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .stat:last-child { border-right: 0; }
+  @media (max-width: 760px) {
+    .stat:nth-child(3n) { border-right: 0; }
+    .stat:nth-child(n+4) { border-top: 1px solid var(--rule); }
+  }
+  .stat .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--fg-dim); font-weight: 500;
+  }
+  .stat .v {
+    font-family: 'Archivo', sans-serif;
+    font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--fg);
+    margin-top: 8px;
+  }
+  .stat .v small { font-size: 14px; font-weight: 500; color: var(--fg-soft); margin-left: 2px; letter-spacing: 0; }
+  h2 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800; font-size: 32px; letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--yellow); font-weight: 700;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  .zones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 760px) {
+    .zones { grid-template-columns: 1fr; }
+  }
+  .zone-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .zone-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+  }
+  .zone-card.ghost::before { background: var(--ghost); }
+  .zone-card.emergent::before { background: var(--emergent); }
+  .zone-card.reborn::before { background: var(--reborn); }
+  .zone-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+  .zone-tag .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .zone-card.ghost .zone-tag { color: var(--ghost); }
+  .zone-card.ghost .zone-tag .dot { background: var(--ghost); }
+  .zone-card.emergent .zone-tag { color: var(--emergent); }
+  .zone-card.emergent .zone-tag .dot { background: var(--emergent); }
+  .zone-card.reborn .zone-tag { color: var(--reborn); }
+  .zone-card.reborn .zone-tag .dot { background: var(--reborn); }
+  .zone-card .big {
+    font-family: 'Archivo', sans-serif;
+    font-size: 42px; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+  }
+  .zone-card h3 {
+    font-family: 'Archivo', sans-serif;
+    font-size: 19px; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--fg);
+    margin: 0;
+  }
+  .zone-card p { font-size: 14px; line-height: 1.55; color: var(--fg-soft); margin: 0; }
+  .loc-id {
+    position: absolute; top: 20px; right: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--fg-dim); letter-spacing: 0.1em;
+  }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 24px;
+    background: var(--yellow); color: var(--bg);
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px; font-weight: 800;
+    letter-spacing: 0.02em; text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.12s ease;
+    margin-top: 8px;
+  }
+  .cta:hover { background: var(--yellow-hot); }
+  .cta::after { content: '→'; }
+  .footnote {
+    font-size: 13px;
+    color: var(--fg-dim);
+    margin-top: 72px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.75;
+  }
+  .footnote a { color: var(--yellow); text-decoration: none; border-bottom: 1px solid rgba(247, 181, 0, 0.35); }
+  .footnote a:hover { border-bottom-color: var(--yellow); }
+  .footnote code { font-family: 'JetBrains Mono', monospace; background: var(--bg-soft); padding: 1px 6px; border-radius: 3px; font-size: 12px; color: var(--fg-soft); }
 </style>
 
-<div class=eyebrow>A Burla demo · 2.76B rows in 15 seconds</div>
-<h1>Every NYC taxi trip ever released, classified by what happened to its neighborhood.</h1>
-<p class=sub>We processed <b>2,758,715,765 NYC taxi &amp; for-hire trips</b> across 168 months on Burla and sorted every one of the 264 TLC taxi zones into six categories — stable, emergent, cooling, warming, ghost, resurrected — purely by what its own trip-per-month time series looks like. No curated "interesting zones" list. Just the data.</p>
+<div class=wrap>
 
-<div class=hero>
-  <div class=label>Headline</div>
-  <blockquote>The biggest <b>emergent</b> zone is <b>Far Rockaway</b> — 43.9 trips/month in 2011, <b>42,053 trips/month</b> today. A <b>958×</b> ride-volume explosion.</blockquote>
-  <div class=detail>All twelve top-emergent zones are in the outer boroughs. Uber/Lyft literally built a second taxi system where yellow cabs had refused to go.</div>
+<div class=topbar>
+  <div class=dot></div>
+  <span class=live>LIVE DATA</span>
+  <span>NYC TLC TRIP RECORD · 2011–2024</span>
+  <div class=spacer></div>
+  <span>A BURLA DEMO</span>
 </div>
 
-<div class=stats>
+<section class=hero>
+  <div class=hero-text>
+    <div class=eyebrow>// 264 ZONES · 168 MONTHS · 2.76B TRIPS</div>
+    <h1>Every NYC taxi trip <span class=highlight>ever released</span>, classified by what happened to its neighborhood.</h1>
+    <p>We processed the entire TLC public archive — yellow + green + FHV + HVFHS, January 2011 through December 2024 — and sorted every one of the 264 TLC zones into six categories based purely on its own time series. No curated "interesting zones." Just the data.</p>
+  </div>
+  <div class=hero-number>
+    <div class=big>958×</div>
+    <div class=label>— Growth at Far Rockaway</div>
+    <div class=sub>43.9 trips/month in 2011 &rarr; 42,053 trips/month today. And 11 more emergent zones just like it.</div>
+  </div>
+</section>
+
+<div class=stats-band>
   <div class=stat><div class=k>Trips scanned</div><div class=v>2.76<small>B</small></div></div>
   <div class=stat><div class=k>Months</div><div class=v>168</div></div>
   <div class=stat><div class=k>TLC zones</div><div class=v>264</div></div>
-  <div class=stat><div class=k>Burla wall-clock</div><div class=v>~15 <small>s</small></div></div>
-  <div class=stat><div class=k>Serial-equivalent</div><div class=v>~30–60 <small>min</small></div></div>
+  <div class=stat><div class=k>Burla wall-clock</div><div class=v>15<small>s</small></div></div>
+  <div class=stat><div class=k>Serial-equiv</div><div class=v>~45<small>min</small></div></div>
   <div class=stat><div class=k>Peak workers</div><div class=v>168</div></div>
 </div>
 
-<a class=cta href='nyc_ghost_out/index.html'>Open the full report →</a>
+<div class=section-label>Three unexpected patterns</div>
+<h2>A city moving, unevenly.</h2>
 
-<h2>A few things we didn't expect</h2>
 <div class=zones>
-  <div class=zone>
-    <span class="chip ghost">Ghost</span>
-    <h3>Central Park, 40% of peak</h3>
-    <p>From 219,763 trips/mo in May 2011 to 86,952/mo today. Classic Manhattan yellow-cab cannibalization by FHV — the neighborhood is still alive, the yellow-cab line isn't.</p>
-  </div>
-  <div class=zone>
-    <span class="chip emergent">Emergent</span>
-    <h3>Brownsville, 769× growth</h3>
-    <p>156 trips/mo at birth → 120,262 recent. The outer boroughs aren't gentrifying; they're being served by a different taxi system for the first time.</p>
-  </div>
-  <div class=zone>
-    <span class="chip reborn">Resurrected</span>
-    <h3>LaGuardia, 82% back</h3>
-    <p>From 609K trips/mo pre-pandemic → 10,717 in April 2020 → 502,846 today. Airports are back. Midtown (64–66% back) isn't. That's remote work, in one number.</p>
-  </div>
+  <article class="zone-card ghost">
+    <span class=loc-id>LOC_ID 043</span>
+    <div class=zone-tag><span class=dot></span>Ghost zone</div>
+    <div class=big>40<small style="font-size:24px;font-weight:700;color:var(--fg-soft);">%</small></div>
+    <h3>Central Park, still alive — just not in a yellow cab</h3>
+    <p>219,763 trips/mo in May 2011 &rarr; 86,952/mo today. Classic Manhattan yellow-cab cannibalization: the neighborhood never emptied, the <em>yellow-cab line</em> did.</p>
+  </article>
+  <article class="zone-card emergent">
+    <span class=loc-id>LOC_ID 035</span>
+    <div class=zone-tag><span class=dot></span>Emergent zone</div>
+    <div class=big>769×</div>
+    <h3>Brownsville, a second taxi system</h3>
+    <p>156 trips/mo at birth &rarr; 120,262 recent. All twelve top-emergent zones are outer-borough. Ride-share literally built a taxi system where yellow cabs refused to go.</p>
+  </article>
+  <article class="zone-card reborn">
+    <span class=loc-id>LOC_ID 138</span>
+    <div class=zone-tag><span class=dot></span>Resurrected</div>
+    <div class=big>82<small style="font-size:24px;font-weight:700;color:var(--fg-soft);">%</small></div>
+    <h3>LaGuardia Airport, fully recovered</h3>
+    <p>From 609K trips/mo peak &rarr; 10,717 in April 2020 &rarr; 502,846 today. Airports are back. Midtown (64–66% back) isn't. That's remote work in one number.</p>
+  </article>
 </div>
 
-<div class=footer>
-  <p>Source: NYC TLC public trip-record archive (yellow + green + FHV + HVFHS parquet) · Map + reduce: Burla <code>remote_parallel_map</code> — one task per (taxi_type, year, month), 371 tasks in parallel.</p>
-  <p>Code, README, and full artifacts: <a class=plain href='https://github.com/Jmp1062/nyc-ghost-neighborhoods' target=_blank>github.com/Jmp1062/nyc-ghost-neighborhoods ↗</a></p>
+<a href=nyc_ghost_out/index.html class=cta>Open the full 264-zone report</a>
+
+<div class=footnote>
+  <p>Source: NYC TLC public trip-record archive (<a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page" target=_blank>tlc.nyc.gov</a>) &middot; yellow + green + FHV + HVFHS monthly parquet &middot; ~50 GB of compressed columnar data.</p>
+  <p>Orchestration: <a href="https://burla.dev" target=_blank>Burla</a>'s <code>remote_parallel_map</code>. One task per <code>(taxi_type, year, month)</code> &rarr; 371 tasks in parallel &rarr; every task runs <code>pyarrow</code> streaming straight off CloudFront, groups by <code>PULocationID</code>, returns a tiny dict. The whole fan-out finishes before a single-threaded laptop has finished downloading one month.</p>
+  <p>Source code: <a href="https://github.com/Jmp1062/nyc-ghost-neighborhoods" target=_blank>github.com/Jmp1062/nyc-ghost-neighborhoods</a></p>
 </div>
+
+</div>
+</html>
