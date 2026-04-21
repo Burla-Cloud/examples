@@ -1,0 +1,10 @@
+{
+  "total_papers": 2710783,
+  "n_shards": 272,
+  "n_clusters": 400,
+  "extinct_count": 10,
+  "emergent_count": 10,
+  "loneliest_id": "2203.12842",
+  "reduce_elapsed_s": 142.41,
+  "generated_at_utc": "2026-04-19T00:07:07+00:00"
+}
