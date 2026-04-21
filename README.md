@@ -18,6 +18,7 @@ One Python file. Runs locally. Runs in CI. Runs on 10,000 machines.
 
 ```python
 import boto3
+import psycopg2  # noqa: F401 -- top-level import so Burla installs psycopg2 on workers
 from burla import remote_parallel_map
 
 BUCKET = "my-events-bucket"
