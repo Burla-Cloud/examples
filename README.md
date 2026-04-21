@@ -4,7 +4,7 @@ Process Sentinel-2, Landsat, or NAIP tiles at the same time on thousands of clou
 
 ## The Problem
 
-You have 2,000 Sentinel-2 tiles on S3 and you want to compute NDVI, reproject, or clip them. A single-core `gdalwarp` or `rasterio` loop takes days. GDAL is hard to containerize cleanly — native deps, PROJ versions, GDAL_DATA paths. Running it on 1,000 EC2 instances yourself means AMIs, user-data scripts, and a queue.
+You have 2,000 Sentinel-2 tiles on S3 and you want to compute NDVI, reproject, or clip them. A single-core `gdalwarp` or `rasterio` loop takes days. GDAL is hard to containerize cleanly - native deps, PROJ versions, GDAL_DATA paths. Running it on 1,000 EC2 instances yourself means AMIs, user-data scripts, and a queue.
 
 Most "big data" tools don't help. Dask arrays assume one logical grid. Spark doesn't speak GeoTIFF. AWS Batch works but takes a day to wire up.
 
@@ -69,11 +69,11 @@ pd.DataFrame(results).to_csv("ndvi_report.csv", index=False)
 
 ## Why This Is Better
 
-**vs Ray** — no head node, no actors, no GDAL-in-Ray headaches. You don't install GDAL on every node yourself.
+**vs Ray** - no head node, no actors, no GDAL-in-Ray headaches. You don't install GDAL on every node yourself.
 
-**vs Dask** — `dask.array` assumes a contiguous grid. Per-tile GDAL operations don't fit that model without `delayed`, and `delayed` plus a 2,000-task graph is slow to schedule.
+**vs Dask** - `dask.array` assumes a contiguous grid. Per-tile GDAL operations don't fit that model without `delayed`, and `delayed` plus a 2,000-task graph is slow to schedule.
 
-**vs AWS Batch** — no custom Docker image with GDAL, PROJ, and your code. No job definition, no compute environment, no IAM dance. Burla starts tiles in seconds; Batch takes minutes to cold start.
+**vs AWS Batch** - no custom Docker image with GDAL, PROJ, and your code. No job definition, no compute environment, no IAM dance. Burla starts tiles in seconds; Batch takes minutes to cold start.
 
 ## How It Works
 
@@ -88,6 +88,6 @@ You pass a list of tile IDs and a function that processes one tile. Burla runs `
 
 ## When NOT To Use This
 
-- Operations that need neighboring tiles to talk to each other (seamless mosaicking with blending, tile-edge dependencies) — use a tool that understands the tile graph.
-- Interactive tile serving — use a tile server, not a batch map.
-- Single very large rasters (one 500 GB GeoTIFF) — chunk by window first, then Burla.
+- Operations that need neighboring tiles to talk to each other (seamless mosaicking with blending, tile-edge dependencies) - use a tool that understands the tile graph.
+- Interactive tile serving - use a tile server, not a batch map.
+- Single very large rasters (one 500 GB GeoTIFF) - chunk by window first, then Burla.
