@@ -56,8 +56,8 @@ def apply_on_chunk(user_ids: list[str]) -> pd.DataFrame:
     return pd.concat([df, enriched], axis=1)
 
 
-# 1,200 chunks -> 1,200 workers running pandas.apply in parallel
-frames = remote_parallel_map(apply_on_chunk, chunks, func_cpu=2, func_ram=8)
+# 1,200 chunks -> Burla grows the cluster on demand and runs pandas.apply in parallel
+frames = remote_parallel_map(apply_on_chunk, chunks, func_cpu=2, func_ram=8, grow=True)
 
 final = pd.concat(frames, ignore_index=True)
 final.to_parquet("enriched.parquet")
