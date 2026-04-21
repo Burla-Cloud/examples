@@ -6,7 +6,7 @@ Run your `df.apply(fn)` across 1,200 cloud workers at the same time. No `swifter
 
 You have a 1 TB Parquet dataset and a real `apply` function: regex parse, call a scoring function, enrich with an API lookup, compute a per-row embedding.
 
-`df.apply(fn, axis=1)` on one machine takes 12+ hours and pegs one core. `swifter` helps a little — it parallelizes across local cores, but not across machines. `modin` requires Ray or Dask running underneath. Moving to Spark means rewriting `fn` as a UDF, dealing with Arrow serialization, and debugging JVM stack traces.
+`df.apply(fn, axis=1)` on one machine takes 12+ hours and pegs one core. `swifter` helps a little - it parallelizes across local cores, but not across machines. `modin` requires Ray or Dask running underneath. Moving to Spark means rewriting `fn` as a UDF, dealing with Arrow serialization, and debugging JVM stack traces.
 
 You just want `apply` to run 1,200x faster without rewriting it.
 
@@ -70,13 +70,13 @@ print(final.shape)
 
 ## Why This Is Better
 
-**vs Ray / modin** — `modin.pandas` requires a running Ray/Dask cluster and silently falls back to pandas for unsupported ops. You still debug Ray shutdowns and memory pressure.
+**vs Ray / modin** - `modin.pandas` requires a running Ray/Dask cluster and silently falls back to pandas for unsupported ops. You still debug Ray shutdowns and memory pressure.
 
-**vs Dask DataFrame** — Dask `.apply` with `meta=` and `map_partitions` is close, but you pay for cluster startup, the scheduler, and the Dask dialect. `apply` with arbitrary Python (regex, dicts, external calls) is slow on Dask.
+**vs Dask DataFrame** - Dask `.apply` with `meta=` and `map_partitions` is close, but you pay for cluster startup, the scheduler, and the Dask dialect. `apply` with arbitrary Python (regex, dicts, external calls) is slow on Dask.
 
-**vs Spark / PySpark** — Spark UDFs force you to rewrite the function or accept Arrow UDFs that still have overhead per batch. No one wants to debug Py4J.
+**vs Spark / PySpark** - Spark UDFs force you to rewrite the function or accept Arrow UDFs that still have overhead per batch. No one wants to debug Py4J.
 
-**vs `swifter`** — single-machine parallelism only. Won't get you 1,200x.
+**vs `swifter`** - single-machine parallelism only. Won't get you 1,200x.
 
 ## How It Works
 
@@ -91,6 +91,6 @@ You pick a cheap partition key (user_id, date, hash). You build a list of chunks
 
 ## When NOT To Use This
 
-- The operation is a simple groupby or aggregation — use DuckDB or SQL directly.
-- The full dataset fits in RAM and the apply is vectorizable — just use `pandas` or `polars`.
-- You need windowed operations across chunk boundaries (rolling across user history) — partition so related rows land in the same chunk first.
+- The operation is a simple groupby or aggregation - use DuckDB or SQL directly.
+- The full dataset fits in RAM and the apply is vectorizable - just use `pandas` or `polars`.
+- You need windowed operations across chunk boundaries (rolling across user history) - partition so related rows land in the same chunk first.
