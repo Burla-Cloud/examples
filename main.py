@@ -1,9 +1,9 @@
 import boto3
 from burla import remote_parallel_map
 
+IMAGE = "us-docker.pkg.dev/test-burla/burla-demos/burla-bio-worker:latest"
 S3_IN = "s3://my-fastq-bucket"
 S3_OUT = "s3://my-bam-bucket"
-REF = "s3://my-refs/GRCh38.fa"
 
 with open("manifest.tsv") as f:
     samples = [line.strip().split("\t") for line in f if line.strip()]
@@ -28,7 +28,7 @@ def align_sample(job: dict) -> dict:
         subprocess.run(cmd, shell=True, check=True, executable="/bin/bash")
 
     t0 = time.time()
-    run(f"aws s3 cp s3://my-refs/GRCh38.fa {work}/ref.fa")
+    run(f"aws s3 cp s3://my-refs/GRCh38.fa     {work}/ref.fa")
     run(f"aws s3 cp s3://my-refs/GRCh38.fa.fai {work}/ref.fa.fai")
     run(f"aws s3 cp s3://my-refs/GRCh38.fa.bwt {work}/ref.fa.bwt")
     run(f"aws s3 cp s3://my-refs/GRCh38.fa.pac {work}/ref.fa.pac")
@@ -51,8 +51,14 @@ def align_sample(job: dict) -> dict:
     return {"sample_id": sid, "bam_bytes": size, "elapsed_s": round(time.time() - t0, 1)}
 
 
-# 2,500 samples -> 2,500 workers each running bwa+samtools in parallel
-reports = remote_parallel_map(align_sample, sample_jobs, func_cpu=4, func_ram=16, grow=True)
+reports = remote_parallel_map(
+    align_sample,
+    sample_jobs,
+    func_cpu=4,
+    func_ram=16,
+    image=IMAGE,
+    grow=True,
+)
 
 import pandas as pd
 pd.DataFrame(reports).to_csv("alignment_report.csv", index=False)
