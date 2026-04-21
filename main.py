@@ -40,7 +40,7 @@ def predict_batch(rows: list[dict]) -> list[dict]:
 
 # 1,000 batches -> 1,000 workers loading the model and running inference in parallel
 results = remote_parallel_map(
-    predict_batch, batches, func_cpu=4, func_ram=16, generator=True
+    predict_batch, batches, func_cpu=4, func_ram=16, generator=True, grow=True
 )
 
 import json
