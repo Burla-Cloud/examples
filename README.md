@@ -71,13 +71,13 @@ with open("predictions.jsonl", "w") as f:
 
 ## Why This Is Better
 
-**vs Ray Serve / KServe** — both are for serving, not batch. You don't need an endpoint, autoscaling policy, or health checks for a one-shot 10M-row job.
+**vs Ray Serve / KServe** - both are for serving, not batch. You don't need an endpoint, autoscaling policy, or health checks for a one-shot 10M-row job.
 
-**vs SageMaker Batch Transform** — you write a Dockerfile, push to ECR, build a manifest in S3, configure an endpoint config. Then you wait for capacity. With Burla, you call a function.
+**vs SageMaker Batch Transform** - you write a Dockerfile, push to ECR, build a manifest in S3, configure an endpoint config. Then you wait for capacity. With Burla, you call a function.
 
-**vs AWS Batch + a Docker image with PyTorch** — you own the image, the IAM role, the queue, the compute env, and the retries. Burla workers already have PyTorch. Cold start is seconds.
+**vs AWS Batch + a Docker image with PyTorch** - you own the image, the IAM role, the queue, the compute env, and the retries. Burla workers already have PyTorch. Cold start is seconds.
 
-**vs Ray Data** — Ray Data can do this, but you still need a Ray cluster running and the Ray serialization layer. Burla ships the function and returns a list.
+**vs Ray Data** - Ray Data can do this, but you still need a Ray cluster running and the Ray serialization layer. Burla ships the function and returns a list.
 
 ## How It Works
 
@@ -92,6 +92,6 @@ You batch your input list. Burla ships your function and batches to 1,000 pre-wa
 
 ## When NOT To Use This
 
-- Real-time single-request inference — use a serving framework.
-- Tiny datasets (<10k rows) — your laptop GPU is faster once you factor in startup.
-- Models that need distributed training or tensor parallelism across workers — Burla workers don't coordinate with each other.
+- Real-time single-request inference - use a serving framework.
+- Tiny datasets (<10k rows) - your laptop GPU is faster once you factor in startup.
+- Models that need distributed training or tensor parallelism across workers - Burla workers don't coordinate with each other.
