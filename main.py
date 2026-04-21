@@ -70,6 +70,7 @@ for r in remote_parallel_map(
     func_ram=2,
     max_parallelism=1000,
     generator=True,
+    grow=True,
 ):
     done += 1
     total_rows += r["rows_out"]

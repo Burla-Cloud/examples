@@ -79,7 +79,7 @@ def etl_one_file(key: str) -> dict:
     return {"key": key, "rows_in": len(rows_in), "rows_out": len(rows_out)}
 
 
-# 10,000 files -> up to 1,000 workers writing to Postgres at once (protects the DB)
+# Burla grows the cluster on demand, capped at 1,000 concurrent workers (protects the DB)
 done = 0
 total_rows = 0
 for r in remote_parallel_map(
@@ -89,6 +89,7 @@ for r in remote_parallel_map(
     func_ram=2,
     max_parallelism=1000,
     generator=True,
+    grow=True,
 ):
     done += 1
     total_rows += r["rows_out"]
