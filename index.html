@@ -1,0 +1,91 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>The Weirdest Art in History — a Burla demo</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta property=og:title content="The Weirdest Art in History — a Burla demo">
+<meta property=og:description content="An Etruscan bronze and a Greek ceramic, 49 centuries apart, are visually nearly identical. We CLIP-embedded 192K Met CC0 artworks to find out.">
+<style>
+  :root { color-scheme: light dark; --fg: #0f172a; --sub: #64748b; --bg: #fff; --card: #fff; --border: #e2e8f0; --accent: #2563eb; --chip: #e0f2fe; --chip-fg: #075985; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e2e8f0; --sub: #94a3b8; --bg: #0b1120; --card: #111c2e; --border: #1e293b; --accent: #60a5fa; --chip: #082f49; --chip-fg: #7dd3fc; }
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+         max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; line-height: 1.55;
+         color: var(--fg); background: var(--bg); }
+  .eyebrow { color: var(--sub); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 10px 0 12px; letter-spacing: -0.02em; }
+  .sub { color: var(--sub); font-size: 17px; margin: 0 0 32px; max-width: 720px; }
+  .hero { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; background: var(--card); box-shadow: 0 1px 3px rgba(15,23,42,0.04); margin: 0 0 32px; overflow: hidden; }
+  .hero .label { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .hero blockquote { margin: 10px 0 16px; font-size: 22px; line-height: 1.35; color: var(--fg); }
+  .hero blockquote b { background: linear-gradient(120deg, transparent 0%, transparent 20%, rgba(37, 99, 235, 0.12) 20%, rgba(37, 99, 235, 0.12) 95%, transparent 95%); padding: 0 4px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 10px; overflow: hidden; background: #000; margin: 4px 0 8px; }
+  .pair img { width: 100%; height: 360px; object-fit: cover; display: block; }
+  .pair-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0; font-size: 13px; color: var(--sub); }
+  .pair-meta .side { padding: 10px 14px; border-top: 1px solid var(--border); }
+  .pair-meta .side:first-child { border-right: 1px solid var(--border); }
+  .hero .detail { color: var(--sub); font-size: 14px; margin-top: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 40px; }
+  .stat { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--card); }
+  .stat .k { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .v { font-size: 22px; font-weight: 600; margin-top: 4px; letter-spacing: -0.01em; }
+  .stat .v small { font-size: 13px; color: var(--sub); font-weight: 400; margin-left: 4px; }
+  h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -0.01em; }
+  .reports { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .report { border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; background: var(--card); text-decoration: none; color: var(--fg); display: block; transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease; }
+  .report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); border-color: var(--accent); }
+  .report .chip { display: inline-block; background: var(--chip); color: var(--chip-fg); border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .report h3 { margin: 10px 0 6px; font-size: 18px; }
+  .report p { margin: 0; color: var(--sub); font-size: 14px; }
+  .footer { color: var(--sub); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  a.plain { color: var(--accent); text-decoration: none; }
+  a.plain:hover { text-decoration: underline; }
+  code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+
+<div class=eyebrow>A Burla demo · 192K CLIP embeddings, no curator</div>
+<h1>An Etruscan bronze and a Greek ceramic, 49 centuries apart, are visually near-identical.</h1>
+<p class=sub>We fetched <b>every Met Museum CC0 artwork with a published image</b>, CLIP-embedded all 191,922 of them, and searched the 512-dimensional space for pairs that look the same despite being separated by thousands of years and half the planet. No one at the Met ever filed these two together.</p>
+
+<div class=hero>
+  <div class=label>Headline hidden twin · cosine 0.932 · 49 centuries apart</div>
+  <div class=pair>
+    <a href='https://www.metmuseum.org/art/collection/search/186597' target=_blank><img src='https://images.metmuseum.org/CRDImages/es/web-large/DP258669.jpg' alt='Etruscan bronze'></a>
+    <a href='https://www.metmuseum.org/art/collection/search/244170' target=_blank><img src='https://images.metmuseum.org/CRDImages/gr/web-large/DP9028.jpg' alt='Greek ceramic'></a>
+  </div>
+  <div class=pair-meta>
+    <div class=side><b>Object 186597</b> · Etruscan bronze · ~8th c. BCE</div>
+    <div class=side><b>Object 244170</b> · Greek ceramic · 4th c. BCE</div>
+  </div>
+  <div class=detail>CLIP — a general-purpose model trained on random internet images — sees these two as visually nearly identical despite being from different civilizations, different materials, and ~2,500 years apart. The top-5 cross-century twins all follow this pattern: ancient small-form sculpture converges on a short list of visual archetypes (seated figures, standing figures, profile animals), and the vision model just picks them up.</div>
+</div>
+
+<div class=stats>
+  <div class=stat><div class=k>Artworks embedded</div><div class=v>191,922</div></div>
+  <div class=stat><div class=k>Hidden twins surfaced</div><div class=v>30</div></div>
+  <div class=stat><div class=k>k-th-NN outliers</div><div class=v>24</div></div>
+  <div class=stat><div class=k>Burla wall-clock</div><div class=v>~45–60 <small>min</small></div></div>
+  <div class=stat><div class=k>Serial-equivalent</div><div class=v>4–12 <small>h*</small></div></div>
+  <div class=stat><div class=k>Reduce stage</div><div class=v>50 <small>s</small></div></div>
+</div>
+
+<h2>The galleries</h2>
+<div class=reports>
+  <a class=report href='met_weirdest_out/twins.html'>
+    <span class=chip>30 pairs</span>
+    <h3>Hidden twins</h3>
+    <p>The tightest cross-century visual matches, rendered side-by-side with direct links to the Met's public collection pages.</p>
+  </a>
+  <a class=report href='met_weirdest_out/weirdest.html'>
+    <span class=chip>24 artworks</span>
+    <h3>The weirdest art</h3>
+    <p>Artworks whose 10th nearest neighbor in CLIP space is the most distant of anyone's. Many turn out to be photographic studio plates, broadside posters, or one-off reference samples.</p>
+  </a>
+</div>
+
+<div class=footer>
+  <p>*Serial-equivalent time is a lower bound that assumes a single laptop IP isn't rate-limited by the Met's CDN. In practice, a single-IP scrape of 192K images will be 403-stormed within the first hour — Burla's distributed workers sidestep this by sharing the load across multiple IPs.</p>
+  <p>Source: <a class=plain href='https://github.com/metmuseum/openaccess' target=_blank>Met Open Access</a> (CC0) · Images: <code>images.metmuseum.org/CRDImages</code> · Embeddings: <code>Qdrant/clip-ViT-B-32-vision</code> via fastembed · Index: FAISS IVF · Orchestration: <a class=plain href='https://burla.dev' target=_blank>Burla</a> <code>remote_parallel_map</code>.</p>
+  <p>Code, README, and full artifacts: <a class=plain href='https://github.com/Jmp1062/met-weirdest-art' target=_blank>github.com/Jmp1062/met-weirdest-art ↗</a></p>
+</div>
