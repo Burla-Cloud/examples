@@ -62,17 +62,17 @@ print(f"price estimate: {mean:.6f}  stderr: {se:.6f}  (n = {total_n:,})")
 
 ## Why This Is Better
 
-**vs Ray** — Ray works, but you still set up a cluster, manage actors, and babysit the scheduler. For pleasantly parallel Monte Carlo, that's pure overhead.
+**vs Ray** - Ray works, but you still set up a cluster, manage actors, and babysit the scheduler. For pleasantly parallel Monte Carlo, that's pure overhead.
 
-**vs Dask** — Dask Bag over 2,000 partitions is fine, but you run a scheduler and worker processes. Serialization of numpy arrays back to the client is noisier than a small dict per task.
+**vs Dask** - Dask Bag over 2,000 partitions is fine, but you run a scheduler and worker processes. Serialization of numpy arrays back to the client is noisier than a small dict per task.
 
-**vs Slurm / MPI** — Slurm means sbatch scripts, partitions, queue waits, and a shared filesystem. MPI forces an `MPI.COMM_WORLD` world-view on an embarrassingly parallel problem that doesn't need it.
+**vs Slurm / MPI** - Slurm means sbatch scripts, partitions, queue waits, and a shared filesystem. MPI forces an `MPI.COMM_WORLD` world-view on an embarrassingly parallel problem that doesn't need it.
 
-**vs AWS Batch** — job definitions, compute environments, Docker images, cold starts in minutes. Burla starts 2,000 workers in seconds.
+**vs AWS Batch** - job definitions, compute environments, Docker images, cold starts in minutes. Burla starts 2,000 workers in seconds.
 
 ## How It Works
 
-Each chunk is independent and seeded by its `chunk_id`. Burla runs `run_chunk` on 2,000 workers in parallel. Each worker returns just sums — not arrays — so the return payload is tiny. The client aggregates sums on one line.
+Each chunk is independent and seeded by its `chunk_id`. Burla runs `run_chunk` on 2,000 workers in parallel. Each worker returns just sums - not arrays - so the return payload is tiny. The client aggregates sums on one line.
 
 ## When To Use This
 
@@ -85,5 +85,5 @@ Each chunk is independent and seeded by its `chunk_id`. Burla runs `run_chunk` o
 ## When NOT To Use This
 
 - Sims where paths talk to each other (interacting particle systems, MCMC with cross-chain adaptation).
-- Tiny sims (< 1 million paths) — a single core is faster once you subtract startup.
-- You need to keep every path's full trajectory — that's TB of data; aggregate on the worker instead.
+- Tiny sims (< 1 million paths) - a single core is faster once you subtract startup.
+- You need to keep every path's full trajectory - that's TB of data; aggregate on the worker instead.
