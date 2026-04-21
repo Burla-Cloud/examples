@@ -101,13 +101,13 @@ print(f"done: {total_rows:,} rows loaded")
 
 ## Why This Is Better
 
-**vs Airflow** — Airflow is a scheduler, a metadata DB, a webserver, and a DAG library. For a daily cron over a file drop, it's five moving parts too many. Burla is a Python script you run from cron or CI.
+**vs Airflow** - Airflow is a scheduler, a metadata DB, a webserver, and a DAG library. For a daily cron over a file drop, it's five moving parts too many. Burla is a Python script you run from cron or CI.
 
-**vs Dagster / Prefect** — same shape. Both are excellent for complex, shared orchestration, but both introduce a deploy target and a DSL. You don't need them for "fan out over files, write to Postgres."
+**vs Dagster / Prefect** - same shape. Both are excellent for complex, shared orchestration, but both introduce a deploy target and a DSL. You don't need them for "fan out over files, write to Postgres."
 
-**vs AWS Glue** — Glue needs a job, a crawler, a catalog, and Spark. Heavy for small-to-medium ETL.
+**vs AWS Glue** - Glue needs a job, a crawler, a catalog, and Spark. Heavy for small-to-medium ETL.
 
-**vs AWS Batch** — you'd still have to build a container and set up a queue and compute environment. Burla skips all of that.
+**vs AWS Batch** - you'd still have to build a container and set up a queue and compute environment. Burla skips all of that.
 
 ## How It Works
 
@@ -122,6 +122,6 @@ Burla runs `etl_one_file` on up to 10,000 workers, capped at 1,000 concurrent vi
 
 ## When NOT To Use This
 
-- DAGs with real cross-task dependencies, retries-with-state, and SLAs — use Airflow/Dagster.
-- Streaming pipelines — use Kafka + a streaming runtime.
-- Complex scheduling with calendars, sensors, and SLA alerts — use a scheduler that's built for it.
+- DAGs with real cross-task dependencies, retries-with-state, and SLAs - use Airflow/Dagster.
+- Streaming pipelines - use Kafka + a streaming runtime.
+- Complex scheduling with calendars, sensors, and SLA alerts - use a scheduler that's built for it.
