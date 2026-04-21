@@ -50,13 +50,15 @@
   .topbar .spacer { flex: 1; }
   .hero {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 56px;
     align-items: end;
     margin-bottom: 72px;
   }
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: 40px; }
+    .hero-number { text-align: left; padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); padding-top: 32px; }
+    .hero-number .sub { margin-left: 0; }
   }
   .hero-text .eyebrow {
     font-family: 'JetBrains Mono', monospace;
@@ -70,13 +72,20 @@
   h1 {
     font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: clamp(44px, 7vw, 78px);
-    line-height: 0.94;
-    letter-spacing: -0.03em;
+    font-size: clamp(36px, 5.4vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
     color: var(--fg);
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+    hyphens: none;
   }
-  h1 .highlight { background: var(--yellow); color: var(--bg); padding: 0 10px; display: inline-block; transform: skew(-4deg); margin: 0 2px; }
+  h1 .highlight {
+    background: var(--yellow); color: var(--bg);
+    padding: 0.04em 0.22em 0.08em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    margin: 0 0.04em;
+  }
   .hero-text p {
     font-size: 17px; line-height: 1.6; color: var(--fg-soft); max-width: 500px;
   }
@@ -245,8 +254,8 @@
 <section class=hero>
   <div class=hero-text>
     <div class=eyebrow>// 264 ZONES · 168 MONTHS · 2.76B TRIPS</div>
-    <h1>Every NYC taxi trip <span class=highlight>ever released</span>, classified by what happened to its neighborhood.</h1>
-    <p>We processed the entire TLC public archive — yellow + green + FHV + HVFHS, January 2011 through December 2024 — and sorted every one of the 264 TLC zones into six categories based purely on its own time series. No curated "interesting zones." Just the data.</p>
+    <h1>Every NYC taxi trip, sorted by <span class=highlight>what happened</span> to the block it started on.</h1>
+    <p>We processed the entire TLC public archive — yellow + green + FHV + HVFHS, January 2011 through December 2024 — and sorted all 264 zones into six categories based purely on their own time series. No curated &ldquo;interesting zones.&rdquo; Just the data.</p>
   </div>
   <div class=hero-number>
     <div class=big>958×</div>
