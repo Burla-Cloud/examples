@@ -82,8 +82,3 @@ Each chunk is independent and seeded by its `chunk_id`. Burla runs `run_chunk` o
 - Reliability and rare-event simulation.
 - Any "run N trials, report mean/stddev/quantiles" workload.
 
-## When NOT To Use This
-
-- Sims where paths talk to each other (interacting particle systems, MCMC with cross-chain adaptation).
-- Tiny sims (< 1 million paths) - a single core is faster once you subtract startup.
-- You need to keep every path's full trajectory - that's TB of data; aggregate on the worker instead.
