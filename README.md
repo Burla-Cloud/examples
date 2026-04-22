@@ -113,8 +113,3 @@ You chunk your S3 key list. Burla runs `resize_chunk` on 5,000 cloud workers. Ea
 - Center-cropping or padding training set images.
 - Converting a format (HEIC, TIFF, BMP) to JPEG or WebP in bulk.
 
-## When NOT To Use This
-
-- Real-time image processing on user upload - use a lambda or a CDN transform.
-- You need GPU-accelerated operations (style transfer, super-resolution) - request GPU workers and raise `func_ram`.
-- The dataset is small (< 10k images) - `multiprocessing` on one box is enough.
