@@ -1,5 +1,7 @@
 # Fossils of the arXiv — a Burla demo
 
+**Live site: <https://burla-cloud.github.io/arxiv-fossils/>**
+
 Cluster every one of the **2,710,783 arXiv abstracts** ever posted, project
 them into 384-dimensional sentence-embedding space, and let three simple
 questions fall out of the geometry:
