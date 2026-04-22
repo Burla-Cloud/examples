@@ -18,27 +18,15 @@ No Nextflow, no Batch compute environment, no queue, no AMI.
 
 ## The Container Image
 
-The worker needs `bwa`, `samtools`, and `awscli`. Burla's default worker image (`python:3.12`) doesn't have them, so we ship a tiny image on top of it.
+The worker needs `bwa`, `samtools`, and `awscli`. Burla's default worker image (`python:3.12`) doesn't have them, so we ship a tiny image on top of it - see [`worker-image/`](worker-image/) in this repo for the `Dockerfile` and build instructions.
 
-`Dockerfile`:
+A pre-built public image is available (no auth needed to pull):
 
-```dockerfile
-FROM python:3.12
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        bwa samtools awscli ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+```
+us-docker.pkg.dev/test-burla/burla-demos/burla-bio-worker:latest
 ```
 
-Build, push, and tell Burla to use it via the `image=` argument:
-
-```bash
-docker build --platform linux/amd64 -t <your-registry>/burla-bio-worker:latest .
-docker push <your-registry>/burla-bio-worker:latest
-```
-
-A pre-built public image is available at `us-docker.pkg.dev/test-burla/burla-demos/burla-bio-worker:latest` if you want to try it without building your own.
+Pass it to Burla via the `image=` argument on `remote_parallel_map`.
 
 ## Example
 
