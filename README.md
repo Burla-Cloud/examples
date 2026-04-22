@@ -111,8 +111,3 @@ You chunk the URL list. Burla holds 1,000 workers live at once via `max_parallel
 - One-off backfills of a site's entire archive.
 - Scraping behind a rotating proxy (configure in `httpx.Client`).
 
-## When NOT To Use This
-
-- JavaScript-heavy sites requiring a full browser - use Playwright with `func_cpu=2, func_ram=4` per worker, and expect higher cost.
-- Sites with aggressive anti-bot (Cloudflare Turnstile, PerimeterX) - you need residential proxies and a browser fingerprinting solution, not just parallelism.
-- Always-on crawlers that need a scheduling graph and dedupe across runs - use Scrapy with a proper item pipeline.
