@@ -1,5 +1,7 @@
 # NYC Ghost Neighborhoods — a Burla demo
 
+**Live site: <https://burla-cloud.github.io/nyc-ghost-neighborhoods/>**
+
 Process **every single NYC taxi & for-hire-vehicle trip ever released by the
 TLC** — 2,758,715,765 rows across 168 monthly parquet files, January 2011 →
 December 2024 — and let the *geography itself* tell you which neighborhoods

@@ -305,7 +305,7 @@
 <div class=footnote>
   <p>Source: NYC TLC public trip-record archive (<a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page" target=_blank>tlc.nyc.gov</a>) &middot; yellow + green + FHV + HVFHS monthly parquet &middot; ~50 GB of compressed columnar data.</p>
   <p>Orchestration: <a href="https://burla.dev" target=_blank>Burla</a>'s <code>remote_parallel_map</code>. One task per <code>(taxi_type, year, month)</code> &rarr; 371 tasks in parallel &rarr; every task runs <code>pyarrow</code> streaming straight off CloudFront, groups by <code>PULocationID</code>, returns a tiny dict. The whole fan-out finishes before a single-threaded laptop has finished downloading one month.</p>
-  <p>Source code: <a href="https://github.com/Jmp1062/nyc-ghost-neighborhoods" target=_blank>github.com/Jmp1062/nyc-ghost-neighborhoods</a></p>
+  <p>Source code: <a href="https://github.com/Burla-Cloud/nyc-ghost-neighborhoods" target=_blank>github.com/Burla-Cloud/nyc-ghost-neighborhoods</a></p>
 </div>
 
 </div>
