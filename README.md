@@ -1,6 +1,6 @@
 # The Met's Hidden Twins — a Burla demo
 
-**Live site: <https://jmp1062.github.io/met-weirdest-art/>**
+**Live site: <https://burla-cloud.github.io/met-weirdest-art/>**
 
 We fetched **every Met Museum CC0 artwork with a published image** (≈192 K
 pieces from the 470 K-item Open Access collection), ran CLIP ViT-B/32 over all
