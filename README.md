@@ -124,8 +124,3 @@ You pass a list of sample descriptors and a container image. Burla boots workers
 - Variant calling per sample (DeepVariant, GATK HaplotypeCaller).
 - QC and trimming pipelines (fastp, Trim Galore) over a cohort.
 
-## When NOT To Use This
-
-- Joint genotyping across all samples at once - that step needs cross-sample coordination; do per-sample GVCFs with Burla, then run the joint step on one big machine.
-- Interactive Jupyter-style exploration on a single BAM - use a local notebook.
-- Pipelines where sample A's output is needed to start sample B's work - Burla tasks are independent.
