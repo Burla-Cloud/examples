@@ -89,8 +89,3 @@ You pick a cheap partition key (user_id, date, hash). You build a list of chunks
 - One-off data prep jobs where rewriting to a SQL engine is overkill.
 - Per-row embedding or feature computation where the function is heavy.
 
-## When NOT To Use This
-
-- The operation is a simple groupby or aggregation - use DuckDB or SQL directly.
-- The full dataset fits in RAM and the apply is vectorizable - just use `pandas` or `polars`.
-- You need windowed operations across chunk boundaries (rolling across user history) - partition so related rows land in the same chunk first.
