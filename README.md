@@ -90,8 +90,3 @@ You batch your input list. Burla ships your function and batches to 1,000 pre-wa
 - Running open-weight LLMs (Llama, Mistral, Qwen) over a fixed corpus.
 - Computing embeddings for a vector DB backfill.
 
-## When NOT To Use This
-
-- Real-time single-request inference - use a serving framework.
-- Tiny datasets (<10k rows) - your laptop GPU is faster once you factor in startup.
-- Models that need distributed training or tensor parallelism across workers - Burla workers don't coordinate with each other.
