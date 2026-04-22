@@ -83,8 +83,3 @@ You call `remote_parallel_map(fn, keys)`. Burla ships your function and the inpu
 - Rewriting thousands of Parquet files to a new schema or compression.
 - Building a per-file index (min/max, distinct counts, bloom filters).
 
-## When NOT To Use This
-
-- You need to shuffle or join across files - use Spark or DuckDB.
-- The files are small (<1 MB each) and there are only a few hundred - local threads are faster.
-- You need sub-second interactive queries - use a query engine, not a batch map.
