@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Amazon Review Distiller · Wall of Fucked Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=2" />
+</head>
+<body>
+
+<header class="amzn-bar">
+  <div class="amzn-bar-inner">
+    <a class="logo" href="#top">
+      <span class="pn">amazon</span><span class="dot">.</span><span class="ps">review-distiller</span>
+    </a>
+    <div class="addr">
+      <small>scanned</small>
+      <b id="hdrTotal">—</b>
+    </div>
+    <div class="search">
+      <select id="catFilter">
+        <option value="">All</option>
+      </select>
+      <input id="q" placeholder="Search reviews (try: fucking, $$$, worst, refund) " />
+      <button id="searchBtn" aria-label="search">⌕</button>
+    </div>
+    <div class="account">
+      <div class="greet">
+        <small>Toggle</small>
+        <label class="unhinged-toggle">
+          <input id="unhingedToggle" type="checkbox" />
+          <span>Unhinged Mode</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <nav class="amzn-subnav">
+    <a href="#wall">The Wall of Fucked Up</a>
+    <a href="#categories">Browse by category</a>
+    <a href="#findings">Findings</a>
+    <a href="#method">Methodology</a>
+    <a href="https://github.com/Burla-Cloud/burla-agent-starter-kit" target="_blank" rel="noopener">Built with Burla</a>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-l">
+    <p class="eyebrow">A Burla demo · <span class="mono">500+ CPUs</span> · <span class="mono" id="heroRows">—</span> reviews parsed</p>
+    <h1>Every Amazon review is a cry for help.<br/>We distilled the <em>loudest ones</em>.</h1>
+    <p class="lede">
+      We streamed <b id="heroBytes">275 GB</b> of raw Amazon reviews across <b id="heroCats">34</b> categories
+      through a <a href="https://burla.dev" target="_blank" rel="noopener">Burla</a> cluster with
+      <b id="heroWorkers">500+ workers in parallel</b>, and ranked them by seven flavors of unhinged:
+      profanity, screaming, punctuation bombs, short-brutal one-liners, full-blown rants,
+      five-star obscene, and five-star silent.
+    </p>
+    <p class="lede">
+      Nothing is sanitized. These are the reviews as customers wrote them,
+      down to the last asterisk. Turn on <span class="kbd">Unhinged Mode</span> to confirm you know what you're getting into.
+    </p>
+    <div class="cta-row">
+      <a class="cta" href="#wall">See the Wall →</a>
+      <a class="cta secondary" href="#findings">Read the findings</a>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="stat-grid">
+      <div class="stat"><b id="sRev">—</b><span>reviews parsed</span></div>
+      <div class="stat"><b id="sProf">—</b><span>reviews w/ profanity</span></div>
+      <div class="stat"><b id="sCats">—</b><span>categories</span></div>
+      <div class="stat"><b id="sRate">—</b><span>global profanity rate</span></div>
+      <div class="stat"><b id="sWorkers">500+</b><span>Burla workers</span></div>
+      <div class="stat"><b id="sBytes">275 GB</b><span>data streamed</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="wall">
+  <div class="sec-head">
+    <h2>The Wall of Fucked Up</h2>
+    <p class="sub" id="wallBlurb">Loading…</p>
+  </div>
+  <div id="wallList" class="review-feed"></div>
+</section>
+
+<section class="section alt" id="categories">
+  <div class="sec-head">
+    <h2>Browse by category</h2>
+    <p class="sub">34 categories, ranked by how many reviews contain profanity. Click one to see the top 30 most fucked-up reviews in that category.</p>
+  </div>
+  <div id="catGrid" class="cat-grid"></div>
+</section>
+
+<section class="section" id="findings">
+  <div class="sec-head">
+    <h2>What we found</h2>
+    <p class="sub">Nine ways Amazon reviews go off the rails.</p>
+  </div>
+  <div id="findingsWrap" class="findings-wrap"></div>
+</section>
+
+<section class="section alt" id="method">
+  <div class="sec-head">
+    <h2>Methodology</h2>
+    <p class="sub">How the distillation works. Reproducible on any Burla cluster.</p>
+  </div>
+  <div class="method-grid">
+    <div>
+      <h3>Data</h3>
+      <p>
+        <a href="https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023" target="_blank" rel="noopener">
+          McAuley-Lab / Amazon-Reviews-2023</a>, the raw JSONL review files (275 GB across 34 categories,
+        2023 snapshot). Streamed directly from Hugging Face via HTTP Range requests — no local download.
+      </p>
+      <h3>Pipeline</h3>
+      <ol>
+        <li><b>Plan</b> — split each review file into ~500 MB byte-range chunks (~550 chunks total).</li>
+        <li><b>Scatter</b> — dispatch chunks to Burla cluster (500+ parallel workers).</li>
+        <li><b>Map</b> — each worker streams its byte range, line-aligns, parses JSONL, scores each review on seven signals, keeps top-K per signal in heaps. Writes one JSON per chunk.</li>
+        <li><b>Reduce</b> — one Burla worker per category merges all shard outputs into one per-category JSON (heaps merged, rating histograms summed).</li>
+        <li><b>Analyze</b> — client builds findings + Wall + per-category pages.</li>
+      </ol>
+      <h3>Scoring</h3>
+      <p>
+        Rule-based, no LLM: word lists for strong/medium/mild profanity, caps-ratio for screaming,
+        consecutive-exclamation-run for punctuation bombs, length × rage for rants, short × profanity for
+        one-liner brutality, rating × profanity for five-star obscene, rating × length-zero for five-star silent.
+      </p>
+    </div>
+    <div>
+      <h3>Source</h3>
+      <p>Open source on <a href="https://github.com/Burla-Cloud/burla-agent-starter-kit" target="_blank" rel="noopener">GitHub</a>.
+      Reproduce this on your own cluster in ~15 minutes with one <code>burla run scale.py</code>.</p>
+      <h3>Warning</h3>
+      <p class="warn">
+        These are real reviews written by real people on Amazon. Content includes profanity, slurs, and
+        descriptions of regret. Nothing has been filtered. If that's not your thing, close this tab.
+      </p>
+      <h3>Credits</h3>
+      <p>
+        Dataset: McAuley Lab, UCSD. Pipeline: <a href="https://burla.dev" target="_blank" rel="noopener">Burla</a>. UI: plain HTML + CSS + JS, zero frameworks.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="amzn-foot">
+  <div>Amazon Review Distiller · A Burla demo · Not affiliated with Amazon.com, Inc.</div>
+  <div class="foot-sub">All reviews shown verbatim from the McAuley-Lab/Amazon-Reviews-2023 public dataset.</div>
+</footer>
+
+<dialog id="catModal">
+  <div class="modal-inner">
+    <button class="modal-close" aria-label="close">×</button>
+    <div id="catBody"></div>
+  </div>
+</dialog>
+
+<script src="js/app.js?v=3"></script>
+</body>
+</html>
