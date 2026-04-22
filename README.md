@@ -120,8 +120,3 @@ Burla runs `etl_one_file` on up to 10,000 workers, capped at 1,000 concurrent vi
 - Simple pipelines where each file is independent.
 - Data loads where you control the load concurrency at the database.
 
-## When NOT To Use This
-
-- DAGs with real cross-task dependencies, retries-with-state, and SLAs - use Airflow/Dagster.
-- Streaming pipelines - use Kafka + a streaming runtime.
-- Complex scheduling with calendars, sensors, and SLA alerts - use a scheduler that's built for it.
