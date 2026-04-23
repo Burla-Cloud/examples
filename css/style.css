@@ -236,7 +236,7 @@ body {
 .section.alt { background: #fff; max-width: none; padding: 48px 0; border-top: 1px solid #d5d9d9; border-bottom: 1px solid #d5d9d9; }
 .section.alt > * { max-width: 1480px; margin: 0 auto; padding: 0 18px; }
 
-/* Unhinged banner — only shown when Unhinged Mode is on. Sits above the
+/* Unhinged banner. Only shown when Unhinged Mode is on. Sits above the
    wall as a loud warning that content is being swapped. */
 .unhinged-banner {
   display: none;
@@ -367,7 +367,7 @@ body.unhinged .unhinged-banner { display: block; }
   font-size: 13px;
 }
 
-/* Unhinged-specific card accents — red left rail, slur tag row. */
+/* Unhinged-specific card accents: red left rail, slur tag row. */
 .rev-unhinged {
   border-left: 3px solid #ff0033;
   box-shadow: 0 0 0 1px rgba(255, 0, 51, 0.08) inset;

@@ -1,14 +1,14 @@
-"""Worst-of-the-worst hunter — Amazon Review Distiller.
+"""Worst-of-the-worst hunter. Amazon Review Distiller.
 
 Third-pass scan that catches what the first two passes missed:
   1. Asterisk / symbol-censored profanity (f***, sh!t, b*tch, c***, n****r, f@g)
-     — which turns out to be the OVERWHELMING majority of strong profanity
+    . which turns out to be the OVERWHELMING majority of strong profanity
      on Amazon since reviewers self-censor. The original tokenizer couldn't
      see any of this.
   2. Categorized slur detection (racial / homophobic / ableist / xenophobic /
      gendered) using hate_lexicon.py. Tiered severity weights.
-  3. Context classification per hit — deploy / quote_and_criticize /
-     reclaim / ambiguous — so the rescorer can boost genuine deployments
+  3. Context classification per hit. deploy / quote_and_criticize /
+     reclaim / ambiguous. so the rescorer can boost genuine deployments
      and down-weight literary criticism that contains the same strings.
 
 Scoring prioritizes:
@@ -42,7 +42,7 @@ K_PER_CHUNK = 250
 WORD_RX = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
 EXCLAM_RX = re.compile(r"!+")
 
-# Char-level pre-filter roots — if none of these substrings are present in
+# Char-level pre-filter roots. if none of these substrings are present in
 # the lowercase blob, we skip the full scan entirely. Kept short / cheap.
 PREFILTER_ROOTS: List[str] = sorted({
     # strong profanity roots from the first pass
@@ -53,7 +53,7 @@ PREFILTER_ROOTS: List[str] = sorted({
     "chinaman", "raghead", "towelhead", "sandnigger",
     # ambiguous / softer but still flagged
     "thot", "skank", "tramp", "incel", "cuck",
-    # censored-substitution anchors — crude but fast
+    # censored-substitution anchors. crude but fast
     "f**", "f*k", "s**", "b**", "n**", "c**", "sh*", "sh!", "sh1",
     "b!t", "b1t", "c*n", "f@g", "f*g", "p***",
 }, key=len, reverse=True)

@@ -41,7 +41,7 @@ def list_categories() -> Dict[str, List[str]]:
 
 
 def reduce_category(category: str, names: List[str]) -> bytes:
-    """Called on cluster worker — merges all shard outputs for one category."""
+    """Called on cluster worker. merges all shard outputs for one category."""
     n_parsed = 0
     n_profane = 0
     rating_counts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}

@@ -1,14 +1,14 @@
-// Amazon Review Distiller — data loader + renderer.
+// Amazon Review Distiller. Data loader + renderer.
 // Pure vanilla, no frameworks. All data lives in /data/*.json.
 //
 // Core flow:
-//   Normal mode  → Wall shows the 120-row "cry for help" corpus (data/wall.json).
-//   Unhinged Mode → Wall swaps to the 120-row merged unhinged corpus
+//   Normal mode  -> Wall shows the 120-row "cry for help" corpus (data/wall.json).
+//   Unhinged Mode -> Wall swaps to the 120-row merged unhinged corpus
 //                   (data/unhinged.json) = hard profanity + censored-slur hits
 //                   rescored to push false positives down, real rants up.
 //
 // All slur tokens in unhinged rows are auto-redacted at render time with a
-// category badge — raw strings never ship verbatim to the page.
+// category badge. Raw strings never ship verbatim to the page.
 
 const DATA = {
   index: null,
@@ -44,18 +44,18 @@ const escReview = (s) => {
     .replace(/&gt;/g, ">");
   return esc(t);
 };
-const fmt = (n) => (n == null ? "—" : n.toLocaleString());
+const fmt = (n) => (n == null ? "…" : n.toLocaleString());
 const fmtShort = (n) => {
-  if (n == null) return "—";
+  if (n == null) return "…";
   if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
   if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
   if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
   return String(n);
 };
-const pct = (x, dp = 2) => (x == null ? "—" : (x * 100).toFixed(dp) + "%");
+const pct = (x, dp = 2) => (x == null ? "…" : (x * 100).toFixed(dp) + "%");
 
 // ---------------------------------------------------------------------
-// Slur redaction. The raw lexicon never ships to the browser — instead
+// Slur redaction. The raw lexicon never ships to the browser. Instead
 // we render each slur as first-letter + asterisks + category badge.
 // These patterns match both uncensored and already-censored variants.
 // ---------------------------------------------------------------------
@@ -64,7 +64,7 @@ const pct = (x, dp = 2) => (x == null ? "—" : (x * 100).toFixed(dp) + "%");
 // legitimate short words. Patterns are ordered most-specific-first so
 // overlapping matches resolve in favor of the harder category.
 const SLUR_PATTERNS = [
-  // RS_HARD — the hard-R tier.
+  // RS_HARD. The hard-R tier.
   { re: /\bn(?:i|[\*\@\#\$\!\%\_\-\.1]){1,3}gg?(?:er|a|ah|az|ers|as|ahs)\b/gi, label: "RACIAL SLUR" },
   { re: /\bn\*{3,6}(?:er|a|ah|az|r)?\b/gi, label: "RACIAL SLUR" },
   // RS (other racial).
@@ -87,11 +87,11 @@ const SLUR_PATTERNS = [
   { re: /\b(?:dyke|dykes)\b/gi, label: "HOMOPHOBIC SLUR" },
   { re: /\btr(?:a|[\*\@\#\$\!])nn(?:y|ies)\b/gi, label: "HOMOPHOBIC SLUR" },
   { re: /\b(?:tranny|trannies|shemale|shemales)\b/gi, label: "HOMOPHOBIC SLUR" },
-  // ABL — only the clear slur tokens; idiot/moron/lame are too ambiguous.
+  // ABL. Only the clear slur tokens; idiot/moron/lame are too ambiguous.
   { re: /\br(?:e|[\*\@\#\$\!])t(?:a|[\*\@\#\$\!])rd(?:ed|s|ation)?\b/gi, label: "ABLEIST SLUR" },
   { re: /\br\*{3,6}(?:d?ed|s|ation)?\b/gi, label: "ABLEIST SLUR" },
   { re: /\b(?:retard|retards|retarded|retardo|mongoloid|mongoloids|spastic|spaz|spazz)\b/gi, label: "ABLEIST SLUR" },
-  // Profanity — display as first-letter + asterisks, no badge (common enough
+  // Profanity. Display as first-letter + asterisks, no badge (common enough
   // that a badge on every f-bomb would be visually exhausting).
   { re: /\bf\*{2,5}(?:ing|in|ed|er|ers|s)?\b/gi, label: "" },
   { re: /\bsh\*{2,4}(?:ty|s|head|hole|bag)?\b/gi, label: "" },
@@ -281,7 +281,7 @@ function reviewCard(r, rank, { unhinged = false } = {}) {
       <button class="more" data-more>Read full review →</button>
       <div class="meta">
         <span class="tags">${metaTags(r)}</span>
-        <span class="asin">ASIN ${esc(r.asin || "—")}</span>
+        <span class="asin">ASIN ${esc(r.asin || "…")}</span>
       </div>
     </article>
   `;
@@ -313,7 +313,7 @@ function miniRev(r, rank) {
       <div class="stars">${starMarkup}</div>
       <div class="ft">
         <span>${cat ? `${cat.emoji} ${esc(cat.name)}` : ""}</span>
-        <span>ASIN ${esc(r.asin || "—")}</span>
+        <span>ASIN ${esc(r.asin || "…")}</span>
       </div>
     </div>
   `;
@@ -321,8 +321,8 @@ function miniRev(r, rank) {
 
 // --- unified wall -----------------------------------------------------
 //
-// Normal mode   → DATA.wall.rows (mild, "cry for help")
-// Unhinged mode → DATA.unhinged.rows (hard profanity + slur corpus merged)
+// Normal mode   -> DATA.wall.rows (mild, "cry for help")
+// Unhinged mode -> DATA.unhinged.rows (hard profanity + slur corpus merged)
 //
 // Toggling re-renders in place. Slur redaction is applied when rendering
 // the unhinged source only.
@@ -338,7 +338,7 @@ function renderWall() {
   const title = el("wallTitle");
   const blurb = el("wallBlurb");
   if (title) {
-    title.textContent = unhinged ? "The Wall of Fucked Up — Unhinged" : "The Wall of Fucked Up";
+    title.textContent = unhinged ? "The Wall of Fucked Up · Unhinged" : "The Wall of Fucked Up";
   }
   blurb.textContent = data.blurb || "";
   const wrap = el("wallList");

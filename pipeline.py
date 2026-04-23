@@ -1,4 +1,4 @@
-"""Amazon Review Distiller — worker pipeline.
+"""Amazon Review Distiller. worker pipeline.
 
 Each Burla worker processes one byte-range chunk of one review JSONL file:
   (file_path, byte_start, byte_end, chunk_id)
@@ -14,7 +14,7 @@ Flow:
   6. Write per-chunk JSON to /workspace/shared/ard/shards/{chunk_id}.json
 
 NO LLM on the critical path. NO sanitization. Raw review text is preserved
-verbatim — profanity, typos, foreign characters, emojis, all intact.
+verbatim. profanity, typos, foreign characters, emojis, all intact.
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ OUTPUT_DIR = "/workspace/shared/ard/shards"
 TOP_K_PER_SIGNAL = 40   # keep top 40 reviews per (category, signal)
 
 
-# Profanity patterns — matched as whole words or inside compounds.
+# Profanity patterns. matched as whole words or inside compounds.
 # Weighted: strong = 3, medium = 2, mild = 1. Score bias shown.
 STRONG_PROFANE = {
     "fuck", "fucks", "fucked", "fucking", "fucker", "fuckers", "fuckin",
@@ -94,7 +94,7 @@ def _score(text: str) -> Dict[str, Any]:
             medium += 1
         elif lw in MILD_PROFANE:
             mild += 1
-        # "all-caps words" — at least 4 chars and ALL uppercase (letters only)
+        # "all-caps words". at least 4 chars and ALL uppercase (letters only)
         if len(w) >= 4 and w.isupper():
             caps += 1
     profanity_total = strong + medium + mild
@@ -133,14 +133,14 @@ def _rant_score(s: Dict[str, Any]) -> float:
 
 
 def _five_star_obscene(rating: float, s: Dict[str, Any]) -> float:
-    """5-star review with heavy profanity — the 'this product fucking slaps' genre."""
+    """5-star review with heavy profanity. the 'this product fucking slaps' genre."""
     if rating < 5:
         return 0.0
     return s["strong"] * 3 + s["medium"] * 1.2
 
 
 def _five_star_boring(rating: float, s: Dict[str, Any]) -> float:
-    """5-star review with 0 words / 1-2 word reviews — Amazon's bleakest genre."""
+    """5-star review with 0 words / 1-2 word reviews. Amazon's bleakest genre."""
     if rating < 5:
         return 0.0
     if s["word_count"] == 0:
@@ -150,7 +150,7 @@ def _five_star_boring(rating: float, s: Dict[str, Any]) -> float:
     return 1.0 / s["word_count"]
 
 
-# Heap helpers — we keep the top-K smallest (so heapreplace pops the worst).
+# Heap helpers. we keep the top-K smallest (so heapreplace pops the worst).
 def _heap_push_top_k(h: List, k: int, item: Tuple[float, int, Dict[str, Any]]):
     if len(h) < k:
         heapq.heappush(h, item)
@@ -191,7 +191,7 @@ def process_chunk(file_path: str, start: int, end: int, chunk_id: str) -> Dict[s
     rating_counts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
     length_sum = 0
 
-    # Streaming parse — accumulate bytes, split on newline, align first line
+    # Streaming parse. accumulate bytes, split on newline, align first line
     buf = b""
     first_line = True
     chunk_id_counter = 0
@@ -205,7 +205,7 @@ def process_chunk(file_path: str, start: int, end: int, chunk_id: str) -> Dict[s
             lines = buf.split(b"\n")
             buf = lines.pop()  # keep partial
             if first_line and start > 0:
-                # Discard first (partial) line — byte alignment safety
+                # Discard first (partial) line. byte alignment safety
                 if lines:
                     lines.pop(0)
                 first_line = False

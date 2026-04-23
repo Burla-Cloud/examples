@@ -1,13 +1,13 @@
 """Merge the two vulgar corpora into one consolidated `unhinged` dataset.
 
 Sources:
-  samples/ard_vulgar_ranked.json    — hard profanity (shit/bitch/cunt/...)
-  samples/ard_worst_ranked.json     — slurs + censored profanity
+  samples/ard_vulgar_ranked.json   . hard profanity (shit/bitch/cunt/...)
+  samples/ard_worst_ranked.json    . slurs + censored profanity
 
 Output:
-  samples/unhinged_wall.json        — top 120 for the main Unhinged wall
-  samples/unhinged_search.json      — top 400 for the search corpus
-  samples/unhinged_stats.json       — aggregate stats for the hero blurb
+  samples/unhinged_wall.json       . top 120 for the main Unhinged wall
+  samples/unhinged_search.json     . top 400 for the search corpus
+  samples/unhinged_stats.json      . aggregate stats for the hero blurb
 
 The two corpora scored reviews on different scales, so we normalize
 `_rescore` per-source before merging. Dedup is (asin, title, text slice).
@@ -120,7 +120,7 @@ def main() -> None:
 
     out_wall.write_text(json.dumps({
         "blurb": (
-            "The most unhinged of {total:,}+ Amazon reviews — every f-bomb, "
+            "The most unhinged of {total:,}+ Amazon reviews: every f-bomb, "
             "slur, censored rant, and full-caps meltdown the first three passes "
             "could surface. Flip Unhinged Mode off to return to the normal Wall."
         ).format(total=571_544_386),

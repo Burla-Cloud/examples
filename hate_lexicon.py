@@ -4,7 +4,7 @@ This file exists to support ANALYSIS ONLY of hate speech in a 571M-review
 Amazon corpus. Terms are categorized by target type so the pipeline can
 produce aggregate statistics and tag context (deploy / quote / reclaim /
 ambiguous). Every term is held in lowercase. Public UI ALWAYS renders these
-redacted with a category badge — the raw strings never ship verbatim to
+redacted with a category badge. the raw strings never ship verbatim to
 burla-cloud.github.io.
 
 Data sources referenced when building these lists:
@@ -30,7 +30,7 @@ from typing import Dict, List, Tuple
 
 
 # -------------------------------------------------------------------------
-# Category: RS_HARD — the hard-R racial slur tier.
+# Category: RS_HARD. the hard-R racial slur tier.
 # Render: [RACIAL SLUR] badge, every char after first → `*`.
 # -------------------------------------------------------------------------
 RS_HARD: List[str] = [
@@ -39,7 +39,7 @@ RS_HARD: List[str] = [
 ]
 
 # -------------------------------------------------------------------------
-# Category: RS — other racial slurs (anti-Asian, anti-Black beyond hard-R,
+# Category: RS. other racial slurs (anti-Asian, anti-Black beyond hard-R,
 # anti-Indigenous, anti-Hispanic, anti-Arab, anti-Jewish).
 # -------------------------------------------------------------------------
 RS: List[str] = [
@@ -58,7 +58,7 @@ RS: List[str] = [
 ]
 
 # -------------------------------------------------------------------------
-# Category: HOM — homophobic / transphobic slurs.
+# Category: HOM. homophobic / transphobic slurs.
 # -------------------------------------------------------------------------
 HOM: List[str] = [
     "fag", "fags", "faggot", "faggots", "faggy", "fagged",
@@ -72,7 +72,7 @@ HOM: List[str] = [
 ]
 
 # -------------------------------------------------------------------------
-# Category: ABL — ableist slurs.
+# Category: ABL. ableist slurs.
 # -------------------------------------------------------------------------
 ABL: List[str] = [
     "retard", "retards", "retarded", "retardo", "retardation",
@@ -85,7 +85,7 @@ ABL: List[str] = [
 ]
 
 # -------------------------------------------------------------------------
-# Category: SEX — gendered slurs beyond the baseline bitch/whore/slut set.
+# Category: SEX. gendered slurs beyond the baseline bitch/whore/slut set.
 # -------------------------------------------------------------------------
 SEX: List[str] = [
     "skank", "skanks", "skanky",
@@ -101,7 +101,7 @@ SEX: List[str] = [
 ]
 
 # -------------------------------------------------------------------------
-# Category: XEN — xenophobic / national origin slurs.
+# Category: XEN. xenophobic / national origin slurs.
 # -------------------------------------------------------------------------
 XEN: List[str] = [
     "dago", "dagos",
@@ -158,7 +158,7 @@ def _sym_class(n_min: int, n_max: int) -> str:
 
 
 # Pure-asterisk pattern class (only `*`, the overwhelmingly most common
-# Amazon censoring char — think `f***ing`, `sh**`, `n*****`, `b****`).
+# Amazon censoring char. think `f***ing`, `sh**`, `n*****`, `b****`).
 def _stars(n_min: int, n_max: int) -> str:
     return r"\*{" + f"{n_min},{n_max}" + "}"
 
@@ -170,9 +170,9 @@ def _stars(n_min: int, n_max: int) -> str:
 #   (a) partial censor: anchor letters preserved (f*ck, sh!t, b*tch)
 #   (b) heavy censor: asterisks replace middle + tail (f***, f***ing, sh**)
 CENSORED_PATTERNS: List[Tuple[str, str, re.Pattern]] = [
-    # Classic profanity — partial-letter censored/leet variants.
+    # Classic profanity. partial-letter censored/leet variants.
     ("VULG", "fuck",    re.compile(r"\bf" + _sym_class(1, 3) + r"k(?:ing|in|ed|er|ers|s)?\b", re.I)),
-    # "f*ck" / "f*cking" — one sym replaces the u, ck preserved.
+    # "f*ck" / "f*cking". one sym replaces the u, ck preserved.
     ("VULG", "fuck",    re.compile(r"\bf" + _sym_class(1, 1) + r"ck(?:ing|in|ed|er|ers|s)?\b", re.I)),
     ("VULG", "shit",    re.compile(r"\bsh" + _sym_class(1, 2) + r"t(?:ty|s|ted|ting|head|hole|bag)?\b", re.I)),
     ("VULG", "bitch",   re.compile(r"\bb" + _sym_class(1, 3) + r"tch(?:es|y|in|ing|ed)?\b", re.I)),
@@ -206,7 +206,7 @@ CENSORED_PATTERNS: List[Tuple[str, str, re.Pattern]] = [
     ("VULG", "prick",    re.compile(r"\bpr" + _sym_class(1, 2) + r"ck(?:s)?\b", re.I)),
     ("VULG", "prick",    re.compile(r"\bpr" + _stars(2, 3) + r"(?:s)?(?!\w)", re.I)),
 
-    # Slur censored variants — mixed (partial letters preserved).
+    # Slur censored variants. mixed (partial letters preserved).
     # Require >=2 symbol chars AND multi-char suffix to avoid "N.a"/"N-A"
     # (Bible abbreviations, "not applicable", etc.) false positives.
     ("RS_HARD", "nigger", re.compile(r"\bn" + _sym_class(2, 4) + r"(?:er|ers|ah|ahs|az|as)\b", re.I)),
@@ -234,7 +234,7 @@ CENSORED_PATTERNS: List[Tuple[str, str, re.Pattern]] = [
 
 
 # -------------------------------------------------------------------------
-# Context detection — deploy / quote-and-criticize / reclaim / ambiguous.
+# Context detection. deploy / quote-and-criticize / reclaim / ambiguous.
 # Used by the rescorer to boost genuine-deploy hits and down-weight the rest.
 # -------------------------------------------------------------------------
 
@@ -295,7 +295,7 @@ def classify_context(text: str) -> str:
     if has_reclaim and not (has_quote or has_deploy):
         return "reclaim"
     if has_deploy and has_quote:
-        return "deploy"  # mixed — treat as deploy
+        return "deploy"  # mixed. treat as deploy
     return "ambiguous"
 
 

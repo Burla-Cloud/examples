@@ -2,7 +2,7 @@
 
 Streams just the first ~4 MB of the All_Beauty.jsonl file directly from
 HuggingFace's CDN (HTTP Range via requests iter_lines). Never downloads
-the full file — laptop disk is tight and we only need to prove:
+the full file. laptop disk is tight and we only need to prove:
   - file is reachable
   - schema matches expectations
   - 1-star and 5-star reviews exist
@@ -38,7 +38,7 @@ def probe() -> dict:
     headers = {"Range": f"bytes=0-{MAX_BYTES - 1}"}
     resp = requests.get(HF_URL, headers=headers, stream=True, timeout=30)
     if resp.status_code not in (200, 206):
-        print(f"BLOCKED: HTTP {resp.status_code} — {resp.text[:300]}", file=sys.stderr)
+        print(f"BLOCKED: HTTP {resp.status_code}. {resp.text[:300]}", file=sys.stderr)
         sys.exit(3)
     content_length = int(resp.headers.get("content-length", 0))
     full_length = resp.headers.get("content-range", "")

@@ -1,11 +1,11 @@
 """Transform ard_reduced.json into UI-ready artifacts + findings.
 
 Outputs in frontend/data/:
-  index.json            — summary stats
-  wall.json             — Wall of Fucked Up (top global unhinged reviews)
-  findings.json         — all other rollups
-  categories.json       — per-category summary rows
-  categories/{cat}.json — per-category deep dive
+  index.json           . summary stats
+  wall.json            . Wall of Fucked Up (top global unhinged reviews)
+  findings.json        . all other rollups
+  categories.json      . per-category summary rows
+  categories/{cat}.json. per-category deep dive
 """
 from __future__ import annotations
 
@@ -51,7 +51,7 @@ def _rescore_profanity(text: str) -> Dict[str, Any]:
       unique_strong: number of DISTINCT strong-profanity words (lowercase).
       unique_medium / unique_mild: same for weaker buckets.
       total_profane: sum of hits (lowercased only, filters proper-noun matches).
-      severity: weighted sum — strong × 3 + medium × 2 + mild × 1.
+      severity: weighted sum. strong × 3 + medium × 2 + mild × 1.
       variety_score: severity × (1 + 0.5 * unique_strong). Rewards varied rants.
     """
     if not text:
@@ -250,7 +250,7 @@ def main() -> None:
         "blurb": f"The {len(wall)} most unhinged reviews from "
                  f"{total_parsed:,} Amazon reviews across {len(cat_rows)} categories. "
                  "Reranked by profanity diversity, intensity, and rant length. "
-                 "No sanitization — raw Amazon, as written.",
+                 "No sanitization. Raw Amazon, as written.",
         "rows": wall,
     }))
 
@@ -285,11 +285,11 @@ def main() -> None:
         "id": "exclamation",
         "title": "Punctuation bombs",
         "blurb": "Reviews with the most consecutive exclamation marks. Not "
-                 "the most enraged — just the most emotional.",
+                 "the most enraged, just the most emotional.",
         "rows": exclaim,
     })
 
-    # F4 Short-brutal — 4-30 words, real profanity density. Mine from
+    # F4 Short-brutal. 4-30 words, real profanity density. Mine from
     # short_brutal + profane_strong since both catch terse reviews.
     short_all = (flatten_top(d, "short_brutal") + flatten_top(d, "profane_strong"))
     short = []
@@ -326,7 +326,7 @@ def main() -> None:
         "rows": rant,
     })
 
-    # F6 Five-star obscene — rescore to require real profanity intensity,
+    # F6 Five-star obscene. rescore to require real profanity intensity,
     # not just "damn/hell" in a Christian theology book.
     fso_all = flatten_top(d, "five_star_obscene", filter_spam=True)
     fso = []
