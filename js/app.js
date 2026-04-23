@@ -92,15 +92,17 @@ async function init() {
   wireModalClose();
 
   // Hard-mode (truly vulgar) is a separate Burla run; load async so the
-  // main site paints first.
+  // main site paints first. Visibility of the section is CSS-gated by
+  // body.unhinged, so we don't toggle inline display here.
   loadJSON("data/vulgar.json")
     .then((d) => {
       DATA.vulgar = d;
       renderVulgar();
     })
     .catch(() => {
-      const s = document.getElementById("vulgar");
-      if (s) s.style.display = "none";
+      // Fallback silently. If vulgar.json is missing, the locked banner
+      // still tells users to enable Unhinged Mode, and the (empty) Hard
+      // Mode section will just render its headline without reviews.
     });
 
   // Load the wider search index in the background so the search bar can
@@ -391,8 +393,23 @@ function renderFindings() {
 
 // --- search -----------------------------------------------------------
 
+// A row is a "hard-mode" vulgar entry if it was produced by hunt_vulgar.py.
+// Those rows always carry a non-empty `score.roots` dict. Regular wall /
+// search.json entries have a different score shape (strong_profane, etc.).
+function isVulgarRow(r) {
+  const s = r && r.score;
+  return !!(s && typeof s === "object" && s.roots && Object.keys(s.roots).length);
+}
+
+function unhingedOn() {
+  return document.body.classList.contains("unhinged");
+}
+
 function searchCorpus() {
-  // Merge Wall + Hard Mode + wider search index, dedupe by (asin|title|text slice).
+  // Merge Wall + (Hard Mode if unhinged) + wider search index, dedupe by
+  // (asin|title|text slice). When unhinged is off, vulgar-only rows are
+  // filtered out so searches for hard words fall back to the milder pool.
+  const includeVulgar = unhingedOn();
   const seen = new Set();
   const out = [];
   const push = (r) => {
@@ -402,8 +419,13 @@ function searchCorpus() {
     out.push(r);
   };
   for (const r of DATA.wall?.rows || []) push(r);
-  for (const r of DATA.vulgar?.rows || []) push(r);
-  for (const r of DATA.searchPool || []) push(r);
+  if (includeVulgar) {
+    for (const r of DATA.vulgar?.rows || []) push(r);
+  }
+  for (const r of DATA.searchPool || []) {
+    if (!includeVulgar && isVulgarRow(r)) continue;
+    push(r);
+  }
   return out;
 }
 
@@ -495,17 +517,32 @@ function wireSearch() {
     run({ scroll: true });
   });
   sel.addEventListener("change", () => run({ scroll: true }));
+
+  // Expose a no-scroll rerun so the Unhinged toggle can refresh the corpus.
+  window.__rerunSearch = () => run({ scroll: false });
 }
 
 // --- unhinged toggle --------------------------------------------------
+
+const PLACEHOLDER_TAME = "Search reviews (try: crap, worst, refund, broken, pissed)";
+const PLACEHOLDER_UNHINGED = "Search reviews (try: bitch, whore, shit, pissed, refund)";
+
+function applyUnhingedState(on) {
+  document.body.classList.toggle("unhinged", on);
+  const q = el("q");
+  if (q) q.placeholder = on ? PLACEHOLDER_UNHINGED : PLACEHOLDER_TAME;
+  // Re-run any active search so the corpus change (with/without vulgar) takes
+  // effect immediately.
+  if (typeof window.__rerunSearch === "function") window.__rerunSearch();
+}
 
 function wireUnhingedToggle() {
   const t = el("unhingedToggle");
   const stored = localStorage.getItem("unhinged") === "1";
   t.checked = stored;
-  document.body.classList.toggle("unhinged", stored);
+  applyUnhingedState(stored);
   t.onchange = () => {
-    document.body.classList.toggle("unhinged", t.checked);
+    applyUnhingedState(t.checked);
     localStorage.setItem("unhinged", t.checked ? "1" : "0");
   };
 }

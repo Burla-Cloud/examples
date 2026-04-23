@@ -140,7 +140,9 @@ body {
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  display: none;
 }
+body.unhinged .amzn-subnav a.hard { display: inline-block; }
 .amzn-subnav a.hard:hover { border-color: #ff3b30; }
 
 /* ---------- hero ---------- */
@@ -243,7 +245,8 @@ body {
 .section.alt { background: #fff; max-width: none; padding: 48px 0; border-top: 1px solid #d5d9d9; border-bottom: 1px solid #d5d9d9; }
 .section.alt > * { max-width: 1480px; margin: 0 auto; padding: 0 18px; }
 
-/* Hard Mode — truly vulgar section. Black + blood red for warning. */
+/* Hard Mode — truly vulgar section. Black + blood red for warning.
+   Hidden by default — only visible when Unhinged Mode is enabled. */
 .section.vulgar {
   background: #0b0b0b;
   color: #f3e8e6;
@@ -252,7 +255,9 @@ body {
   border-top: 3px solid #ff3b30;
   border-bottom: 3px solid #ff3b30;
   position: relative;
+  display: none;
 }
+body.unhinged .section.vulgar { display: block; }
 .section.vulgar > * { max-width: 1480px; margin: 0 auto; padding: 0 18px; }
 .section.vulgar .sec-head h2 {
   color: #ff3b30;
@@ -301,6 +306,46 @@ body {
   border-top: 1px dashed #3a2a2a;
   line-height: 1.6;
 }
+
+/* Hard Mode locked placeholder — shown when Unhinged is off.
+   Reuses the vulgar section's black-on-red palette in a smaller band. */
+.hard-locked {
+  background: #0b0b0b;
+  border-top: 2px solid #3a2a2a;
+  border-bottom: 2px solid #3a2a2a;
+  color: #c9bfbc;
+}
+body.unhinged .hard-locked { display: none; }
+.hard-locked-inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 20px 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hard-locked-lock {
+  font-size: 26px;
+  filter: grayscale(0.2);
+}
+.hard-locked-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffd7a8;
+  font-size: 15px;
+}
+.hard-locked-sub {
+  font-size: 13px;
+  color: #9d928f;
+  max-width: 640px;
+}
+
+/* Hero CTA swap — show Hard Mode CTA only when Unhinged is on. */
+.cta-hard { display: none; }
+body.unhinged .cta-wall { display: none; }
+body.unhinged .cta-hard { display: inline-block; }
 .sec-head h2 {
   font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
@@ -761,8 +806,8 @@ body.unhinged .search button { background: #ff0033; color: #fff; }
   .findings-wrap, .method-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .amzn-bar-inner { grid-template-columns: auto 1fr; }
-  .account { display: none; }
+  .amzn-bar-inner { grid-template-columns: auto 1fr auto; }
+  .account .greet small { display: none; }
   .search select { display: none; }
   .review-feed { grid-template-columns: 1fr; }
 }

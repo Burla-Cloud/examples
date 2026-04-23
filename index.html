@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 </head>
 <body>
 
@@ -24,7 +24,7 @@
       <select id="catFilter">
         <option value="">All</option>
       </select>
-      <input id="q" placeholder="Search reviews (try: bitch, whore, shit, pissed, refund)" autocomplete="off" />
+      <input id="q" placeholder="Search reviews (try: crap, worst, refund, broken, pissed)" autocomplete="off" />
       <button id="searchBtn" aria-label="search">⌕</button>
     </div>
     <div class="account">
@@ -63,9 +63,9 @@
       down to the last asterisk. Turn on <span class="kbd">Unhinged Mode</span> to confirm you know what you're getting into.
     </p>
     <div class="cta-row">
-      <a class="cta" href="#vulgar">Hard Mode →</a>
-      <a class="cta secondary" href="#wall">The Wall</a>
-      <a class="cta secondary" href="#findings">Findings</a>
+      <a class="cta cta-wall" href="#wall">See the Wall →</a>
+      <a class="cta cta-hard" href="#vulgar">Hard Mode →</a>
+      <a class="cta secondary" href="#findings">Read the findings</a>
     </div>
   </div>
   <div class="hero-r">
@@ -98,6 +98,19 @@
     remove Dick Tracy / Dirty Bastards book-plot false positives.
   </div>
 </section>
+
+<div class="hard-locked">
+  <div class="hard-locked-inner">
+    <span class="hard-locked-lock">🔒</span>
+    <div>
+      <div class="hard-locked-title">Hard Mode is locked</div>
+      <div class="hard-locked-sub">
+        Flip <b>Unhinged Mode</b> in the top bar to unlock the 40 rawest, most vulgar
+        rants — and let the search bar hit them too.
+      </div>
+    </div>
+  </div>
+</div>
 
 <section class="section" id="wall">
   <div class="sec-head">
@@ -189,6 +202,6 @@
   </div>
 </dialog>
 
-<script src="js/app.js?v=5"></script>
+<script src="js/app.js?v=6"></script>
 </body>
 </html>
