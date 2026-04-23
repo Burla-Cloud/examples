@@ -16,8 +16,8 @@ Boosts:
   * Hard-R slur category when context = deploy
 
 Outputs:
-  samples/ard_worst_ranked.json  — top 400 for search / expanded corpus
-  samples/ard_worst_wall.json    — top 50 for the Unhinged Mode wall
+  samples/ard_worst_ranked.json . top 400 for search / expanded corpus
+  samples/ard_worst_wall.json   . top 50 for the Unhinged Mode wall
 """
 from __future__ import annotations
 
@@ -49,7 +49,7 @@ PHYSICAL_CATS = {
 # Words that are SLURS but have MAJOR benign meanings. These must ALWAYS
 # co-occur with either (a) a deploy context, (b) another high-confidence
 # slur category, OR (c) an explicit hate/race/identity keyword before they
-# count. Otherwise we zero them out — too many food crackers / Maine Coon
+# count. Otherwise we zero them out. too many food crackers / Maine Coon
 # / Spic-and-Span / Van Dyke / Mick Jagger false positives.
 # -------------------------------------------------------------------------
 AMBIGUOUS_ROOTS = {
@@ -71,13 +71,13 @@ AMBIGUOUS_ROOTS = {
     "mick", "micks", "gypsy", "gypsies", "oriental", "orientals",
     # SEX / internet
     "hoe", "hoes", "tramp", "tramps",
-    # HOM auto-transmission (uncensored forms — "tranny fluid")
+    # HOM auto-transmission (uncensored forms. "tranny fluid")
     "tranny", "trannies",
     # also the SEX-category erotica defaults
     "shemale", "shemales",
 }
 
-# Roots that are too noisy to count as slur hits in specific categories —
+# Roots that are too noisy to count as slur hits in specific categories -
 # always drop them for those categories regardless of other signals.
 CATEGORY_ROOT_BLOCKLIST = {
     "Grocery_and_Gourmet_Food": {
@@ -105,7 +105,7 @@ CATEGORY_ROOT_BLOCKLIST = {
     "Handmade_Products": {"hoe", "hoes"},
 }
 
-# Words that are HIGH confidence — almost always used as slurs.
+# Words that are HIGH confidence. almost always used as slurs.
 HIGH_CONFIDENCE_ROOTS = {
     # RS_HARD
     "nigger", "nigger*", "niggers", "nigga", "niggas", "niggah", "niggahs", "niggaz",
@@ -122,7 +122,7 @@ HIGH_CONFIDENCE_ROOTS = {
     "retard", "retards", "retarded", "retard*", "retardo", "mongoloid", "mongoloids",
 }
 
-# Explicit race / identity keywords — presence in the text is enough to let
+# Explicit race / identity keywords. presence in the text is enough to let
 # an AMBIGUOUS_ROOTS hit count.
 EXPLICIT_HATE_CONTEXT = re.compile(
     r"\b(black|white|asian|latino|latina|hispanic|mexican|jewish|jew|"
@@ -139,7 +139,7 @@ EXPLICIT_HATE_CONTEXT = re.compile(
 # that root's hits are dropped entirely.
 # -------------------------------------------------------------------------
 NAME_TRAPS_BY_ROOT: Dict[str, str] = {
-    # RS root: "slant" — razor head style, pocket style, shelf style
+    # RS root: "slant". razor head style, pocket style, shelf style
     "slant": (
         r"\bslant\s+(?:razor|razors|pocket|pockets|shelf|shelves|bar|bars|"
         r"board|boards|cut|cuts|edge|edges|top|tops|tile|wall|roof|fence)\b|"
@@ -150,7 +150,7 @@ NAME_TRAPS_BY_ROOT: Dict[str, str] = {
         r"\bslants?\s+(?:razor|pocket|shelf|bar|board|cut|edge|top|tile|wall|roof|fence)\b|"
         r"\b(?:futur|merkur|parker|razor)\s+slants?\b"
     ),
-    # RS root: "chink" — "chink in the armor", sound of metal
+    # RS root: "chink". "chink in the armor", sound of metal
     "chink": (
         r"\bchink\s+(?:in|of)\s+(?:the\s+)?(?:armor|armour)\b|"
         r"\bchink\s+of\s+(?:metal|glass|coin|light|sound)\b|"
@@ -161,7 +161,7 @@ NAME_TRAPS_BY_ROOT: Dict[str, str] = {
         r"\bchinks?\s+of\s+(?:light|metal|sound|glass)\b|"
         r"\bmetallic\s+chinks?\b"
     ),
-    # RS root: "gook" — automotive/mechanical gunk
+    # RS root: "gook". automotive/mechanical gunk
     "gook": (
         r"\bgook\s+(?:buildup|build\-up|residue|gunk|grease|oil|sludge|dirt)\b|"
         r"\b(?:engine|motor|greasy|slimy|sticky|thick|dried|caked|chemical)\s+gook\b|"
@@ -170,7 +170,7 @@ NAME_TRAPS_BY_ROOT: Dict[str, str] = {
     "gooks": (
         r"\b(?:engine|motor|greasy|sticky|thick)\s+gooks?\b"
     ),
-    # HOM root: "dyke" / "dykes" — Klein side-cutter pliers
+    # HOM root: "dyke" / "dykes". Klein side-cutter pliers
     "dyke": (
         r"\bdyke\s+(?:plier|pliers|cutter|cutters|tool|tools|wrench)\b|"
         r"\b(?:klein|channel\s*lock|channellock|side\-?cut|flush\-?cut|linesman)\s+dykes?\b|"
@@ -182,7 +182,7 @@ NAME_TRAPS_BY_ROOT: Dict[str, str] = {
         r"\b(?:klein|channel\s*lock|channellock|side\-?cut|flush\-?cut|linesman)\s+dykes?\b|"
         r"\bnose\s+pliers?\b|\bwire\s+cutters?\b|\bside[ \-]?cutters?\b"
     ),
-    # XEN root: "gringo" — food brand (Gringo Bandito, Hot Sauce Gringo, etc.)
+    # XEN root: "gringo". food brand (Gringo Bandito, Hot Sauce Gringo, etc.)
     "gringo": (
         r"\bgringo\s+(?:bandito|hot\s*sauce|sauce|salsa|chile|chili|food|cuisine|taco|restaurant)\b|"
         r"\b(?:hot\s*sauce|salsa|chile|chili|mexican|food|brand|label)\s+gringo\b|"
@@ -246,7 +246,7 @@ NAME_TRAPS_BY_ROOT: Dict[str, str] = {
         # AND is not preceded by capital-context markers.
         r"[A-Z][a-z]+\s+Sissy\b|\bSissy\s+[A-Z]|"
         r"\bnamed\s+sissy\b|\bcharacter\s+sissy\b|"
-        # literary baby-talk usage — `sissy` meaning `sister`
+        # literary baby-talk usage. `sissy` meaning `sister`
         r"\b(my|his|her|big|little)\s+sissy\b"
     ),
     "sissies": r"\bsissies\s+(maid|boy|crossdress)\b|\bSissies\b",
@@ -271,7 +271,7 @@ ALL_NAME_TRAPS_RX = {
 }
 
 
-# Erotica / fetish detectors — if present AND cats includes HOM or SEX
+# Erotica / fetish detectors. if present AND cats includes HOM or SEX
 # without deploy context, penalize hard.
 EROTICA_MARKERS = re.compile(
     r"\berotic|\bsexy\b|\bsensual\b|\bromance novel\b|\bporn(o|y|ography)?\b|"
@@ -291,7 +291,7 @@ HIPHOP_MARKERS = re.compile(
 )
 
 
-# Proper-noun self-censor detector. `N****** P****` style — when multiple
+# Proper-noun self-censor detector. `N****** P****` style. when multiple
 # adjacent tokens are heavily asterisk-censored, they're almost always
 # self-censored proper nouns, not a slur deployed against a group.
 MULTI_CENSOR = re.compile(r"\b\w\*{3,}\s+\w\*{3,}", re.I)
@@ -348,7 +348,7 @@ CATEGORY_WEIGHT = {
 
 
 # Hard VULG tokens that justify inclusion on their own. "Pissed"/"piss off"
-# and similar milder stems do NOT qualify — we need a real f-bomb-grade word.
+# and similar milder stems do NOT qualify. we need a real f-bomb-grade word.
 HARD_VULG_ROOTS = {
     "fuck", "fucker", "fuckers", "fucking", "fuckin", "fucked",
     "shit", "shits", "shitty", "shithead", "shithole", "bullshit",
@@ -392,7 +392,7 @@ def _filter_ambiguous(text: str, categories: Dict[str, Dict[str, int]], ctx: str
     """Ambiguous roots only count when supported by corroborating signal:
     (a) a high-confidence slur hit in the same review, or
     (b) explicit hate / race / identity context in the text.
-    Deploy context alone is NOT enough — "worst product ever" tells us the
+    Deploy context alone is NOT enough. "worst product ever" tells us the
     person is angry, not that they're using a slur-as-slur."""
     if not categories:
         return categories
@@ -421,7 +421,7 @@ def _strip_company_censor(text: str, categories: Dict[str, Dict[str, int]]) -> D
     """If the text contains adjacent heavily-censored tokens (= self-censored
     company / person name), drop ALL heavy-asterisk hits. `N****** P****`
     style censoring produces spurious matches across VULG + slur categories
-    alike — none of them are real slurs against a group."""
+    alike. none of them are real slurs against a group."""
     if not categories:
         return categories
     multi = bool(MULTI_CENSOR.search(text))
@@ -496,7 +496,7 @@ def _rescore(row: Dict[str, Any]) -> float:
         else:
             severity *= 0.6
         # Fiction categories swim in "retarded" / "moron" / "idiot" used to
-        # describe characters, plots, films — heavily down-weight ABL-only
+        # describe characters, plots, films. heavily down-weight ABL-only
         # fiction hits.
         if list(cats.keys()) == ["ABL"]:
             severity *= 0.2
@@ -569,7 +569,7 @@ def main() -> None:
     out_wall = Path(__file__).parent / "samples" / "ard_worst_wall.json"
     out_wall.write_text(json.dumps({
         "blurb": (
-            f"The worst of {d['total_reviews_parsed']:,} Amazon reviews — including "
+            f"The worst of {d['total_reviews_parsed']:,} Amazon reviews: including "
             f"slurs, censored profanity, and unhinged rants the first two passes missed."
         ),
         "rows": wall,

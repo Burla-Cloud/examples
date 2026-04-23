@@ -2,8 +2,8 @@
 Dick Tracy DVD plot summaries.
 
 Reads samples/ard_vulgar.json, applies a quality filter, writes:
-  samples/ard_vulgar_ranked.json  — top 200 for the site
-  samples/ard_vulgar_wall.json    — top 40 for a hero 'Wall of Vulgar' section
+  samples/ard_vulgar_ranked.json . top 200 for the site
+  samples/ard_vulgar_wall.json   . top 40 for a hero 'Wall of Vulgar' section
 """
 from __future__ import annotations
 
@@ -48,7 +48,7 @@ PLOT_PHRASES = [
 ]
 PLOT_RX = re.compile("|".join(PLOT_PHRASES), re.I)
 
-# Proper-noun traps — if any of these appear, the hit is almost certainly
+# Proper-noun traps. if any of these appear, the hit is almost certainly
 # a name/title, not profanity.
 PROPER_NOUN_TRAPS = [
     r"\bdick tracy\b", r"\bdick van dyke\b", r"\bphilip k\.? dick\b",
@@ -62,7 +62,7 @@ PROPER_NOUN_TRAPS = [
 ]
 PROPER_NOUN_RX = re.compile("|".join(PROPER_NOUN_TRAPS), re.I)
 
-# Consumer-complaint signal — phrases real pissed-off humans write.
+# Consumer-complaint signal. phrases real pissed-off humans write.
 COMPLAINT_PHRASES = [
     r"\bwaste of (money|time|my money)\b",
     r"\bpiece of (shit|crap|garbage|junk)\b",
@@ -134,34 +134,34 @@ def _rescore(row: Dict[str, Any]) -> float:
             # Probably someone writing about a Dick movie or Dirty Bastards book.
             base *= 0.2
 
-    # Fiction-category plot summary penalty — much stronger now.
+    # Fiction-category plot summary penalty. much stronger now.
     if _is_fictional_review(text, cat):
         base *= 0.18
     elif cat in FICTION_CATS:
         base *= 0.55   # fiction cats without plot words still de-prioritised
 
-    # Physical-product boost — angry customer rants about REAL things.
+    # Physical-product boost. angry customer rants about REAL things.
     if cat in PHYSICAL_CATS:
         base += 6.0
         base *= 1.5
 
-    # Positive signal — real complaints.
+    # Positive signal. real complaints.
     complaint_hits = len(COMPLAINT_RX.findall(text))
     base += complaint_hits * 1.6
     if HARD_COMPLAINT.search(text):
         base += 6.0
 
-    # Low-rating boost — 1-star reviewers are funnier.
+    # Low-rating boost. 1-star reviewers are funnier.
     if rating and rating <= 2:
         base += 4.0
     elif rating and rating >= 4:
         base *= 0.6
 
-    # Caps/exclamation mania — unhinged energy.
+    # Caps/exclamation mania. unhinged energy.
     base += float(sc.get("caps_ratio") or 0) * 6.0
     base += min(int(sc.get("exclam_count") or 0), 20) * 0.08
 
-    # Length sanity — too short isn't funny, too long isn't readable.
+    # Length sanity. too short isn't funny, too long isn't readable.
     n = int(sc.get("word_count") or 0)
     if n < 12:
         base *= 0.5

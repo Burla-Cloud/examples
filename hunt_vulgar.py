@@ -1,7 +1,7 @@
-"""Amazon Review Distiller — truly-vulgar hunter.
+"""Amazon Review Distiller. truly-vulgar hunter.
 
 Re-scans the full 275 GB Amazon Reviews 2023 dataset (571M reviews) looking
-specifically for reviews that contain HARD profanity — the stuff Amazon
+specifically for reviews that contain HARD profanity. the stuff Amazon
 reviewers would normally self-censor. Explicitly excludes soft curses like
 "crap" / "crappy" that dominated the original top-K heaps.
 
@@ -102,7 +102,7 @@ def _score_hard(text: str) -> Dict[str, Any]:
     caps_ratio = caps / nw
     exclam_count = sum(len(m.group()) for m in EXCLAM_RX.finditer(text))
 
-    # Variety × intensity — reward reviews that swear across multiple root words.
+    # Variety × intensity. reward reviews that swear across multiple root words.
     # variety_score climbs steeply with unique_roots because it's rare to see
     # 3+ distinct hard roots in a single review (those are the gold).
     variety_score = (

@@ -1,10 +1,10 @@
-# Amazon Review Distiller — a Burla demo
+# Amazon Review Distiller. a Burla demo
 
 **Live site: <https://burla-cloud.github.io/amazon-review-distiller/>**
 
-We streamed **571 million Amazon reviews** — the entire public
+We streamed **571 million Amazon reviews**. the entire public
 `McAuley-Lab/Amazon-Reviews-2023` corpus on HuggingFace, **275 GB of raw
-JSONL** — through a Burla cluster of **500+ parallel CPUs**, scored every
+JSONL**. through a Burla cluster of **500+ parallel CPUs**, scored every
 single review on profanity / screaming / punctuation / length / rage-vs-star
 mismatch, and built the **Wall of Fucked Up**: a rank-ordered shrine to the
 most unhinged things humans have ever typed into the shopping-cart equivalent
@@ -15,7 +15,7 @@ a real Amazon purchase.
 
 ## The headline
 
-> The filthiest category on Amazon is **Video Games** — 6.54% of all
+> The filthiest category on Amazon is **Video Games**. 6.54% of all
 > video-game reviews contain at least one strong profanity. The loudest
 > single review is **1,169 words of ALL CAPS** from a self-described "100%
 > disabled decorated Vietnam veteran and Mozart scholar," who starts with an
@@ -38,28 +38,28 @@ a real Amazon purchase.
 
 ## What's in this repo
 
-- **`index.html` + `css/` + `js/`** — the Amazon-parody site. Wall of Fucked
+- **`index.html` + `css/` + `js/`**. the Amazon-parody site. Wall of Fucked
   Up hero, category grid (click any to see the top-100 unhinged reviews for
   that category), nine findings cards, search bar that hits all 34 categories
   client-side, and an **Unhinged Mode** toggle that hides star ratings and
   just shows the rage.
-- **`FINDINGS.md`** — the full writeup of the nine findings.
-- **`data/`** — frontend artifacts: `overall.json` (aggregate stats),
+- **`FINDINGS.md`**. the full writeup of the nine findings.
+- **`data/`**. frontend artifacts: `overall.json` (aggregate stats),
   `wall.json` (the ranked Wall), `categories.json` (per-category metadata),
   `findings.json` (the 9 findings), and `categories/*.json` (per-category
   top-reviews).
-- **`probe.py`** — verify you can stream one HuggingFace JSONL shard.
-- **`pipeline.py`** — the worker. Takes a `(file_path, start_byte, end_byte,
+- **`probe.py`**. verify you can stream one HuggingFace JSONL shard.
+- **`pipeline.py`**. the worker. Takes a `(file_path, start_byte, end_byte,
   chunk_id)` tuple, opens a range request against the HF CDN, parses review
   JSONL, scores every row, emits per-chunk JSON with top-scoring reviews per
   bucket (profanity, screaming, exclamation, short-brutal, long-rant, 5-star
   with rage, etc.).
-- **`scale.py`** — fans out 545 byte-range chunks to Burla with
+- **`scale.py`**. fans out 545 byte-range chunks to Burla with
   `remote_parallel_map`, `max_parallelism=500+`.
-- **`reduce.py`** — 34 parallel reducers (one per category) plus a global
+- **`reduce.py`**. 34 parallel reducers (one per category) plus a global
   reducer that aggregates every chunk's top-K lists into a single
   `ard_reduced.json`.
-- **`analysis.py`** — local: deduplicate, filter proper-noun spam, rescore
+- **`analysis.py`**. local: deduplicate, filter proper-noun spam, rescore
   for profanity variety, produce the final `wall.json` and `findings.json`.
 
 ## The 9 findings (shortlist)
@@ -109,11 +109,11 @@ python -m http.server 8766
 
 ## Why McAuley-Lab/Amazon-Reviews-2023
 
-- It's the largest public Amazon review dump — **571 million reviews**
-  across 34 categories — released for academic use by the McAuley lab at
+- It's the largest public Amazon review dump. **571 million reviews**
+  across 34 categories. released for academic use by the McAuley lab at
   UCSD. Newer than the 2018 dump and far larger.
 - Served as one `.jsonl.gz` per category from the HuggingFace CDN, which
-  supports HTTP Range requests. **We never download a file** — every
+  supports HTTP Range requests. **We never download a file**. every
   worker streams its own byte range and processes on the fly.
 - Every row has `title`, `text`, `rating`, `helpful_vote`, `timestamp`,
   `asin`, `parent_asin`, `user_id`. No customer PII beyond the anonymous
