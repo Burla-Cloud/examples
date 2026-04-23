@@ -4,6 +4,7 @@
 const DATA = {
   index: null,
   wall: null,
+  vulgar: null,
   findings: null,
   categories: null,
   catPages: {},
@@ -90,8 +91,20 @@ async function init() {
   wireUnhingedToggle();
   wireModalClose();
 
+  // Hard-mode (truly vulgar) is a separate Burla run; load async so the
+  // main site paints first.
+  loadJSON("data/vulgar.json")
+    .then((d) => {
+      DATA.vulgar = d;
+      renderVulgar();
+    })
+    .catch(() => {
+      const s = document.getElementById("vulgar");
+      if (s) s.style.display = "none";
+    });
+
   // Load the wider search index in the background so the search bar can
-  // hit ~3,900 reviews across every category, not just the 120-item Wall.
+  // hit ~4,000 reviews across every category, not just the 120-item Wall.
   loadJSON("data/search.json")
     .then((rows) => {
       DATA.searchPool = rows;
@@ -209,6 +222,20 @@ function renderWall() {
   el("wallBlurb").textContent = w.blurb;
   const wrap = el("wallList");
   wrap.innerHTML = w.rows
+    .map((r, i) => reviewCard(r, i + 1))
+    .join("");
+  attachMoreHandlers(wrap);
+}
+
+// --- hard mode (truly vulgar) -----------------------------------------
+
+function renderVulgar() {
+  const v = DATA.vulgar;
+  const blurbEl = el("vulgarBlurb");
+  const wrap = el("vulgarList");
+  if (!v || !v.rows || !wrap) return;
+  if (blurbEl) blurbEl.textContent = v.blurb || "";
+  wrap.innerHTML = v.rows
     .map((r, i) => reviewCard(r, i + 1))
     .join("");
   attachMoreHandlers(wrap);
@@ -365,7 +392,7 @@ function renderFindings() {
 // --- search -----------------------------------------------------------
 
 function searchCorpus() {
-  // Merge the Wall with the wider search index, dedupe by (asin|title|text slice).
+  // Merge Wall + Hard Mode + wider search index, dedupe by (asin|title|text slice).
   const seen = new Set();
   const out = [];
   const push = (r) => {
@@ -375,6 +402,7 @@ function searchCorpus() {
     out.push(r);
   };
   for (const r of DATA.wall?.rows || []) push(r);
+  for (const r of DATA.vulgar?.rows || []) push(r);
   for (const r of DATA.searchPool || []) push(r);
   return out;
 }
