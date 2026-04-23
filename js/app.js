@@ -331,7 +331,7 @@ function renderWall() {
   const title = el("wallTitle");
   const blurb = el("wallBlurb");
   if (title) {
-    title.textContent = unhinged ? "The Wall of Fucked Up · Unhinged" : "The Wall of Fucked Up";
+    title.textContent = unhinged ? "The Wall of Fucked Up" : "The Wall of Rants";
   }
   blurb.textContent = data.blurb || "";
   const wrap = el("wallList");
@@ -637,7 +637,15 @@ function applyUnhingedState(on) {
   document.body.classList.toggle("unhinged", on);
   const q = el("q");
   if (q) q.placeholder = on ? PLACEHOLDER_UNHINGED : PLACEHOLDER_TAME;
+  if (DATA.wall) renderWall();
   if (typeof window.__rerunSearch === "function") window.__rerunSearch();
+}
+
+function setUnhinged(on) {
+  const t = el("unhingedToggle");
+  if (t) t.checked = !!on;
+  applyUnhingedState(!!on);
+  localStorage.setItem("unhinged", on ? "1" : "0");
 }
 
 function wireUnhingedToggle() {
@@ -645,10 +653,20 @@ function wireUnhingedToggle() {
   const stored = localStorage.getItem("unhinged") === "1";
   t.checked = stored;
   applyUnhingedState(stored);
-  t.onchange = () => {
-    applyUnhingedState(t.checked);
-    localStorage.setItem("unhinged", t.checked ? "1" : "0");
-  };
+  t.onchange = () => setUnhinged(t.checked);
+
+  document.querySelectorAll("[data-mode]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const mode = a.dataset.mode;
+      if (mode === "unhinged") setUnhinged(true);
+      else if (mode === "tame") setUnhinged(false);
+      const wall = document.getElementById("wall");
+      if (wall) {
+        e.preventDefault();
+        wall.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
 }
 
 init();
