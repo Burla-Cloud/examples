@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=7" />
 </head>
 <body>
 
@@ -38,7 +38,6 @@
     </div>
   </div>
   <nav class="amzn-subnav">
-    <a href="#vulgar" class="hard">Hard Mode</a>
     <a href="#wall">The Wall of Fucked Up</a>
     <a href="#categories">Browse by category</a>
     <a href="#findings">Findings</a>
@@ -49,22 +48,22 @@
 
 <section class="hero" id="top">
   <div class="hero-l">
-    <p class="eyebrow">A Burla demo · <span class="mono">500+ CPUs</span> · <span class="mono" id="heroRows">—</span> reviews parsed</p>
+    <p class="eyebrow">A Burla demo · <span class="mono">1,000 CPUs</span> · <span class="mono" id="heroRows">—</span> reviews parsed</p>
     <h1>Every Amazon review is a cry for help.<br/>We distilled the <em>loudest ones</em>.</h1>
     <p class="lede">
       We streamed <b id="heroBytes">275 GB</b> of raw Amazon reviews across <b id="heroCats">34</b> categories
       through a <a href="https://burla.dev" target="_blank" rel="noopener">Burla</a> cluster with
-      <b id="heroWorkers">500+ workers in parallel</b>, and ranked them by seven flavors of unhinged:
+      <b id="heroWorkers">1,000 workers in parallel</b>, and ranked them by seven flavors of unhinged:
       profanity, screaming, punctuation bombs, short-brutal one-liners, full-blown rants,
       five-star obscene, and five-star silent.
     </p>
     <p class="lede">
-      Nothing is sanitized. These are the reviews as customers wrote them,
-      down to the last asterisk. Turn on <span class="kbd">Unhinged Mode</span> to confirm you know what you're getting into.
+      Flip <span class="kbd">Unhinged Mode</span> to swap the wall for the rawest content we found —
+      every f-bomb, censored slur, and full-caps meltdown three map-reduce passes could surface.
+      Nothing sanitized. Reader discretion strongly advised.
     </p>
     <div class="cta-row">
       <a class="cta cta-wall" href="#wall">See the Wall →</a>
-      <a class="cta cta-hard" href="#vulgar">Hard Mode →</a>
       <a class="cta secondary" href="#findings">Read the findings</a>
     </div>
   </div>
@@ -74,47 +73,19 @@
       <div class="stat"><b id="sProf">—</b><span>reviews w/ profanity</span></div>
       <div class="stat"><b id="sCats">—</b><span>categories</span></div>
       <div class="stat"><b id="sRate">—</b><span>global profanity rate</span></div>
-      <div class="stat"><b id="sWorkers">500+</b><span>Burla workers</span></div>
+      <div class="stat"><b id="sWorkers">1,000</b><span>Burla workers</span></div>
       <div class="stat"><b id="sBytes">275 GB</b><span>data streamed</span></div>
     </div>
   </div>
 </section>
 
-<section class="section vulgar" id="vulgar">
-  <div class="vulgar-warn">
-    ⚠️ Hard Mode — the 40 reviews where customers dropped their most unambiguous vocabulary.
-    No F-bombs shielded behind asterisks. No soft "crap". These are the real ones.
-  </div>
-  <div class="sec-head">
-    <h2>Hard Mode — The Truly Vulgar</h2>
-    <p class="sub" id="vulgarBlurb">Loading…</p>
-  </div>
-  <div id="vulgarList" class="review-feed"></div>
-  <div class="vulgar-method">
-    Separate Burla run: 1000 CPUs, 2.8 min, 571M reviews re-scanned for a
-    targeted hard-profanity list (shit, bitch, cunt, whore, asshole,
-    motherfuck, dick, cock, pussy, slut, twat, douche, bastard, prick, wanker,
-    piss, bollocks, nutsack, arse). 496,668 hits total, rescored locally to
-    remove Dick Tracy / Dirty Bastards book-plot false positives.
-  </div>
-</section>
-
-<div class="hard-locked">
-  <div class="hard-locked-inner">
-    <span class="hard-locked-lock">🔒</span>
-    <div>
-      <div class="hard-locked-title">Hard Mode is locked</div>
-      <div class="hard-locked-sub">
-        Flip <b>Unhinged Mode</b> in the top bar to unlock the 40 rawest, most vulgar
-        rants — and let the search bar hit them too.
-      </div>
-    </div>
-  </div>
-</div>
-
 <section class="section" id="wall">
+  <div class="unhinged-banner" id="unhingedBanner">
+    ⚠️ Unhinged Mode active — content below contains profanity, slurs, and severe language.
+    All slurs are auto-redacted with category badges. Toggle off up top to return to the normal Wall.
+  </div>
   <div class="sec-head">
-    <h2>The Wall of Fucked Up</h2>
+    <h2 id="wallTitle">The Wall of Fucked Up</h2>
     <p class="sub" id="wallBlurb">Loading…</p>
   </div>
   <div id="wallList" class="review-feed"></div>
@@ -152,7 +123,7 @@
       <h3>Pipeline</h3>
       <ol>
         <li><b>Plan</b> — split each review file into ~500 MB byte-range chunks (~550 chunks total).</li>
-        <li><b>Scatter</b> — dispatch chunks to Burla cluster (500+ parallel workers).</li>
+        <li><b>Scatter</b> — dispatch chunks to Burla cluster (up to 1,000 parallel workers).</li>
         <li><b>Map</b> — each worker streams its byte range, line-aligns, parses JSONL, scores each review on seven signals, keeps top-K per signal in heaps. Writes one JSON per chunk.</li>
         <li><b>Reduce</b> — one Burla worker per category merges all shard outputs into one per-category JSON (heaps merged, rating histograms summed).</li>
         <li><b>Analyze</b> — client builds findings + Wall + per-category pages.</li>
@@ -163,14 +134,18 @@
         consecutive-exclamation-run for punctuation bombs, length × rage for rants, short × profanity for
         one-liner brutality, rating × profanity for five-star obscene, rating × length-zero for five-star silent.
       </p>
-      <h3>Hard Mode (second pass)</h3>
+      <h3>Unhinged Mode (three-pass pipeline)</h3>
       <p>
-        After the first run surfaced too many soft "crap" reviews, we re-ran the full
-        <b>275 GB / 571 M review</b> corpus on <b>1,000 CPUs in parallel in 2.8 min</b>, filtering for a
-        targeted hard-profanity list (shit, bitch, cunt, whore, asshole, motherfuck, dick, cock, pussy, slut,
-        twat, douche, bastard, prick, wanker, piss, bollocks, nutsack, arse). 496,668 hard hits,
-        rescored locally to drop Dick Tracy / Dirty Bastards / book-plot false positives and boost
-        angry physical-product rants.
+        The first pass surfaced too many soft "crap" reviews, so we re-ran the full
+        <b>275 GB / 571 M review</b> corpus on <b>1,000 CPUs in parallel, twice more</b>.
+        Pass two targeted hard profanity (shit, bitch, cunt, whore, asshole, motherfuck, dick, cock,
+        pussy, slut, twat, bastard, prick, piss) and produced 496,668 hits. Pass three added a
+        censoring-aware lexicon (f***, sh!t, n****r, f@ggot, b*tch) plus a categorized slur
+        taxonomy — racial, homophobic, ableist, xenophobic, gendered — and classified each hit as
+        <code>deploy</code> / <code>quote_crit</code> / <code>reclaim</code> / <code>ambiguous</code>.
+        Results were rescored locally to drop Dick Tracy / Maine Coon / Spic-and-Span / cracker-barrel
+        false positives and boost angry physical-product rants. The two hard passes were merged and
+        deduped into the single Unhinged corpus you see when the toggle is on.
       </p>
     </div>
     <div>
@@ -179,8 +154,10 @@
       Reproduce this on your own cluster in ~15 minutes with one <code>burla run scale.py</code>.</p>
       <h3>Warning</h3>
       <p class="warn">
-        These are real reviews written by real people on Amazon. Content includes profanity, slurs, and
-        descriptions of regret. Nothing has been filtered. If that's not your thing, close this tab.
+        These are real reviews written by real people on Amazon. Unhinged Mode unlocks content that
+        includes profanity, racial slurs, homophobic slurs, ableist slurs, and descriptions of
+        regret. Slur tokens are auto-redacted with category badges — the raw strings are never
+        displayed. If that's not your thing, leave the toggle off, or close this tab.
       </p>
       <h3>Credits</h3>
       <p>
@@ -192,7 +169,7 @@
 
 <footer class="amzn-foot">
   <div>Amazon Review Distiller · A Burla demo · Not affiliated with Amazon.com, Inc.</div>
-  <div class="foot-sub">All reviews shown verbatim from the McAuley-Lab/Amazon-Reviews-2023 public dataset.</div>
+  <div class="foot-sub">All reviews shown verbatim from the McAuley-Lab/Amazon-Reviews-2023 public dataset. Slur tokens auto-redacted with category badges in Unhinged Mode.</div>
 </footer>
 
 <dialog id="catModal">
@@ -202,6 +179,6 @@
   </div>
 </dialog>
 
-<script src="js/app.js?v=6"></script>
+<script src="js/app.js?v=7"></script>
 </body>
 </html>
