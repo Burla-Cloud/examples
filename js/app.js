@@ -278,7 +278,6 @@ function reviewCard(r, rank, { unhinged = false } = {}) {
       <div class="stars">${starMarkup}</div>
       <div class="title">${title}</div>
       <div class="body">${body}</div>
-      <button class="more" data-more>Read full review →</button>
       <div class="meta">
         <span class="tags">${metaTags(r)}</span>
         <span class="asin">ASIN ${esc(r.asin || "…")}</span>
@@ -287,14 +286,8 @@ function reviewCard(r, rank, { unhinged = false } = {}) {
   `;
 }
 
-function attachMoreHandlers(scope) {
-  scope.querySelectorAll("[data-more]").forEach((btn) => {
-    btn.onclick = () => {
-      const card = btn.closest(".rev");
-      card.classList.toggle("expanded");
-      btn.textContent = card.classList.contains("expanded") ? "Collapse" : "Read full review →";
-    };
-  });
+function attachMoreHandlers(_scope) {
+  /* reviews are always fully expanded and scrollable; no handler needed. */
 }
 
 function miniRev(r, rank) {
