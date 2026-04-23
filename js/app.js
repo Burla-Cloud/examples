@@ -7,6 +7,7 @@ const DATA = {
   findings: null,
   categories: null,
   catPages: {},
+  searchPool: null,
 };
 
 const el = (id) => document.getElementById(id);
@@ -88,6 +89,16 @@ async function init() {
   wireSearch();
   wireUnhingedToggle();
   wireModalClose();
+
+  // Load the wider search index in the background so the search bar can
+  // hit ~3,900 reviews across every category, not just the 120-item Wall.
+  loadJSON("data/search.json")
+    .then((rows) => {
+      DATA.searchPool = rows;
+    })
+    .catch(() => {
+      // Fallback silently — search will still work against the Wall.
+    });
 }
 
 // --- header + hero ----------------------------------------------------
@@ -353,22 +364,43 @@ function renderFindings() {
 
 // --- search -----------------------------------------------------------
 
+function searchCorpus() {
+  // Merge the Wall with the wider search index, dedupe by (asin|title|text slice).
+  const seen = new Set();
+  const out = [];
+  const push = (r) => {
+    const key = `${r.asin || ""}|${(r.title || "").slice(0, 40)}|${(r.text || "").slice(0, 60)}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(r);
+  };
+  for (const r of DATA.wall?.rows || []) push(r);
+  for (const r of DATA.searchPool || []) push(r);
+  return out;
+}
+
 function wireSearch() {
   const q = el("q");
   const sel = el("catFilter");
   const btn = el("searchBtn");
+  const wrap = el("wallList");
+  const blurb = el("wallBlurb");
+  const originalBlurb = (DATA.wall && DATA.wall.blurb) || blurb.textContent;
 
-  const run = () => {
+  let debounce = null;
+
+  const run = ({ scroll = false } = {}) => {
     const needle = (q.value || "").toLowerCase().trim();
     const catWanted = sel.value;
+
     if (!needle && !catWanted) {
       renderWall();
+      blurb.textContent = originalBlurb;
       return;
     }
 
-    // Search across wall (already the juiciest 120). For broader scope,
-    // we could lazily load all category pages, but this covers 80% of intent.
-    const filtered = DATA.wall.rows.filter((r) => {
+    const pool = searchCorpus();
+    const filtered = pool.filter((r) => {
       if (catWanted && r._category !== catWanted) return false;
       if (needle) {
         const haystack = ((r.title || "") + " " + (r.text || "")).toLowerCase();
@@ -377,19 +409,64 @@ function wireSearch() {
       return true;
     });
 
-    const wrap = el("wallList");
-    wrap.innerHTML = filtered.length
-      ? filtered.map((r, i) => reviewCard(r, i + 1)).join("")
-      : `<p style="padding:24px;color:#666">Nothing matched. Try a filthier search.</p>`;
-    attachMoreHandlers(wrap);
-    el("wallBlurb").textContent = `${filtered.length} matching reviews on the Wall of Fucked Up${
-      catWanted ? " (filtered to " + catWanted.replace(/_/g, " ") + ")" : ""
-    }.`;
+    // Cap to keep the DOM snappy.
+    const shown = filtered.slice(0, 200);
+
+    if (shown.length) {
+      wrap.innerHTML = shown.map((r, i) => reviewCard(r, i + 1)).join("");
+      attachMoreHandlers(wrap);
+    } else {
+      wrap.innerHTML = `
+        <div style="grid-column:1/-1;padding:36px 24px;text-align:center;background:#fff;border:1px dashed #ccc;border-radius:8px;color:#555">
+          <div style="font-size:22px;font-weight:700;margin-bottom:6px">No matches for "${esc(needle || catWanted)}"</div>
+          <div style="margin-bottom:14px">Amazon masks a lot of the classic four-letter words. Try one of these instead:</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            ${["crap", "worst", "refund", "broken", "garbage", "pissed", "terrible", "damn"]
+              .map(
+                (w) =>
+                  `<button class="suggest" data-suggest="${esc(w)}" style="background:#febd69;border:none;padding:6px 12px;border-radius:16px;font-weight:600;cursor:pointer">${esc(w)}</button>`,
+              )
+              .join("")}
+          </div>
+        </div>`;
+      wrap.querySelectorAll(".suggest").forEach((b) => {
+        b.onclick = () => {
+          q.value = b.dataset.suggest;
+          run({ scroll: true });
+        };
+      });
+    }
+
+    const catLabel = catWanted ? ` in ${catWanted.replace(/_/g, " ")}` : "";
+    const truncNote = filtered.length > shown.length ? ` (showing first ${shown.length})` : "";
+    blurb.textContent = `${filtered.length.toLocaleString()} matching review${
+      filtered.length === 1 ? "" : "s"
+    }${needle ? ` for "${needle}"` : ""}${catLabel}${truncNote}.`;
+
+    if (scroll) {
+      const wallSec = document.getElementById("wall");
+      if (wallSec) wallSec.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
-  btn.onclick = run;
-  q.onkeydown = (e) => e.key === "Enter" && run();
-  sel.onchange = run;
+  // Live search while typing, 140ms debounced.
+  q.addEventListener("input", () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => run({ scroll: false }), 140);
+  });
+  // Enter / button / category change: run and jump to results.
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      clearTimeout(debounce);
+      run({ scroll: true });
+    }
+  });
+  btn.addEventListener("click", () => {
+    clearTimeout(debounce);
+    run({ scroll: true });
+  });
+  sel.addEventListener("change", () => run({ scroll: true }));
 }
 
 // --- unhinged toggle --------------------------------------------------
