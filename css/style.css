@@ -135,15 +135,6 @@ body {
   font-weight: 500;
 }
 .amzn-subnav a:hover { border-color: #fff; }
-.amzn-subnav a.hard {
-  color: #ff3b30;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  display: none;
-}
-body.unhinged .amzn-subnav a.hard { display: inline-block; }
-.amzn-subnav a.hard:hover { border-color: #ff3b30; }
 
 /* ---------- hero ---------- */
 
@@ -245,107 +236,24 @@ body.unhinged .amzn-subnav a.hard { display: inline-block; }
 .section.alt { background: #fff; max-width: none; padding: 48px 0; border-top: 1px solid #d5d9d9; border-bottom: 1px solid #d5d9d9; }
 .section.alt > * { max-width: 1480px; margin: 0 auto; padding: 0 18px; }
 
-/* Hard Mode — truly vulgar section. Black + blood red for warning.
-   Hidden by default — only visible when Unhinged Mode is enabled. */
-.section.vulgar {
-  background: #0b0b0b;
-  color: #f3e8e6;
-  max-width: none;
-  padding: 48px 0;
-  border-top: 3px solid #ff3b30;
-  border-bottom: 3px solid #ff3b30;
-  position: relative;
+/* Unhinged banner — only shown when Unhinged Mode is on. Sits above the
+   wall as a loud warning that content is being swapped. */
+.unhinged-banner {
   display: none;
-}
-body.unhinged .section.vulgar { display: block; }
-.section.vulgar > * { max-width: 1480px; margin: 0 auto; padding: 0 18px; }
-.section.vulgar .sec-head h2 {
-  color: #ff3b30;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-.section.vulgar .sec-head .sub {
-  color: #c9bfbc;
-  font-size: 15px;
-}
-.section.vulgar .rev {
-  background: #18171a;
-  color: #f3e8e6;
-  border: 1px solid #3a2a2a;
-}
-.section.vulgar .rev .title { color: #ffd7a8; }
-.section.vulgar .rev .body { color: #e6dad7; }
-.section.vulgar .rev .asin { color: #888; }
-.section.vulgar .rev .tag { background: #3a1f1f; color: #ffd7a8; border-color: #5a2f2f; }
-.section.vulgar .rev .rank { color: #ff3b30; background: transparent; border-color: #ff3b30; }
-.section.vulgar .rev .stars { color: #ffa41c; }
-.section.vulgar .rev .ghost { color: #4a3a3a; }
-.section.vulgar .rev .cat { background: #3a1f1f; color: #ffbdb5; border-color: #5a2f2f; }
-.section.vulgar .rev button.more { color: #ff9f98; background: transparent; border-color: #5a2f2f; }
-.section.vulgar .rev button.more:hover { background: #3a1f1f; color: #fff; }
-.vulgar-warn {
-  max-width: 1480px;
-  margin: 0 auto 20px;
+  margin: 0 0 22px;
   padding: 14px 18px;
-  background: #ff3b30;
-  color: #0b0b0b;
-  font-weight: 800;
+  background: linear-gradient(90deg, #ff0033 0%, #990022 100%);
+  color: #fff;
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.01em;
-  text-align: center;
-  border-radius: 2px;
+  border-radius: 4px;
+  border: 1px solid #660016;
+  box-shadow: 0 0 0 1px rgba(255, 0, 51, 0.2) inset;
+  line-height: 1.45;
 }
-.vulgar-method {
-  max-width: 1480px;
-  margin: 24px auto 0;
-  padding: 14px 18px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: #7f7471;
-  border-top: 1px dashed #3a2a2a;
-  line-height: 1.6;
-}
+body.unhinged .unhinged-banner { display: block; }
 
-/* Hard Mode locked placeholder — shown when Unhinged is off.
-   Reuses the vulgar section's black-on-red palette in a smaller band. */
-.hard-locked {
-  background: #0b0b0b;
-  border-top: 2px solid #3a2a2a;
-  border-bottom: 2px solid #3a2a2a;
-  color: #c9bfbc;
-}
-body.unhinged .hard-locked { display: none; }
-.hard-locked-inner {
-  max-width: 1480px;
-  margin: 0 auto;
-  padding: 20px 18px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.hard-locked-lock {
-  font-size: 26px;
-  filter: grayscale(0.2);
-}
-.hard-locked-title {
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #ffd7a8;
-  font-size: 15px;
-}
-.hard-locked-sub {
-  font-size: 13px;
-  color: #9d928f;
-  max-width: 640px;
-}
-
-/* Hero CTA swap — show Hard Mode CTA only when Unhinged is on. */
-.cta-hard { display: none; }
-body.unhinged .cta-wall { display: none; }
-body.unhinged .cta-hard { display: inline-block; }
 .sec-head h2 {
   font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
@@ -458,6 +366,63 @@ body.unhinged .cta-hard { display: inline-block; }
   cursor: pointer;
   font-size: 13px;
 }
+
+/* Unhinged-specific card accents — red left rail, slur tag row. */
+.rev-unhinged {
+  border-left: 3px solid #ff0033;
+  box-shadow: 0 0 0 1px rgba(255, 0, 51, 0.08) inset;
+}
+.slur-tag-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 4px 0 8px;
+}
+.slur-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: #ff0033;
+  color: #fff;
+  border: 1px solid #cc002a;
+}
+.slur-tag-racial-slur { background: #990000; border-color: #660000; }
+.slur-tag-homophobic  { background: #8a1a6b; border-color: #5c1249; }
+.slur-tag-ableist     { background: #8a4a00; border-color: #5c3100; }
+.slur-tag-xenophobic  { background: #4a3d00; border-color: #332a00; color: #ffe680; }
+.slur-tag-gendered    { background: #a6003a; border-color: #6b0025; }
+.slur-tag-hard-profanity { background: #232f3e; border-color: #151c25; }
+
+/* Redacted slur tokens with inline hover tooltip. */
+.slur {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  background: rgba(255, 0, 51, 0.14);
+  border: 1px solid rgba(255, 0, 51, 0.3);
+  border-radius: 3px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+.slur .slur-txt { font-weight: 700; color: inherit; }
+.slur .slur-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ff0033;
+}
+.censor {
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0 3px;
+  border-radius: 2px;
+}
+body.unhinged .censor { background: rgba(255, 255, 255, 0.08); }
 
 /* ---------- category grid ---------- */
 
