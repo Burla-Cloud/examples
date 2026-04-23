@@ -324,14 +324,23 @@ body.unhinged .unhinged-banner { display: block; }
   overflow-wrap: anywhere;
   line-height: 1.5;
   max-height: 280px;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, black 80%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent);
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #c7c7c7 transparent;
 }
-.rev.expanded .body {
-  max-height: none;
-  mask-image: none;
-  -webkit-mask-image: none;
+.rev .body::-webkit-scrollbar {
+  width: 6px;
+}
+.rev .body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rev .body::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 3px;
+}
+.rev .body::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 .rev .meta {
   margin-top: 10px;
@@ -358,14 +367,6 @@ body.unhinged .unhinged-banner { display: block; }
 .rev .tag.verified { background: #007600; }
 .rev .tag.helpful { background: #cc6600; }
 .rev .tag.danger { background: #cc0000; }
-.rev .more {
-  background: transparent;
-  border: none;
-  color: #007185;
-  padding: 6px 0 0;
-  cursor: pointer;
-  font-size: 13px;
-}
 
 /* Unhinged-specific card accents: red left rail, slur tag row. */
 .rev-unhinged {
@@ -715,7 +716,9 @@ body.unhinged .rev {
   box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.08) inset;
 }
 body.unhinged .rev .title { color: #fff; }
-body.unhinged .rev .body { color: #ddd; }
+body.unhinged .rev .body { color: #ddd; scrollbar-color: #660000 transparent; }
+body.unhinged .rev .body::-webkit-scrollbar-thumb { background: #660000; }
+body.unhinged .rev .body::-webkit-scrollbar-thumb:hover { background: #ff0033; }
 body.unhinged .rev .cat {
   background: #330000;
   color: #ff6680;
@@ -761,6 +764,30 @@ body.unhinged .search,
 body.unhinged .search input { background: #1a1a1a; color: #fff; }
 body.unhinged .search select { background: #330000; color: #fff; }
 body.unhinged .search button { background: #ff0033; color: #fff; }
+
+body.unhinged .kbd {
+  background: #330000;
+  color: #ff3355;
+  border: 1px solid #660000;
+}
+body.unhinged .cta {
+  background: linear-gradient(to bottom, #ff3355, #cc0029);
+  border-color: #800018;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 0, 51, 0.15) inset;
+}
+body.unhinged .cta:hover {
+  background: linear-gradient(to bottom, #ff4d6a, #e60033);
+}
+body.unhinged .cta.secondary {
+  background: #1a1a1a;
+  border-color: #330000;
+  color: #eee;
+}
+body.unhinged .cta.secondary:hover {
+  background: #220000;
+  border-color: #660000;
+}
 
 /* responsive */
 
