@@ -190,6 +190,15 @@ body {
   background: #fff;
   border-color: #ccc;
 }
+.cta.cta-fire {
+  background: linear-gradient(to bottom, #ff4d6a, #c9002b);
+  border-color: #800018;
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 0 0 1px rgba(255,0,51,0.25);
+}
+.cta.cta-fire:hover {
+  background: linear-gradient(to bottom, #ff6680, #e60033);
+}
 
 .kbd {
   font-family: "JetBrains Mono", monospace;
@@ -323,24 +332,6 @@ body.unhinged .unhinged-banner { display: block; }
   word-wrap: break-word;
   overflow-wrap: anywhere;
   line-height: 1.5;
-  max-height: 280px;
-  overflow-y: auto;
-  padding-right: 6px;
-  scrollbar-width: thin;
-  scrollbar-color: #c7c7c7 transparent;
-}
-.rev .body::-webkit-scrollbar {
-  width: 6px;
-}
-.rev .body::-webkit-scrollbar-track {
-  background: transparent;
-}
-.rev .body::-webkit-scrollbar-thumb {
-  background: #c7c7c7;
-  border-radius: 3px;
-}
-.rev .body::-webkit-scrollbar-thumb:hover {
-  background: #999;
 }
 .rev .meta {
   margin-top: 10px;
@@ -716,9 +707,7 @@ body.unhinged .rev {
   box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.08) inset;
 }
 body.unhinged .rev .title { color: #fff; }
-body.unhinged .rev .body { color: #ddd; scrollbar-color: #660000 transparent; }
-body.unhinged .rev .body::-webkit-scrollbar-thumb { background: #660000; }
-body.unhinged .rev .body::-webkit-scrollbar-thumb:hover { background: #ff0033; }
+body.unhinged .rev .body { color: #ddd; }
 body.unhinged .rev .cat {
   background: #330000;
   color: #ff6680;
@@ -770,14 +759,10 @@ body.unhinged .kbd {
   color: #ff3355;
   border: 1px solid #660000;
 }
-body.unhinged .cta {
-  background: linear-gradient(to bottom, #ff3355, #cc0029);
-  border-color: #800018;
-  color: #fff;
-  box-shadow: 0 0 0 1px rgba(255, 0, 51, 0.15) inset;
-}
-body.unhinged .cta:hover {
-  background: linear-gradient(to bottom, #ff4d6a, #e60033);
+body.unhinged .cta-wall {
+  background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  border-color: #a88734;
+  color: #111;
 }
 body.unhinged .cta.secondary {
   background: #1a1a1a;

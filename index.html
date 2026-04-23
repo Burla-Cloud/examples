@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Amazon Review Distiller · Wall of Fucked Up</title>
+  <title>Amazon Review Distiller · Wall of Rants</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=9" />
+  <link rel="stylesheet" href="css/style.css?v=11" />
 </head>
 <body>
 
@@ -38,7 +38,7 @@
     </div>
   </div>
   <nav class="amzn-subnav">
-    <a href="#wall">The Wall of Fucked Up</a>
+    <a href="#wall">The Wall</a>
     <a href="#categories">Browse by category</a>
     <a href="#findings">Findings</a>
     <a href="#method">Methodology</a>
@@ -63,7 +63,8 @@
       Nothing sanitized. Reader discretion strongly advised.
     </p>
     <div class="cta-row">
-      <a class="cta cta-wall" href="#wall">See the Wall →</a>
+      <a class="cta cta-wall" href="#wall" data-mode="tame">Wall of Rants →</a>
+      <a class="cta cta-fire" href="#wall" data-mode="unhinged">Wall of Fucked Up →</a>
       <a class="cta secondary" href="#findings">Read the findings</a>
     </div>
   </div>
@@ -85,7 +86,7 @@
     All slurs are auto-redacted with category badges. Toggle off up top to return to the normal Wall.
   </div>
   <div class="sec-head">
-    <h2 id="wallTitle">The Wall of Fucked Up</h2>
+    <h2 id="wallTitle">The Wall of Rants</h2>
     <p class="sub" id="wallBlurb">Loading…</p>
   </div>
   <div id="wallList" class="review-feed"></div>
@@ -179,6 +180,6 @@
   </div>
 </dialog>
 
-<script src="js/app.js?v=9"></script>
+<script src="js/app.js?v=11"></script>
 </body>
 </html>

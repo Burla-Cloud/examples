@@ -125,7 +125,7 @@ cd frontend && python -m http.server 8765
 - **No LLM sanitization.** All text is verbatim from Amazon.
 - **Rule-based scoring.** Word lists for strong/medium/mild profanity, caps ratio, exclamation runs. No sentiment model. That's the point. we wanted raw, reproducible, human-auditable signal.
 - **Proper-noun filtering.** The Wall rescorer filters capitalized words, so "Dick Tracy" and similar titles don't inflate the profanity count.
-- **Spam filter.** Reviews where a single token is > 45% of the text, or a 15–60 char substring repeats 4+ times, are dropped from Wall candidates.
+- **Spam filter.** Reviews where a single token is > 45% of the text, or a 15 to 60 char substring repeats 4+ times, are dropped from Wall candidates.
 - **2023 snapshot.** This is the McAuley Lab release; it does not include reviews posted after mid-2023.
 
 ## Source

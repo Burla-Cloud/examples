@@ -2,26 +2,29 @@
 
 **Live site: <https://burla-cloud.github.io/amazon-review-distiller/>**
 
-We streamed **571 million Amazon reviews**. the entire public
-`McAuley-Lab/Amazon-Reviews-2023` corpus on HuggingFace, **275 GB of raw
-JSONL**. through a Burla cluster of **500+ parallel CPUs**, scored every
-single review on profanity / screaming / punctuation / length / rage-vs-star
-mismatch, and built the **Wall of Fucked Up**: a rank-ordered shrine to the
-most unhinged things humans have ever typed into the shopping-cart equivalent
-of a grief journal.
+We streamed the entire public `McAuley-Lab/Amazon-Reviews-2023` corpus on
+HuggingFace, **571 million Amazon reviews, 275 GB of raw JSONL**, through a
+Burla cluster of **500+ parallel CPUs**, scored every review on profanity /
+caps / rants / censored-slur hits, and built two walls:
 
-No LLM sanitized anything. Every review is a real, verbatim string from
-a real Amazon purchase.
+- **Wall of Rants** (default). the 120 most unhinged profane reviews,
+  re-ranked for variety.
+- **Wall of Fucked Up** (Unhinged Mode). the worst-of-worst pass,
+  including asterisk-censored strong profanity and categorized slurs.
+
+No LLM sanitized anything. Every review is a real, verbatim string from a
+real Amazon purchase.
 
 ## The headline
 
 > The filthiest category on Amazon is **Video Games**. 6.54% of all
 > video-game reviews contain at least one strong profanity. The loudest
 > single review is **1,169 words of ALL CAPS** from a self-described "100%
-> disabled decorated Vietnam veteran and Mozart scholar," who starts with an
-> apology for the caps (macular degeneration) and then uses them for the rest
-> of the paragraph. The longest single run of exclamation marks we found is
-> **10,594 "!"s** in a two-word review of a baby product: *"love these"*.
+> disabled decorated Vietnam veteran and Mozart scholar," who opens with an
+> apology for the caps (macular degeneration) and then uses them for the
+> rest of the paragraph. The longest single run of exclamation marks we
+> found is **10,594 "!"s** in a two-word review of a baby product:
+> *"love these"*.
 
 |  |  |
 |---|---:|
@@ -32,107 +35,73 @@ a real Amazon purchase.
 | Source | `McAuley-Lab/Amazon-Reviews-2023` (HuggingFace) |
 | Byte-range chunks dispatched | **545** |
 | Peak concurrent Burla workers | **500+** |
-| Map wall-clock | **3.21 min** |
-| Reduce wall-clock | **9.2 s** |
 | LLMs used | **zero** |
 
-## What's in this repo
+## Repo layout
 
-- **`index.html` + `css/` + `js/`**. the Amazon-parody site. Wall of Fucked
-  Up hero, category grid (click any to see the top-100 unhinged reviews for
-  that category), nine findings cards, search bar that hits all 34 categories
-  client-side, and an **Unhinged Mode** toggle that hides star ratings and
-  just shows the rage.
-- **`FINDINGS.md`**. the full writeup of the nine findings.
-- **`data/`**. frontend artifacts: `overall.json` (aggregate stats),
-  `wall.json` (the ranked Wall), `categories.json` (per-category metadata),
-  `findings.json` (the 9 findings), and `categories/*.json` (per-category
-  top-reviews).
-- **`probe.py`**. verify you can stream one HuggingFace JSONL shard.
-- **`pipeline.py`**. the worker. Takes a `(file_path, start_byte, end_byte,
-  chunk_id)` tuple, opens a range request against the HF CDN, parses review
-  JSONL, scores every row, emits per-chunk JSON with top-scoring reviews per
-  bucket (profanity, screaming, exclamation, short-brutal, long-rant, 5-star
-  with rage, etc.).
-- **`scale.py`**. fans out 545 byte-range chunks to Burla with
-  `remote_parallel_map`, `max_parallelism=500+`.
-- **`reduce.py`**. 34 parallel reducers (one per category) plus a global
-  reducer that aggregates every chunk's top-K lists into a single
-  `ard_reduced.json`.
-- **`analysis.py`**. local: deduplicate, filter proper-noun spam, rescore
-  for profanity variety, produce the final `wall.json` and `findings.json`.
+```
+lexicon.py     word lists + censored-variant regexes + context classifier
+pipeline.py    Burla map/reduce worker + CLI dispatch
+analysis.py    rescore, merge hard+worst corpora, emit data/*.json
+probe.py       stream 4 MB of one category to sanity-check HF access
 
-## The 9 findings (shortlist)
-
-1. **The filthiest categories ranked.** Video Games 6.54%, Movies & TV 5.93%,
-   CDs & Vinyl 5.66%, Kindle Store 5.41%. Gift Cards last at 1.19%.
-2. **The loudest reviewers on Amazon.** A 1,169-word all-caps rant about a
-   Mozart CD is #1.
-3. **Punctuation bombs.** *"love these" !!!!!!!!!!!!!!!!!!!!!!!!!…* × 10,594.
-4. **Reviews too brutal for two sentences.** The Wall of Fucked Up hero
-   section. The haikus of Amazon despair.
-5. **Rant hall of fame.** A 2,000-word monologue about an oil-covered motor
-   unit that cascades into a critique of Amazon returns policy.
-6. **Five-star reviews that scream.** People who loved the product but still
-   typed in ALL CAPS.
-7. **One-star reviews with a smile emoji in the title.** Passive-aggressive
-   gold.
-8. **Profanity diversity.** Reviews using ≥5 unique strong curse words.
-9. **Repeat offenders.** Reviewer IDs with the highest per-review profanity
-   density across the entire corpus.
-
-See **[`FINDINGS.md`](./FINDINGS.md)** for the full numbers.
+index.html     the Amazon-parody site
+css/style.css  dark/light themes (flips in Unhinged Mode)
+js/app.js      pure vanilla JS. loads data/*.json, renders, searches
+data/*.json    frontend artifacts: wall, unhinged, search pools,
+               categories, findings
+```
 
 ## Reproduce
 
 ```bash
-# One-time setup
 curl -fsSL https://raw.githubusercontent.com/Burla-Cloud/burla-agent-starter-kit/main/install.sh | sh
 pip install -r requirements.txt
 
-# Verify HF streaming works (1k reviews, ~30 s)
-python probe.py
+python pipeline.py probe         # streaming sanity check
+python pipeline.py map-main      # main pass across the cluster
+python pipeline.py map-worst     # worst-of-worst pass
+python pipeline.py reduce-main   # merge main shards -> samples/ard_reduced.json
+python pipeline.py reduce-worst  # merge worst shards -> samples/ard_worst.json
+python analysis.py               # rescore + merge + write data/*.json
 
-# Run the Burla pipeline (545 byte chunks × 500+ workers, ~3 min)
-python scale.py
-
-# Reduce (34 categories + global, ~10 s)
-python reduce.py
-
-# Local analysis + dedupe + rescore (~30 s)
-python analysis.py
-
-# Serve
-python -m http.server 8766
-# open http://localhost:8766
+python -m http.server 8766       # browse http://localhost:8766
 ```
+
+## The findings (shortlist)
+
+See **[`FINDINGS.md`](./FINDINGS.md)** for the full writeup.
+
+1. The filthiest categories ranked. Video Games 6.54%, Movies & TV 5.93%,
+   CDs & Vinyl 5.66%, Kindle Store 5.41%. Gift Cards last at 1.19%.
+2. The loudest reviewers on Amazon. A 1,169-word all-caps rant about a
+   Mozart CD wins.
+3. Punctuation bombs. *"love these"* × 10,594 exclamation marks.
+4. Reviews too brutal for two sentences. The Wall of Rants hero section.
+5. Rant hall of fame. A 2,000-word oil-covered motor-unit monologue that
+   cascades into a critique of Amazon's return policy.
+6. Five stars, zero words. The bleakest genre of human text.
+7. Profanity diversity. Reviews using 5+ unique strong curse words.
 
 ## Why McAuley-Lab/Amazon-Reviews-2023
 
-- It's the largest public Amazon review dump. **571 million reviews**
-  across 34 categories. released for academic use by the McAuley lab at
-  UCSD. Newer than the 2018 dump and far larger.
-- Served as one `.jsonl.gz` per category from the HuggingFace CDN, which
-  supports HTTP Range requests. **We never download a file**. every
-  worker streams its own byte range and processes on the fly.
-- Every row has `title`, `text`, `rating`, `helpful_vote`, `timestamp`,
-  `asin`, `parent_asin`, `user_id`. No customer PII beyond the anonymous
-  `user_id`.
+Largest public Amazon review dump. **571 million reviews** across 34
+categories, released for academic use by the McAuley lab at UCSD. Served
+as one `.jsonl.gz` per category from the HuggingFace CDN, which supports
+HTTP Range requests. **No file is ever fully downloaded.** every worker
+streams its own byte range.
 
 ## Caveats / content warning
 
-- **The profanity is real.** We do not censor or rewrite. Every string on
-  the Wall of Fucked Up is copy-paste from a real Amazon purchase. Open the
-  site with headphones / at home / behind your employer's HR firewall.
-- **Profanity detection is rule-based**, not model-based. We used a
-  curated word list of strong English profanity + a proper-noun filter
-  to avoid false positives on brand names. Reviews in languages other
-  than English are scored by length/caps/exclamation only.
-- **We dedupe and re-score.** Amazon reviews have a non-trivial volume of
-  "crap crap crap crap crap" spam from the same few users; we filter
-  these out of the Wall so the genuinely creative rage isn't buried.
+- **The profanity is real.** We do not censor or rewrite anywhere on the
+  Wall. Slurs in Unhinged Mode are rendered with a category badge and the
+  middle characters blanked in the UI, but the underlying JSON ships the
+  same raw strings the reviewer typed.
+- **Profanity detection is rule-based**, not model-based. Reviews in
+  languages other than English are scored by length / caps / exclamation
+  only.
 - **No LLM touches the text.** Every ranking, bucket, and finding in this
-  repo is produced by regex, tokenization, and arithmetic. The *site* has
-  an LLM-free pipeline end to end.
+  repo is produced by regex, tokenization, and arithmetic.
 
-Part of the Burla demo collection. Source: [`Burla-Cloud/burla-agent-starter-kit`](https://github.com/Burla-Cloud/burla-agent-starter-kit).
+Part of the Burla demo collection.
+Source: [`Burla-Cloud/burla-agent-starter-kit`](https://github.com/Burla-Cloud/burla-agent-starter-kit).
