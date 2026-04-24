@@ -655,13 +655,32 @@ function wireSearch() {
 
 const PLACEHOLDER_TAME = "Search reviews (try: crap, worst, refund, broken, pissed)";
 const PLACEHOLDER_UNHINGED = "Search reviews (try: bitch, shit, fuck, cunt, whore, refund)";
+const PLACEHOLDER_TAME_SM = "Search reviews…";
+const PLACEHOLDER_UNHINGED_SM = "Search the filth…";
+
+const narrowMQ = typeof window !== "undefined" && window.matchMedia
+  ? window.matchMedia("(max-width: 720px)")
+  : null;
+
+function pickPlaceholder(on) {
+  const narrow = narrowMQ && narrowMQ.matches;
+  if (on) return narrow ? PLACEHOLDER_UNHINGED_SM : PLACEHOLDER_UNHINGED;
+  return narrow ? PLACEHOLDER_TAME_SM : PLACEHOLDER_TAME;
+}
 
 function applyUnhingedState(on) {
   document.body.classList.toggle("unhinged", on);
   const q = el("q");
-  if (q) q.placeholder = on ? PLACEHOLDER_UNHINGED : PLACEHOLDER_TAME;
+  if (q) q.placeholder = pickPlaceholder(on);
   if (DATA.wall) renderWall();
   if (typeof window.__rerunSearch === "function") window.__rerunSearch();
+}
+
+if (narrowMQ && narrowMQ.addEventListener) {
+  narrowMQ.addEventListener("change", () => {
+    const q = el("q");
+    if (q) q.placeholder = pickPlaceholder(unhingedOn());
+  });
 }
 
 function setUnhinged(on) {
