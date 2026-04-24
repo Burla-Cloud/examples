@@ -139,14 +139,15 @@
       <p>
         The first pass surfaced too many soft "crap" reviews, so we re-ran the full
         <b>275 GB / 571 M review</b> corpus on <b>1,000 CPUs in parallel, twice more</b>.
-        Pass two targeted hard profanity (shit, bitch, cunt, whore, asshole, motherfuck, dick, cock,
-        pussy, slut, twat, bastard, prick, piss) and produced 496,668 hits. Pass three added a
-        censoring-aware lexicon (f***, sh!t, n****r, f@ggot, b*tch) plus a categorized slur
-        taxonomy (racial, homophobic, ableist, xenophobic, gendered), and classified each hit as
-        <code>deploy</code> / <code>quote_crit</code> / <code>reclaim</code> / <code>ambiguous</code>.
-        Results were rescored locally to drop Dick Tracy / Maine Coon / Spic-and-Span / cracker-barrel
-        false positives and boost angry physical-product rants. The two hard passes were merged and
-        deduped into the single Unhinged corpus you see when the toggle is on.
+        Pass two targeted a hard-profanity lexicon (~14 strong roots) and produced
+        <b>496,668</b> hits. Pass three added a censor-aware lexicon
+        (asterisk, symbol, and zero-width variants) plus a categorized slur taxonomy
+        (racial, homophobic, ableist, xenophobic, gendered), and classified each hit
+        as <code>deploy</code> / <code>quote_crit</code> / <code>reclaim</code> /
+        <code>ambiguous</code>. Results were rescored locally to drop proper-noun and
+        idiom false positives (TV shows, pet breeds, brand names) and boost angry
+        physical-product rants. The two hard passes were merged and deduped into the
+        single Unhinged corpus you see when the toggle is on.
       </p>
     </div>
     <div>
