@@ -286,8 +286,31 @@ function reviewCard(r, rank, { unhinged = false } = {}) {
   `;
 }
 
-function attachMoreHandlers(_scope) {
-  /* reviews are always fully expanded and scrollable; no handler needed. */
+// Clamp tall review bodies and inject a "Show more" toggle. Only cards
+// whose rendered body exceeds CLAMP_PX get the fade overlay + button;
+// short reviews render unchanged.
+function attachMoreHandlers(scope) {
+  if (!scope) return;
+  const CLAMP_PX = 340;
+  requestAnimationFrame(() => {
+    scope.querySelectorAll(".rev").forEach((card) => {
+      if (card.dataset.moreChecked) return;
+      card.dataset.moreChecked = "1";
+      const body = card.querySelector(".body");
+      if (!body) return;
+      if (body.scrollHeight <= CLAMP_PX + 20) return;
+      card.classList.add("has-more");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "show-more";
+      btn.textContent = "Show more ▾";
+      btn.addEventListener("click", () => {
+        const expanded = card.classList.toggle("expanded");
+        btn.textContent = expanded ? "Show less ▴" : "Show more ▾";
+      });
+      body.insertAdjacentElement("afterend", btn);
+    });
+  });
 }
 
 function miniRev(r, rank) {

@@ -286,7 +286,8 @@ body.unhinged .unhinged-banner { display: block; }
 }
 
 .rev {
-  background: #fff;
+  --rev-bg: #fff;
+  background: var(--rev-bg);
   border: 1px solid #d5d9d9;
   border-radius: 8px;
   padding: 16px 18px;
@@ -332,7 +333,37 @@ body.unhinged .unhinged-banner { display: block; }
   word-wrap: break-word;
   overflow-wrap: anywhere;
   line-height: 1.5;
+  position: relative;
 }
+.rev.has-more:not(.expanded) .body {
+  max-height: 22em;
+  overflow: hidden;
+}
+.rev.has-more:not(.expanded) .body::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4em;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--rev-bg) 85%);
+  pointer-events: none;
+}
+.rev .show-more {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #007185;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 2px 0;
+  text-align: left;
+  display: none;
+}
+.rev.has-more .show-more { display: inline-block; }
+.rev .show-more:hover { color: #c45500; text-decoration: underline; }
 .rev .meta {
   margin-top: 10px;
   display: flex;
@@ -702,12 +733,17 @@ body.unhinged .sec-head h2::before { content: "☠ "; color: #ff0033; }
 body.unhinged .sec-head h2::after  { content: " ☠"; color: #ff0033; }
 body.unhinged .sec-head .sub { color: #aaa; }
 body.unhinged .rev {
-  background: #1a1a1a;
+  --rev-bg: #1a1a1a;
   border-color: #330000;
   box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.08) inset;
 }
 body.unhinged .rev .title { color: #fff; }
 body.unhinged .rev .body { color: #ddd; }
+body.unhinged .rev.has-more:not(.expanded) .body::after {
+  background: linear-gradient(to bottom, rgba(26, 26, 26, 0), var(--rev-bg) 85%);
+}
+body.unhinged .rev .show-more { color: #ff6680; }
+body.unhinged .rev .show-more:hover { color: #ff3355; }
 body.unhinged .rev .cat {
   background: #330000;
   color: #ff6680;
