@@ -441,7 +441,7 @@ function renderCategoryModal(cat) {
         return `
           <div class="modal-section">
             <h3>${label}</h3>
-            <div class="review-feed" style="grid-template-columns: 1fr 1fr">
+            <div class="review-feed modal-feed">
               ${rows.map((r, i) => reviewCard({ ...r, _category: cat }, i + 1, { unhinged })).join("")}
             </div>
           </div>

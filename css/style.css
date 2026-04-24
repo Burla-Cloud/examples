@@ -4,13 +4,18 @@
 */
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
 body {
   margin: 0;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #111;
   background: #eaeded;
   line-height: 1.5;
+  overflow-x: clip;
+  min-width: 0;
 }
 
 .mono { font-family: "JetBrains Mono", monospace; }
@@ -161,6 +166,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
   color: #111;
+  overflow-wrap: anywhere;
 }
 .hero h1 em { color: #ff9900; font-style: italic; font-weight: 800; }
 .hero .lede {
@@ -293,6 +299,7 @@ body.unhinged .unhinged-banner { display: block; }
   padding: 16px 18px;
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 .rev .rank {
   position: absolute;
@@ -503,7 +510,12 @@ body.unhinged .censor { background: rgba(255, 255, 255, 0.08); }
   border: 1px solid #d5d9d9;
   border-radius: 8px;
   padding: 20px 22px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
+.finding .frow,
+.finding .bar-row { min-width: 0; }
+.finding .label { min-width: 0; overflow-wrap: anywhere; }
 .finding h3 {
   margin: 0 0 6px;
   font-size: 19px;
@@ -551,6 +563,9 @@ body.unhinged .censor { background: rgba(255, 255, 255, 0.08); }
   border-top: 1px solid #f1f1f1;
   font-size: 13px;
   color: #333;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .finding .minirev:first-of-type { border-top: none; }
 .finding .minirev .ft {
@@ -560,11 +575,14 @@ body.unhinged .censor { background: rgba(255, 255, 255, 0.08); }
   color: #666;
   font-size: 11px;
   margin-top: 6px;
+  flex-wrap: wrap;
 }
 .finding .minirev .qt {
   font-style: italic;
   line-height: 1.4;
   color: #111;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .finding .minirev .qt::before { content: "\201C"; color: #999; margin-right: 2px; }
 .finding .minirev .qt::after { content: "\201D"; color: #999; margin-left: 2px; }
@@ -689,6 +707,10 @@ dialog#catModal::backdrop { background: rgba(0,0,0,0.6); }
   color: #111;
 }
 .modal-section { margin-bottom: 10px; }
+.modal-feed { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 720px) {
+  .modal-feed { grid-template-columns: 1fr; }
+}
 
 /* ---------- unhinged mode override ---------- */
 
@@ -810,17 +832,98 @@ body.unhinged .cta.secondary:hover {
   border-color: #660000;
 }
 
-/* responsive */
+/* ---------- responsive ---------- */
 
+/* Tablet + large phones: collapse the 4-col top bar, stack the hero,
+   fold findings and methodology into a single column. */
 @media (max-width: 1024px) {
   .amzn-bar-inner { grid-template-columns: auto 1fr auto; }
   .addr { display: none; }
-  .hero { grid-template-columns: 1fr; }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 18px 24px;
+  }
   .findings-wrap, .method-grid { grid-template-columns: 1fr; }
+  .method-grid { gap: 24px; }
+  .section { padding: 40px 18px; }
+  .section.alt { padding: 40px 0; }
 }
-@media (max-width: 640px) {
-  .amzn-bar-inner { grid-template-columns: auto 1fr auto; }
-  .account .greet small { display: none; }
+
+/* Phones: wrap the CTA row, stack review cards, kill the fixed 180px
+   bar-row column, tighten section padding. */
+@media (max-width: 720px) {
+  .amzn-bar-inner { padding: 8px 12px; gap: 10px; }
+  .search { max-width: none; min-width: 0; }
   .search select { display: none; }
-  .review-feed { grid-template-columns: 1fr; }
+  .cta-row { flex-wrap: wrap; gap: 10px; }
+  .cta { flex: 1 1 auto; text-align: center; padding: 11px 16px; font-size: 14px; }
+  .review-feed { grid-template-columns: 1fr; gap: 14px; }
+  .cat-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .finding { padding: 18px 18px; }
+  .finding .bar-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .finding .bar-row .stacked { width: 100%; }
+  .hero { padding: 28px 16px 20px; gap: 22px; }
+  .hero h1 { font-size: clamp(28px, 7vw, 40px); }
+  .hero .lede { font-size: 15px; }
+  .section { padding: 36px 16px; }
+  .section.alt { padding: 36px 0; }
+  .section.alt > * { padding: 0 16px; }
+  .sec-head h2 { font-size: clamp(22px, 5.6vw, 32px); }
+  .sec-head .sub { font-size: 14.5px; }
+  .modal-inner { padding: 22px 20px 26px; }
+  .modal-head h2 { font-size: 24px; }
+  .modal-head .emoji { font-size: 32px; }
+  dialog#catModal { width: calc(100% - 20px); max-height: 92vh; }
+  .modal-inner { max-height: 92vh; }
+  .amzn-foot { padding: 24px 16px; margin-top: 28px; }
+}
+
+/* Small phones: single-column stats, smaller logo, stacked CTAs full width,
+   two-column category grid, hide the select dropdown in the search. */
+@media (max-width: 480px) {
+  .amzn-bar-inner {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .logo { font-size: 18px; padding: 4px 6px; }
+  .logo .ps { font-size: 11px; }
+  .search input { padding: 9px 10px; font-size: 13px; }
+  .search button { padding: 0 10px; font-size: 16px; }
+  .amzn-subnav { font-size: 13px; padding: 0 8px; }
+  .amzn-subnav a { padding: 10px 8px; }
+  .account .greet small { display: none; }
+  .unhinged-toggle { font-size: 12px; gap: 4px; }
+  .unhinged-toggle input { transform: scale(1); }
+  .hero h1 { font-size: clamp(26px, 7.2vw, 36px); line-height: 1.12; }
+  .hero .eyebrow { font-size: 11px; }
+  .cta-row { gap: 8px; }
+  .cta { flex: 1 1 100%; padding: 12px 16px; font-size: 15px; }
+  .stat-grid { grid-template-columns: 1fr; gap: 8px; }
+  .stat { padding: 14px 16px; }
+  .stat b { font-size: 26px; }
+  .rev { padding: 14px 14px; }
+  .rev .title { font-size: 14.5px; }
+  .rev .body { font-size: 13.5px; }
+  .rev .rank { font-size: 10px; top: 8px; right: 10px; }
+  .rev .meta { font-size: 11px; }
+  .rev .tag { font-size: 9px; padding: 2px 5px; }
+  .cat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cat-card { padding: 12px 12px; }
+  .cat-card .emoji { font-size: 24px; }
+  .cat-card .nm { font-size: 13px; }
+  .finding { padding: 16px 14px; }
+  .finding h3 { font-size: 17px; }
+  .finding p.blurb { font-size: 13px; }
+  .finding .frow { grid-template-columns: 26px 1fr auto; gap: 8px; padding: 7px 0; }
+  .finding .label { font-size: 13px; }
+  .finding .label .sm { font-size: 11.5px; }
+  .finding .val { font-size: 12px; }
+  .finding .minirev { font-size: 12.5px; }
+  .unhinged-banner { font-size: 13px; padding: 10px 12px; }
+  .slur-tag { font-size: 9px; padding: 2px 6px; }
 }
