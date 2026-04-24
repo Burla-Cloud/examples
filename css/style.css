@@ -850,12 +850,36 @@ body.unhinged .cta.secondary:hover {
   .section.alt { padding: 40px 0; }
 }
 
-/* Phones: wrap the CTA row, stack review cards, kill the fixed 180px
-   bar-row column, tighten section padding. */
+/* Phones: put the logo + toggle on one row and the search bar on a
+   dedicated second row so it has the full viewport width. Wrap the CTA
+   row, stack review cards, kill the fixed 180px bar-row column,
+   tighten section padding. */
 @media (max-width: 720px) {
-  .amzn-bar-inner { padding: 8px 12px; gap: 10px; }
-  .search { max-width: none; min-width: 0; }
+  .amzn-bar-inner {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "logo account"
+      "search search";
+    row-gap: 8px;
+    column-gap: 10px;
+    padding: 10px 12px;
+  }
+  .logo { grid-area: logo; font-size: 20px; padding: 4px 8px; }
+  .account { grid-area: account; justify-self: end; }
+  .search {
+    grid-area: search;
+    max-width: none;
+    min-width: 0;
+  }
   .search select { display: none; }
+  .search input { padding: 11px 14px; font-size: 15px; }
+  .search input::placeholder { color: #888; }
+  .search button { padding: 0 16px; font-size: 18px; }
+  .amzn-subnav { font-size: 13.5px; padding: 0 10px; }
+  .amzn-subnav a { padding: 11px 10px; }
+  .greet small { display: none; }
+  .unhinged-toggle { font-size: 13px; gap: 6px; }
   .cta-row { flex-wrap: wrap; gap: 10px; }
   .cta { flex: 1 1 auto; text-align: center; padding: 11px 16px; font-size: 14px; }
   .review-feed { grid-template-columns: 1fr; gap: 14px; }
@@ -883,21 +907,20 @@ body.unhinged .cta.secondary:hover {
 }
 
 /* Small phones: single-column stats, smaller logo, stacked CTAs full width,
-   two-column category grid, hide the select dropdown in the search. */
+   two-column category grid. */
 @media (max-width: 480px) {
   .amzn-bar-inner {
-    grid-template-columns: auto 1fr auto;
-    gap: 8px;
-    padding: 6px 10px;
+    row-gap: 6px;
+    column-gap: 8px;
+    padding: 8px 10px;
   }
-  .logo { font-size: 18px; padding: 4px 6px; }
+  .logo { font-size: 18px; padding: 3px 6px; }
   .logo .ps { font-size: 11px; }
-  .search input { padding: 9px 10px; font-size: 13px; }
-  .search button { padding: 0 10px; font-size: 16px; }
+  .search input { padding: 10px 12px; font-size: 14px; }
+  .search button { padding: 0 12px; font-size: 16px; }
   .amzn-subnav { font-size: 13px; padding: 0 8px; }
   .amzn-subnav a { padding: 10px 8px; }
-  .account .greet small { display: none; }
-  .unhinged-toggle { font-size: 12px; gap: 4px; }
+  .unhinged-toggle { font-size: 12px; gap: 5px; }
   .unhinged-toggle input { transform: scale(1); }
   .hero h1 { font-size: clamp(26px, 7.2vw, 36px); line-height: 1.12; }
   .hero .eyebrow { font-size: 11px; }
