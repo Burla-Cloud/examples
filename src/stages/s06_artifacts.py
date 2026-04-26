@@ -152,7 +152,12 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
             worst_tv_src = worst_tv_src.sort_values(
                 "clip_tv_above_fireplace", ascending=False
             )
+            worst_tv_src = worst_tv_src.drop_duplicates(
+                subset=["listing_id"], keep="first"
+            )
             j = _attach_listing(worst_tv_src, "clip_tv_above_fireplace")
+            if "image_url" in j.columns:
+                j = j.drop_duplicates(subset=["image_url"], keep="first")
             out["sections"]["worst_tv_placements"] = {
                 "title": "Worst TV placements in 1.1M Airbnb listings",
                 "n": int(min(len(j), args.top_k["worst_tv_placements"])),
@@ -168,8 +173,10 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
         messy = cpu.sort_values("clip_messy_room", ascending=False)
         messy = messy.drop_duplicates(subset=["listing_id"], keep="first")
         j = _attach_listing(messy, "clip_messy_room")
+        if "image_url" in j.columns:
+            j = j.drop_duplicates(subset=["image_url"], keep="first")
         out["sections"]["messiest_listings"] = {
-                "title": "Messiest Airbnb photos in 1.1M listings",
+            "title": "Messiest Airbnb photos in 1.1M listings",
             "n": int(min(len(j), args.top_k["messiest_listings"])),
             "items": _serialize(j, "clip_messy_room", args.top_k["messiest_listings"]),
         }
@@ -177,10 +184,20 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
         mirror = cpu.sort_values("clip_photographer_reflection", ascending=False)
         mirror = mirror.drop_duplicates(subset=["listing_id"], keep="first")
         j = _attach_listing(mirror, "clip_photographer_reflection")
+        # Belt-and-suspenders: also dedupe by image_url across listings, since
+        # the same hero photo sometimes gets reused by multi-listing hosts and
+        # CLIP will flag every copy.
+        if "image_url" in j.columns:
+            j = j.drop_duplicates(subset=["image_url"], keep="first")
+        # Cap to a much smaller, more confident slice. The CLIP prompt
+        # ("a photographer reflected in a mirror taking a photo") catches both
+        # actual host-with-camera shots and well-staged mirror compositions, so
+        # we surface only the very top scoring listings to keep precision high.
+        mirror_k = min(args.top_k["mirror_selfies"], 24)
         out["sections"]["mirror_selfies"] = {
-            "title": "Hosts who got caught in their own mirrors",
-            "n": int(min(len(j), args.top_k["mirror_selfies"])),
-            "items": _serialize(j, "clip_photographer_reflection", args.top_k["mirror_selfies"]),
+            "title": "When the mirror became the main character",
+            "n": int(min(len(j), mirror_k)),
+            "items": _serialize(j, "clip_photographer_reflection", mirror_k),
         }
 
         plant_src = cpu.sort_values("clip_lots_of_plants", ascending=False)
@@ -189,6 +206,8 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
             plant_counts = gpu.groupby("listing_id")["potted_plant_count"].max().reset_index()
             plant_src = plant_src.merge(plant_counts, on="listing_id", how="left")
         j = _attach_listing(plant_src, "clip_lots_of_plants")
+        if "image_url" in j.columns:
+            j = j.drop_duplicates(subset=["image_url"], keep="first")
         out["sections"]["plant_maximalists"] = {
             "title": "The most plant-maximalist Airbnbs",
             "n": int(min(len(j), args.top_k["plant_maximalists"])),
@@ -240,13 +259,15 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
             )
             review_rows = []
             for _, r in top_reviews.iterrows():
+                full_comment = str(r.get("comments", ""))
                 review_rows.append({
                     "review_id": int(r.get("review_id", 0)),
                     "listing_id": int(r.get("listing_id", 0)),
                     "city": str(r.get("city", "")),
                     "country": str(r.get("country", "")),
                     "date": str(r.get("date", ""))[:10],
-                    "comment": str(r.get("comments", ""))[:600],
+                    "comment": full_comment[:600],
+                    "comment_full": full_comment[:8000],
                     "category": str(r.get("claude_category", "") or ""),
                     "humor_score": float(r["claude_humor_score"])
                         if "claude_humor_score" in r and pd.notna(r["claude_humor_score"]) else None,
