@@ -24,7 +24,7 @@ with stuff everywhere."
 
 ### Mirror selfies
 
-Top-50 listings where the host got caught reflected in their own
+Top-24 listings where the host got caught reflected in their own
 mirror photo (CLIP score against "a photographer reflected in a mirror").
 
 ### Plant-maximalist Airbnbs
@@ -56,4 +56,4 @@ Top-100 reviews surfaced by 3-tier funnel (heuristic -> embedding cluster
 ## Replication
 
 Repo: airbnb-burla
-Runtime: 10.8 hours wall time, peak 1000 Burla workers.
+Runtime: 10.9 hours wall time, peak 1000 Burla workers.
