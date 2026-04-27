@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burla Examples</title>
+  <meta name="description" content="A gallery of Burla demos, examples, and production patterns for scaling Python across many CPUs and GPUs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0a1020;
+      --muted: #5b6475;
+      --soft: #eef2ff;
+      --line: rgba(15, 23, 42, 0.11);
+      --panel: rgba(255, 255, 255, 0.76);
+      --panel-strong: rgba(255, 255, 255, 0.95);
+      --blue: #635bff;
+      --cyan: #00d4ff;
+      --green: #00c08b;
+      --pink: #ff5f93;
+      --orange: #ffb84d;
+      --purple: #7c3aed;
+      --shadow: 0 28px 80px rgba(15, 23, 42, 0.14);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% -10%, rgba(99, 91, 255, 0.22), transparent 34%),
+        radial-gradient(circle at 92% 4%, rgba(0, 212, 255, 0.20), transparent 30%),
+        linear-gradient(180deg, #fbfcff 0%, #f6f8ff 44%, #ffffff 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 10;
+      margin: 16px auto 0;
+      width: min(1180px, calc(100% - 40px));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 11px;
+      background:
+        radial-gradient(circle at 30% 20%, #ffffff 0 12%, transparent 13%),
+        linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 12px 24px rgba(99, 91, 255, 0.28);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(10, 16, 32, 0.68);
+    }
+
+    .nav-links a {
+      padding: 9px 12px;
+      border-radius: 999px;
+    }
+
+    .nav-links a:hover { background: rgba(99, 91, 255, 0.08); color: var(--ink); }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr);
+      gap: 52px;
+      align-items: center;
+      padding: 88px 0 78px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(99, 91, 255, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.64);
+      color: #4338ca;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 36px rgba(99, 91, 255, 0.12);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 0 6px rgba(99, 91, 255, 0.10);
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(52px, 8vw, 92px);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(100deg, #0a1020 0%, #4338ca 45%, #00a6d6 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.6;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #fff;
+      background: #0a1020;
+      box-shadow: 0 18px 34px rgba(10, 16, 32, 0.20);
+    }
+    .btn-secondary {
+      color: #1d2537;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--line);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+      max-width: 560px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.66);
+      box-shadow: 0 16px 46px rgba(15, 23, 42, 0.06);
+    }
+
+    .stat b {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .hero-showcase {
+      position: relative;
+      min-height: 540px;
+    }
+
+    .showcase-card {
+      position: absolute;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.74);
+      border-radius: 34px;
+      background: var(--panel);
+      backdrop-filter: blur(22px);
+      box-shadow: var(--shadow);
+    }
+
+    .showcase-card.main {
+      inset: 42px 24px auto 14px;
+      height: 330px;
+      padding: 18px;
+      transform: rotate(-2deg);
+    }
+
+    .showcase-card.side {
+      right: 0;
+      bottom: 46px;
+      width: 58%;
+      min-height: 226px;
+      padding: 16px;
+      transform: rotate(4deg);
+    }
+
+    .showcase-card.float {
+      left: -4px;
+      bottom: 0;
+      width: 54%;
+      min-height: 188px;
+      padding: 18px;
+      transform: rotate(-5deg);
+    }
+
+    .preview-img {
+      height: 210px;
+      border-radius: 24px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 -80px 120px rgba(10, 16, 32, 0.30);
+    }
+
+    .preview-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .preview-label span {
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .mini-bars {
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .mini-bars i {
+      display: block;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 10px 20px rgba(99, 91, 255, 0.14);
+    }
+
+    .mini-bars i:nth-child(1) { width: 94%; }
+    .mini-bars i:nth-child(2) { width: 72%; background: linear-gradient(90deg, var(--green), var(--cyan)); }
+    .mini-bars i:nth-child(3) { width: 84%; background: linear-gradient(90deg, var(--pink), var(--orange)); }
+
+    .orb {
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: 64px;
+      top: 0;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 35% 30%, #ffffff, transparent 18%),
+        conic-gradient(from 210deg, var(--blue), var(--cyan), var(--green), var(--orange), var(--pink), var(--blue));
+      filter: blur(0.2px);
+      opacity: 0.88;
+      box-shadow: 0 40px 90px rgba(99, 91, 255, 0.26);
+    }
+
+    section { padding: 44px 0; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+    }
+
+    .section-head p {
+      margin: 0;
+      max-width: 470px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 360px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-strong);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99, 91, 255, 0.25);
+      box-shadow: 0 34px 90px rgba(15, 23, 42, 0.14);
+    }
+
+    .card-media {
+      position: relative;
+      height: 170px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.75), transparent 24%),
+        linear-gradient(135deg, var(--blue), var(--cyan));
+      overflow: hidden;
+    }
+
+    .card-media.image {
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-media.image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 10%, rgba(10, 16, 32, 0.42));
+    }
+
+    .card-media.wall {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      padding: 18px;
+      background: linear-gradient(135deg, #101827, #ffb84d);
+    }
+
+    .card-media.wall span {
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 12px 22px rgba(10, 16, 32, 0.14);
+    }
+
+    .card-media.paper {
+      padding: 24px;
+      background: linear-gradient(135deg, #fff7e6, #e7efff);
+    }
+
+    .card-media.paper span {
+      display: block;
+      height: 10px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      background: rgba(67, 56, 202, 0.18);
+    }
+
+    .card-media.paper span:nth-child(1) { width: 38%; height: 16px; background: rgba(10, 16, 32, 0.78); }
+    .card-media.paper span:nth-child(2) { width: 82%; }
+    .card-media.paper span:nth-child(3) { width: 70%; }
+    .card-media.paper span:nth-child(4) { width: 90%; }
+
+    .card-media.map {
+      background:
+        radial-gradient(circle at 62% 48%, rgba(255,255,255,0.9) 0 3px, transparent 4px),
+        radial-gradient(circle at 36% 38%, rgba(255,255,255,0.85) 0 4px, transparent 5px),
+        radial-gradient(circle at 52% 60%, rgba(255,255,255,0.8) 0 5px, transparent 6px),
+        conic-gradient(from 140deg, #0ea5e9, #22c55e, #f59e0b, #0ea5e9);
+    }
+
+    .card-media.map::before {
+      content: "";
+      position: absolute;
+      inset: 30px 62px;
+      border: 1px solid rgba(255,255,255,0.56);
+      border-radius: 999px;
+      box-shadow: inset 0 0 42px rgba(255,255,255,0.22), 0 0 0 18px rgba(255,255,255,0.08);
+    }
+
+    .card-media.code {
+      padding: 22px;
+      background: linear-gradient(135deg, #0b1020, #3730a3);
+    }
+
+    .card-media.code span {
+      display: block;
+      height: 11px;
+      margin-bottom: 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+    }
+
+    .card-media.code span:nth-child(1) { width: 42%; background: #67e8f9; }
+    .card-media.code span:nth-child(2) { width: 84%; }
+    .card-media.code span:nth-child(3) { width: 64%; }
+    .card-media.code span:nth-child(4) { width: 76%; background: rgba(16, 185, 129, 0.6); }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    .kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: rgba(99, 91, 255, 0.10);
+      color: #4338ca;
+      white-space: nowrap;
+    }
+
+    h3 {
+      margin: 14px 0 10px;
+      font-size: 24px;
+      line-height: 1.03;
+      letter-spacing: -0.05em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .arrow {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--ink);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover .arrow { transform: translateX(3px); }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    .compact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .mini-card {
+      position: relative;
+      min-height: 210px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72)),
+        radial-gradient(circle at 15% 0%, rgba(99, 91, 255, 0.18), transparent 32%);
+      box-shadow: 0 18px 54px rgba(15, 23, 42, 0.07);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 72px rgba(15, 23, 42, 0.12);
+    }
+
+    .mini-card::before {
+      content: "";
+      display: block;
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 16px 28px rgba(99, 91, 255, 0.18);
+    }
+
+    .mini-card:nth-child(4n+2)::before { background: linear-gradient(135deg, var(--green), var(--cyan)); }
+    .mini-card:nth-child(4n+3)::before { background: linear-gradient(135deg, var(--pink), var(--orange)); }
+    .mini-card:nth-child(4n+4)::before { background: linear-gradient(135deg, var(--purple), var(--pink)); }
+
+    .mini-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .mini-card p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .mini-card .card-footer {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 18px;
+      margin: 0;
+    }
+
+    .footer {
+      padding: 62px 0 80px;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer a { font-weight: 800; color: var(--ink); }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding-top: 62px; }
+      .hero-showcase { min-height: 430px; }
+      .grid { grid-template-columns: 1fr 1fr; }
+      .compact-grid { grid-template-columns: 1fr 1fr; }
+      .wide { grid-column: span 1; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 12px; }
+    }
+
+    @media (max-width: 680px) {
+      .wrap, .nav { width: min(100% - 28px, 1180px); }
+      .nav { align-items: flex-start; border-radius: 24px; }
+      .nav-links { display: none; }
+      .stats, .grid, .compact-grid { grid-template-columns: 1fr; }
+      .hero-showcase { min-height: 380px; }
+      .showcase-card.main { left: 0; right: 0; }
+      .showcase-card.side { width: 70%; }
+      .showcase-card.float { width: 66%; }
+      .footer-inner { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Burla Examples</span>
+    </a>
+    <div class="nav-links">
+      <a href="#live">Live sites</a>
+      <a href="#workloads">Workloads</a>
+      <a href="#patterns">Patterns</a>
+      <a href="https://github.com/Burla-Cloud/examples">GitHub</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="wrap hero">
+      <div>
+        <div class="eyebrow">Remote Python at real scale</div>
+        <h1>Examples that show what <span class="gradient-text">Burla can do.</span></h1>
+        <p class="lede">
+          A curated gallery of demos, data stories, and reusable patterns for running ordinary Python across hundreds of CPUs and GPUs without rebuilding your workflow around Spark, Airflow, or queues.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#live">Explore live demos</a>
+          <a class="btn btn-secondary" href="https://github.com/Burla-Cloud/examples">View source</a>
+        </div>
+        <div class="stats" aria-label="Example collection stats">
+          <div class="stat"><b>19</b><span>Examples</span></div>
+          <div class="stat"><b>7</b><span>Live sites</span></div>
+          <div class="stat"><b>1 API</b><span>remote_parallel_map</span></div>
+        </div>
+      </div>
+
+      <div class="hero-showcase" aria-hidden="true">
+        <div class="orb"></div>
+        <div class="showcase-card main">
+          <div class="preview-img" style="background-image:url('https://a0.muscache.com/pictures/85379587-35fd-42f7-88a4-872581e417ee.jpg')"></div>
+          <div class="preview-label">1.4M Airbnb photos <span>vision + reviews</span></div>
+        </div>
+        <div class="showcase-card side">
+          <div class="preview-label">571M Amazon reviews <span>500+ CPUs</span></div>
+          <div class="mini-bars"><i></i><i></i><i></i></div>
+        </div>
+        <div class="showcase-card float">
+          <div class="preview-label">2.76B taxi trips <span>15 sec</span></div>
+          <div class="mini-bars"><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="wrap" id="live">
+      <div class="section-head">
+        <h2>Live data stories</h2>
+        <p>These are the examples that already had GitHub Pages sites. Each card opens the migrated live site under this repo.</p>
+      </div>
+
+      <div class="grid">
+        <a class="card wide" href="airbnb-burla/">
+          <div class="card-media image" style="background-image:url('https://a0.muscache.com/pictures/85379587-35fd-42f7-88a4-872581e417ee.jpg')"></div>
+          <div class="card-body">
+            <div class="kicker"><span>Computer vision + reviews</span><span class="badge">Live site</span></div>
+            <h3>Airbnb at continental scale</h3>
+            <p>Scan 1.1M listings, 1.4M photos, and 50M reviews to find the listings, amenities, and image patterns hiding in plain sight.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="amazon-review-distiller/">
+          <div class="card-media wall"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="card-body">
+            <div class="kicker"><span>Text mining</span><span class="badge">Live site</span></div>
+            <h3>571M Amazon reviews distilled</h3>
+            <p>Rank real reviews by profanity, screaming, mismatch, and pure customer chaos. No LLM, just massive parallel text processing.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="met-weirdest-art/">
+          <div class="card-media image" style="background-image:url('https://images.metmuseum.org/CRDImages/es/web-large/DP258669.jpg')"></div>
+          <div class="card-body">
+            <div class="kicker"><span>Embeddings</span><span class="badge">Live site</span></div>
+            <h3>The Met's hidden twins</h3>
+            <p>Embed 192K public-domain artworks and surface visual near-duplicates separated by centuries, cultures, and mediums.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="nyc-ghost-neighborhoods/">
+          <div class="card-media code"><span></span><span></span><span></span><span></span></div>
+          <div class="card-body">
+            <div class="kicker"><span>Urban data</span><span class="badge">Live site</span></div>
+            <h3>NYC ghost neighborhoods</h3>
+            <p>Process 2.76B taxi trips to find zones that died, rebounded, or became something new after years of city-scale change.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="arxiv-fossils/">
+          <div class="card-media paper"><span></span><span></span><span></span><span></span></div>
+          <div class="card-body">
+            <div class="kicker"><span>Scientific literature</span><span class="badge">Live site</span></div>
+            <h3>Fossils of the arXiv</h3>
+            <p>Cluster 2.71M abstracts to find extinct topics, emerging fields, and the loneliest paper in the scientific corpus.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="world-photo-index/">
+          <div class="card-media map"></div>
+          <div class="card-body">
+            <div class="kicker"><span>Maps + images</span><span class="badge">Live site</span></div>
+            <h3>World Photo Index</h3>
+            <p>Analyze 9.49M geotagged Flickr photos to discover what each country photographs more than anywhere else.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+
+        <a class="card" href="github-repo-summarizer/">
+          <div class="card-media code"><span></span><span></span><span></span><span></span></div>
+          <div class="card-body">
+            <div class="kicker"><span>Open source corpus</span><span class="badge">Live site</span></div>
+            <h3>One million GitHub READMEs</h3>
+            <p>Classify, summarize, and search 1.2M READMEs with deterministic heuristics running across a Burla cluster.</p>
+            <div class="card-footer"><span>Open demo</span><span class="arrow">-&gt;</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="wrap" id="workloads">
+      <div class="section-head">
+        <h2>Heavy workloads</h2>
+        <p>These examples focus on compute patterns that get painful on one machine: GPU batches, large media jobs, geospatial data, and scientific pipelines.</p>
+      </div>
+
+      <div class="compact-grid">
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/gpu-embedding-demo">
+          <h3>GPU embeddings</h3>
+          <p>Embed 50K Wikipedia articles on A100s and query the vectors.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/image-dataset-resize">
+          <h3>Image resize</h3>
+          <p>Resize millions of images in parallel without a dedicated image platform.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/bioinformatics-alignment">
+          <h3>Genome alignment</h3>
+          <p>Run BWA-MEM over many FASTQ files with one Python fan-out.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/gdal-raster-processing">
+          <h3>GDAL raster jobs</h3>
+          <p>Process geospatial rasters across a large Burla cluster.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/ml-inference-batch">
+          <h3>Batch inference</h3>
+          <p>Run CPU and GPU inference jobs without standing up a serving layer.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/ghcn-rainiest-day">
+          <h3>NOAA rain extremes</h3>
+          <p>Scan 3.18B weather rows to find the rainiest day on record.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="wrap" id="patterns">
+      <div class="section-head">
+        <h2>Everyday production patterns</h2>
+        <p>Reusable shapes for common work: API jobs, ETL, Pandas, Parquet, scraping, and simulations.</p>
+      </div>
+
+      <div class="compact-grid">
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/parallel-web-scraping">
+          <h3>Parallel scraping</h3>
+          <p>Scrape thousands of pages concurrently from plain Python.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/python-etl-no-airflow">
+          <h3>ETL without Airflow</h3>
+          <p>Split Python ETL into simple tasks instead of a scheduler DAG.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/rate-limited-api-requests">
+          <h3>Rate-limited APIs</h3>
+          <p>Run huge API jobs while keeping concurrency under control.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/pandas-apply-parallel">
+          <h3>Pandas apply</h3>
+          <p>Scale slow row-wise functions without rewriting your DataFrame logic.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/parquet-parallel">
+          <h3>Parquet fan-out</h3>
+          <p>Process one file per worker across thousands of Parquet shards.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+        <a class="mini-card" href="https://github.com/Burla-Cloud/examples/tree/main/monte-carlo-simulation">
+          <h3>Monte Carlo</h3>
+          <p>Run independent simulations across 1,000+ cores from one script.</p>
+          <div class="card-footer"><span>View code</span><span class="arrow">-&gt;</span></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <div class="footer-inner">
+      <div>Burla examples and demos, collected in one repo.</div>
+      <div><a href="https://burla.dev">burla.dev</a> / <a href="https://github.com/Burla-Cloud/examples">GitHub</a></div>
+    </div>
+  </footer>
+</body>
+</html>
