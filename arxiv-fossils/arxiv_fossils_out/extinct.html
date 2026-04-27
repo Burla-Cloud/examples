@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<title>§1 Fossils · The arXiv Review</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel=preconnect href=https://fonts.googleapis.com>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel=stylesheet>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f4efe5;
+    --ink: #161310;
+    --ink-soft: #4a443b;
+    --ink-mute: #706858;
+    --rust: #7a3d25;
+    --rust-soft: #a45834;
+    --rule: #ccc2ad;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--paper); }
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 17px; line-height: 1.6;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(122, 61, 37, 0.035), transparent 40%),
+      radial-gradient(circle at 80% 85%, rgba(93, 107, 86, 0.035), transparent 45%),
+      var(--paper);
+    min-height: 100vh;
+    padding: 48px 24px 96px;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+  .masthead {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-bottom: 14px; border-bottom: 1px solid var(--rule); margin-bottom: 40px;
+  }
+  .masthead a { color: var(--ink-soft); text-decoration: none; }
+  .masthead a:hover { color: var(--rust); }
+  .masthead .brand { color: var(--ink); font-weight: 600; }
+  .masthead .brand em { font-family: 'Newsreader', serif; font-style: italic; font-weight: 500; color: var(--rust); text-transform: none; letter-spacing: normal; font-size: 13px; margin-right: 6px; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rust); font-weight: 600; margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400; font-size: 44px; line-height: 1.05; letter-spacing: -0.01em;
+    color: var(--ink); margin-bottom: 16px;
+  }
+  h1 em { font-style: italic; color: var(--rust); }
+  .sub {
+    font-size: 18px; line-height: 1.6; color: var(--ink-soft);
+    margin-bottom: 40px; max-width: 620px;
+  }
+  .card {
+    border: 0; border-top: 1px solid var(--rule);
+    border-radius: 0; padding: 32px 0 28px; margin: 0;
+    box-shadow: none; background: transparent;
+  }
+  .card:last-of-type { border-bottom: 1px solid var(--rule); }
+  .card .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rust); font-weight: 600; margin-bottom: 10px;
+  }
+  .card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 500; line-height: 1.55;
+    color: var(--ink); margin-bottom: 10px;
+    background: rgba(122, 61, 37, 0.07);
+    padding: 6px 10px;
+    display: inline-block;
+    border-radius: 2px;
+  }
+  .stats {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink-soft); margin-bottom: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .card ul { list-style: none; padding: 0; margin-top: 10px; }
+  .sample {
+    font-size: 16px; line-height: 1.55; color: var(--ink-soft);
+    margin: 8px 0; padding-left: 18px; position: relative;
+    font-family: 'Newsreader', serif;
+  }
+  .sample::before {
+    content: '·'; position: absolute; left: 0; top: -2px;
+    color: var(--rust); font-weight: 700; font-size: 18px;
+  }
+  .sample code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--rust);
+    background: rgba(122, 61, 37, 0.07);
+    padding: 1px 5px; border-radius: 2px;
+  }
+  .sample code a { color: inherit; text-decoration: none; }
+  .sample span[style] { color: var(--ink-mute) !important; font-size: 13px !important; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+  .footer {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-mute);
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule);
+    line-height: 1.7;
+  }
+  a { color: var(--rust); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+</style>
+<div class=page>
+<div class=masthead>
+  <span class=brand><em>Fossils of the arXiv</em> &middot; <a href="../">Home</a></span>
+  <span>§1 &middot; Fossils</span>
+</div>
+<div class=eyebrow>§1 — Ten research topics</div>
+<h1>The <em>fossils</em> of science.</h1>
+<p class=sub>Ten research topics that peaked, then quietly collapsed. Discovered by clustering 2,710,783 arXiv abstracts into 400 topics and ranking each cluster by how steeply its recent 5-year volume has fallen below its all-time peak.</p>
+        <div class=card>
+          <div class=label>#1 &middot; peaked 2000 &middot; now 16.7% of peak rate</div>
+          <h3>hep-th, gr-qc, hep-ph, astro-ph, astro-ph.CO</h3>
+          <div class=stats>7,402 papers from 1992-2025 &middot; peak-year volume 503, last 5 years 421</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0078' target=_blank>0704.0078</a></code> — Linear perturbations of matched spacetimes: the gauge problem and background symmetries <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/hep-th/0004126' target=_blank>hep-th/0004126</a></code> — Cosmology in the Randall-Sundrum Brane World Scenario <span style='color:#94a3b8'>(2000-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math/0003024' target=_blank>math/0003024</a></code> — Brane Solitons and Hypercomplex Structures <span style='color:#94a3b8'>(2000-03)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#2 &middot; peaked 1997 &middot; now 18.0% of peak rate</div>
+          <h3>hep-ph, hep-th, hep-ex, astro-ph, astro-ph.CO</h3>
+          <div class=stats>7,088 papers from 1991-2025 &middot; peak-year volume 345, last 5 years 311</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0166' target=_blank>0704.0166</a></code> — Supersymmetry breaking metastable vacua in runaway quiver gauge theories <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1404.3710' target=_blank>1404.3710</a></code> — Cosmological Constraints on MFV SUSY <span style='color:#94a3b8'>(2014-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math-ph/0702088' target=_blank>math-ph/0702088</a></code> — Exact propagators for SUSY partners <span style='color:#94a3b8'>(2007-02)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#3 &middot; peaked 2020 &middot; now 19.7% of peak rate</div>
+          <h3>q-bio.PE, physics.soc-ph, stat.AP, cs.SI, math.DS</h3>
+          <div class=stats>6,697 papers from 1995-2025 &middot; peak-year volume 1841, last 5 years 1817</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.3174' target=_blank>0704.3174</a></code> — A new chaotic attractor in a basic multi-strain epidemiological model with temporary cross-immunity <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1804.08422' target=_blank>1804.08422</a></code> — Robustness and fragility of the susceptible-infected-susceptible epidemic models on complex networks <span style='color:#94a3b8'>(2018-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/nlin/0703053' target=_blank>nlin/0703053</a></code> — On the propagation of social epidemics in social networks under S.I.R. model <span style='color:#94a3b8'>(2007-03)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#4 &middot; peaked 2005 &middot; now 30.3% of peak rate</div>
+          <h3>cond-mat.mes-hall, cond-mat.mtrl-sci, cond-mat.str-el, physics.app-ph, cond-mat.soft</h3>
+          <div class=stats>3,355 papers from 1992-2025 &middot; peak-year volume 192, last 5 years 291</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0113' target=_blank>0704.0113</a></code> — Langmuir blodgett assembly of densely aligned single walled carbon nanotubes from bulk materials <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1309.3831' target=_blank>1309.3831</a></code> — Asymptotic spectral analysis in semiconductor nanowire heterostructures <span style='color:#94a3b8'>(2013-09)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math-ph/0612021' target=_blank>math-ph/0612021</a></code> — On the spectra of carbon nano-structures <span style='color:#94a3b8'>(2006-12)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#5 &middot; peaked 2009 &middot; now 34.2% of peak rate</div>
+          <h3>quant-ph, hep-th, gr-qc, cond-mat.stat-mech, cond-mat.mes-hall</h3>
+          <div class=stats>3,172 papers from 1991-2025 &middot; peak-year volume 208, last 5 years 356</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.1040' target=_blank>0704.1040</a></code> — Recent Results on Thermal Casimir Force between Dielectrics and Related Problems <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1202.0478' target=_blank>1202.0478</a></code> — Observation of reduction in Casimir force without change of dielectric permittivity <span style='color:#94a3b8'>(2012-02)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math-ph/9910003' target=_blank>math-ph/9910003</a></code> — Stability of spherically symmetric steady states in galactic dynamics against general perturbations <span style='color:#94a3b8'>(1999-10)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#6 &middot; peaked 2015 &middot; now 35.1% of peak rate</div>
+          <h3>hep-ph, hep-th, hep-ex, hep-lat, astro-ph.CO</h3>
+          <div class=stats>10,392 papers from 1992-2025 &middot; peak-year volume 606, last 5 years 1063</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0328' target=_blank>0704.0328</a></code> — Electroweak phase transitions in the MSSM with an extra $U(1)'$ <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1505.05905' target=_blank>1505.05905</a></code> — Decays $h\to \gamma \gamma, \, \gamma Z$ in the Two Higgs Doublet Model Type III <span style='color:#94a3b8'>(2015-05)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math-ph/0602028' target=_blank>math-ph/0602028</a></code> — Dirac Type Gauge Theories and the Mass of the Higgs Boson <span style='color:#94a3b8'>(2006-02)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#7 &middot; peaked 2011 &middot; now 37.0% of peak rate</div>
+          <h3>cond-mat.mes-hall, cond-mat.mtrl-sci, physics.app-ph, physics.optics, cond-mat.str-el</h3>
+          <div class=stats>9,466 papers from 1993-2025 &middot; peak-year volume 664, last 5 years 1227</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0216' target=_blank>0704.0216</a></code> — Ab initio Study of Graphene on SiC <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1805.01749' target=_blank>1805.01749</a></code> — Impact of thermal annealing on graphene devices encapsulated in hexagonal boron nitride <span style='color:#94a3b8'>(2018-05)</span></li><li class=sample><code><a href='https://arxiv.org/abs/cond-mat/0506273' target=_blank>cond-mat/0506273</a></code> — Different Melting Behavior in Pentane and Heptane Monolayers on Graphite; Molecular Dynamics Simulations <span style='color:#94a3b8'>(2005-06)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#8 &middot; peaked 2012 &middot; now 37.1% of peak rate</div>
+          <h3>hep-ex, hep-ph, nucl-ex, nucl-th, hep-lat</h3>
+          <div class=stats>7,593 papers from 1992-2025 &middot; peak-year volume 457, last 5 years 847</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0638' target=_blank>0704.0638</a></code> — Polarizations of J/psi and psi(2S) Mesons Produced in ppbar Collisions at 1.96 TeV <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1804.08906' target=_blank>1804.08906</a></code> — $\phi$ meson production at forward rapidity in Pb-Pb collisions at $\sqrt{s_\mathrm{NN}}=2.76$ TeV <span style='color:#94a3b8'>(2018-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/hep-ph/9707387' target=_blank>hep-ph/9707387</a></code> — HERA Anomaly and Hard Charm in the Nucleon <span style='color:#94a3b8'>(1997-07)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#9 &middot; peaked 2002 &middot; now 37.9% of peak rate</div>
+          <h3>hep-ph, nucl-th, hep-ex, nucl-ex, hep-lat</h3>
+          <div class=stats>7,721 papers from 1992-2025 &middot; peak-year volume 348, last 5 years 659</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0039' target=_blank>0704.0039</a></code> — Scalar radius of the pion and zeros in the form factor <span style='color:#94a3b8'>(2007-03)</span></li><li class=sample><code><a href='https://arxiv.org/abs/1403.3355' target=_blank>1403.3355</a></code> — Constraints on spin-dependent parton distributions at large x from global QCD analysis <span style='color:#94a3b8'>(2014-03)</span></li><li class=sample><code><a href='https://arxiv.org/abs/hep-th/9912126' target=_blank>hep-th/9912126</a></code> — Glueball Spin <span style='color:#94a3b8'>(1999-12)</span></li></ul>
+        </div>
+        <div class=card>
+          <div class=label>#10 &middot; peaked 2002 &middot; now 38.4% of peak rate</div>
+          <h3>hep-th, hep-ph, gr-qc, math-ph, math.MP</h3>
+          <div class=stats>9,578 papers from 1991-2025 &middot; peak-year volume 418, last 5 years 802</div>
+          <ul><li class=sample><code><a href='https://arxiv.org/abs/0704.0085' target=_blank>0704.0085</a></code> — A Universality in PP-Waves <span style='color:#94a3b8'>(2007-04)</span></li><li class=sample><code><a href='https://arxiv.org/abs/hep-th/0009210' target=_blank>hep-th/0009210</a></code> — Phase transition in Wilson loop correlator from AdS/CFT correspondence <span style='color:#94a3b8'>(2000-09)</span></li><li class=sample><code><a href='https://arxiv.org/abs/math-ph/9904017' target=_blank>math-ph/9904017</a></code> — A Note on modified Veselov-Novikov Hierarchy <span style='color:#94a3b8'>(1999-04)</span></li></ul>
+        </div><div class=footer>Generated 2026-04-19T00:07:07+00:00. Source: arXiv metadata snapshot via Burla &middot; <a href="../">Back to home</a></div>
+</div>
