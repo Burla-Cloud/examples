@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1M READMEs · GRS</title>
+  <meta name="description" content="One million GitHub READMEs, summarized in parallel on a Burla cluster. Search them, cluster them, and see what the internet is really building." />
+  <link rel="stylesheet" href="css/style.css?v=1" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">
+        <span class="brand-octocat">⬢</span>
+        <span class="brand-text">1M&nbsp;READMEs<span class="brand-dot">.</span></span>
+      </a>
+      <div class="search-wrap">
+        <input id="search" type="text" placeholder="Search 1,000,000+ repos — try: terraform, llama, godot, parser…" autocomplete="off" />
+        <span id="search-count" class="search-count"></span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#landscape">The landscape</a>
+      <a href="#categories">Categories</a>
+      <a href="#findings">Findings</a>
+      <a href="#method">How it works</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1>One million <span class="accent">READMEs</span> at once.</h1>
+      <p class="lede">
+        We streamed <b id="hero-nrepos">~1.2 million</b> real GitHub READMEs through a Burla
+        cluster with <b>500+ CPUs running in parallel</b>, ran deterministic summary heuristics on each one, and
+        shipped every result to this page. No LLM. All rules. Reproducible.
+      </p>
+      <div class="hero-stats" id="hero-stats">
+        <div class="stat"><span class="stat-n" id="stat-repos">—</span><span class="stat-l">repos summarized</span></div>
+        <div class="stat"><span class="stat-n">500+</span><span class="stat-l">CPUs in parallel</span></div>
+        <div class="stat"><span class="stat-n" id="stat-cats">14</span><span class="stat-l">categories</span></div>
+        <div class="stat"><span class="stat-n" id="stat-langs">—</span><span class="stat-l">languages</span></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#categories" class="btn primary">Browse categories →</a>
+        <a href="#findings" class="btn">Read the findings</a>
+      </div>
+    </section>
+
+    <section id="search-results" class="search-results" hidden>
+      <h2>Matches</h2>
+      <div id="search-grid" class="repo-grid"></div>
+    </section>
+
+    <section id="landscape" class="landscape">
+      <h2>What's on GitHub, in one glance</h2>
+      <p class="blurb">Every README we processed, bucketed into one of 14 categories by keyword heuristics.</p>
+      <div id="landscape-bars" class="bars"></div>
+    </section>
+
+    <section id="categories">
+      <h2>Browse by category</h2>
+      <p class="blurb">14 flavors of open source. Click one to see the most prominent repos inside it.</p>
+      <div id="category-grid" class="category-grid"></div>
+    </section>
+
+    <section id="findings">
+      <h2>What we found</h2>
+      <p class="blurb">Nine patterns in the texture of open source — only visible at this scale.</p>
+      <div id="findings-list"></div>
+    </section>
+
+    <section id="method" class="method">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><b>Pull.</b> BigQuery <code>bigquery-public-data.github_repos</code> — join <code>files</code> + <code>contents</code> + <code>languages</code>. One README per repo (biggest). Export as zstd parquet.</li>
+        <li><b>Upload once.</b> Stream the parquet to the cluster's shared filesystem (<code>/workspace/shared</code>).</li>
+        <li><b>Fan out.</b> <code>remote_parallel_map(summarize_shard, 600 shards)</code> on Burla — every worker reads its stripe of the parquet and runs the summarizer on ~2,000 READMEs each.</li>
+        <li><b>Summarize.</b> For each README: title, tldr, install method, category, badges, code blocks, token counts.</li>
+        <li><b>Reduce.</b> 16 buckets, each merges ~40 shard files in parallel. Top-K per category by "quality" score.</li>
+        <li><b>Analyze locally.</b> TF-IDF over 14 category "documents" surfaces distinctive keywords. Client-side search index sampled to 6,000 repos.</li>
+      </ol>
+      <p class="footnote">Source: <a href="https://github.com/Burla-Cloud/" target="_blank" rel="noopener noreferrer">Burla-Cloud</a> on GitHub. Pipeline code in <code>pipeline.py</code>, <code>scale.py</code>, <code>reduce.py</code>, <code>analysis.py</code>.</p>
+    </section>
+  </main>
+
+  <!-- Category modal -->
+  <dialog id="cat-modal" class="cat-modal">
+    <div class="cat-modal-inner">
+      <div class="cat-modal-head">
+        <h3 id="cat-modal-title">—</h3>
+        <button class="cat-modal-close" aria-label="Close">✕</button>
+      </div>
+      <p id="cat-modal-subtitle" class="blurb"></p>
+      <div id="cat-modal-repos" class="repo-grid"></div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <p><b>1M READMEs</b> is a <a href="https://burla.dev" target="_blank">Burla</a> demo. Data: <a href="https://console.cloud.google.com/marketplace/product/github/github-repos" target="_blank">bigquery-public-data.github_repos</a>. Code: plain HTML + CSS + JS, zero frameworks. Built in parallel across 500+ worker CPUs.</p>
+  </footer>
+
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>
