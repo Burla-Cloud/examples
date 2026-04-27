@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+
+local_shared/
+*.csv.gz
+
+local_cache/
+results_local/
