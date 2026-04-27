@@ -1,0 +1,66 @@
+name: Deploy example sites
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Pages artifact
+        run: |
+          set -euo pipefail
+
+          mkdir -p public
+          touch public/.nojekyll
+
+          mkdir -p public/airbnb-burla
+          cp -R airbnb-burla/site/. public/airbnb-burla/
+          mkdir -p public/amazon-review-distiller
+          cp -R amazon-review-distiller/. public/amazon-review-distiller/
+          mkdir -p public/met-weirdest-art
+          cp -R met-weirdest-art/. public/met-weirdest-art/
+          mkdir -p public/nyc-ghost-neighborhoods
+          cp -R nyc-ghost-neighborhoods/. public/nyc-ghost-neighborhoods/
+          mkdir -p public/arxiv-fossils
+          cp -R arxiv-fossils/. public/arxiv-fossils/
+          mkdir -p public/world-photo-index
+          cp -R world-photo-index/. public/world-photo-index/
+          mkdir -p public/github-repo-summarizer
+          cp -R github-repo-summarizer/. public/github-repo-summarizer/
+
+          find public -name .gitignore -delete
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
