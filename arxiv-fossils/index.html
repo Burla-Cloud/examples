@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<title>Fossils of the arXiv — a Burla demo</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta name=description content="We embedded 2,710,783 arXiv abstracts and asked the geometry which topics went extinct, which appeared overnight, and which paper is the loneliest of all.">
+<meta property=og:title content="Fossils of the arXiv">
+<meta property=og:description content="The loneliest paper in science is a dataset of Norwegian corporate tax filings. We clustered 2.71M arXiv abstracts to find out.">
+<meta name=twitter:card content=summary_large_image>
+<link rel=preconnect href=https://fonts.googleapis.com>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel=stylesheet>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f4efe5;
+    --paper-edge: #e8e0cf;
+    --ink: #161310;
+    --ink-soft: #4a443b;
+    --rust: #7a3d25;
+    --rust-soft: #a45834;
+    --olive: #5d6b56;
+    --rule: #ccc2ad;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--paper); }
+  body {
+    font-family: 'Newsreader', 'Source Serif Pro', Georgia, serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(122, 61, 37, 0.035), transparent 40%),
+      radial-gradient(circle at 80% 85%, rgba(93, 107, 86, 0.035), transparent 45%),
+      var(--paper);
+    min-height: 100vh;
+    padding: 64px 24px 96px;
+  }
+  .page { max-width: 680px; margin: 0 auto; }
+  .meta-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .meta-top b { color: var(--ink); letter-spacing: 0.22em; font-weight: 600; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: clamp(38px, 6vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  h1 em { font-style: italic; color: var(--rust); }
+  .lede { font-size: 20px; line-height: 1.6; color: var(--ink-soft); margin-bottom: 42px; }
+  .lede b { color: var(--ink); font-weight: 500; }
+  .rule { border: 0; height: 1px; background: var(--rule); margin: 42px 0; }
+  .rule-ornament {
+    display: flex; align-items: center; gap: 14px;
+    margin: 48px 0 36px;
+    color: var(--rust-soft);
+  }
+  .rule-ornament::before, .rule-ornament::after {
+    content: ''; flex: 1; border-top: 1px solid var(--rule);
+  }
+  .rule-ornament span {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  }
+  blockquote.finding {
+    border-left: 3px solid var(--rust);
+    padding: 4px 0 4px 24px;
+    margin: 28px 0;
+    font-size: 24px;
+    line-height: 1.45;
+    font-weight: 400;
+  }
+  blockquote.finding em { font-style: italic; color: var(--rust); }
+  blockquote.finding .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  .byline {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 14px;
+  }
+  .byline a { color: var(--rust); text-decoration: underline; text-decoration-color: rgba(122,61,37,0.35); text-underline-offset: 3px; }
+  .data-table {
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    font-size: 14px;
+    margin: 36px 0;
+  }
+  .data-table td { padding: 10px 0; border-bottom: 1px dashed var(--rule); vertical-align: baseline; }
+  .data-table td:first-child { color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; font-weight: 600; width: 48%; }
+  .data-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: var(--ink); font-size: 15px; }
+  .data-table td:last-child small { font-weight: 400; color: var(--ink-soft); margin-left: 2px; }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--rust);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .finding-entry {
+    padding: 24px 0 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .finding-entry:last-of-type { border-bottom: 1px solid var(--rule); }
+  .finding-entry h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 2px 0 10px;
+    color: var(--ink);
+  }
+  .finding-entry h2 a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .finding-entry h2 a:hover { border-bottom-color: var(--rust); color: var(--rust); }
+  .finding-entry p { color: var(--ink-soft); font-size: 17px; margin-bottom: 6px; }
+  .finding-entry .readmore {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rust);
+    display: inline-block;
+    margin-top: 8px;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .finding-entry .readmore:hover { color: var(--ink); }
+  .footnote {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.7;
+  }
+  .footnote a { color: var(--rust); }
+  .footnote code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; background: rgba(122,61,37,0.07); padding: 1px 5px; border-radius: 2px; }
+  .dropcap::first-letter {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    float: left;
+    font-size: 62px;
+    line-height: 0.85;
+    padding: 8px 10px 0 0;
+    color: var(--rust);
+  }
+</style>
+
+<div class=page>
+
+<div class=meta-top>
+  <span><b>THE ARXIV REVIEW</b></span>
+  <span>VOL. I · APRIL 2026</span>
+  <span>A BURLA DEMO</span>
+</div>
+
+<div class=eyebrow>Linguistic archaeology</div>
+<h1>The loneliest paper in science is about <em>Norwegian corporate tax filings.</em></h1>
+
+<p class="lede dropcap">We embedded <b>every single arXiv abstract ever posted</b> — 2,710,783 of them — with MiniLM-L6-v2, clustered the lot into 400 topics, and asked the 384-dimensional geometry three questions whose answers no one at arXiv has ever curated: which topics collapsed, which appeared overnight, and which single paper sits the furthest from anything else anyone has ever written.</p>
+
+<blockquote class=finding>
+  <span class=mono>arXiv:2203.12842</span> &middot; <em>"Financial statements of companies in Norway."</em> Its fifth-nearest neighbor across 2.71 M papers has cosine similarity <b>0.138</b>. Nothing else is remotely about the same thing.
+  <div class=byline>Posted 2022-03-24 &middot; Categories: <code>econ.GN</code>, <code>q-fin.EC</code> &middot; <a href="https://arxiv.org/abs/2203.12842" target=_blank>arxiv.org/abs/2203.12842</a></div>
+</blockquote>
+
+<div class="rule-ornament"><span>Methodology &amp; compute</span></div>
+
+<table class=data-table>
+  <tr><td>Abstracts embedded</td><td>2,710,783</td></tr>
+  <tr><td>Embedding model</td><td>all-MiniLM-L6-v2 <small>· 384-d</small></td></tr>
+  <tr><td>Clusters (MiniBatch k-means)</td><td>400</td></tr>
+  <tr><td>Burla wall-clock</td><td>~25 <small>min</small></td></tr>
+  <tr><td>Serial-equivalent</td><td>~75–90 <small>min</small></td></tr>
+  <tr><td>Reduce stage alone</td><td>142 <small>s</small></td></tr>
+  <tr><td>Peak parallel workers</td><td>16</td></tr>
+</table>
+
+<div class="rule-ornament"><span>Three findings</span></div>
+
+<article class=finding-entry>
+  <span class=section-num>§1 — Fossils</span>
+  <h2><a href="arxiv_fossils_out/extinct.html">Ten research topics that peaked, then quietly collapsed</a></h2>
+  <p>Measured by the ratio of last-5-year paper rate to peak-year rate. #1 is 2000s-era Randall-Sundrum braneworld cosmology, now running at <b>16.7%</b> of its peak. #3 is pandemic-era epidemic modelling, already at 19.7%.</p>
+  <a class=readmore href="arxiv_fossils_out/extinct.html">Read the full list ↗</a>
+</article>
+
+<article class=finding-entry>
+  <span class=section-num>§2 — Newborns</span>
+  <h2><a href="arxiv_fossils_out/emergent.html">Ten topics that appeared essentially overnight</a></h2>
+  <p>Clusters where the majority of their all-time papers were written in the last 24 months. #1 is LLM evaluation, safety, and alignment — <b>55.3%</b> of its entire history is from the last two years.</p>
+  <a class=readmore href="arxiv_fossils_out/emergent.html">Read the full list ↗</a>
+</article>
+
+<article class=finding-entry>
+  <span class=section-num>§3 — The outlier</span>
+  <h2><a href="arxiv_fossils_out/loneliest.html">The single paper furthest from anything else in science</a></h2>
+  <p>The one arXiv paper whose closest neighbor is further away than any other paper's closest neighbor. It's not what anyone predicted — and its abstract is not about machine learning.</p>
+  <a class=readmore href="arxiv_fossils_out/loneliest.html">Read the case ↗</a>
+</article>
+
+<div class=footnote>
+  <p>Source: the full arXiv metadata snapshot (Cornell University / Hugging Face, refreshed monthly). Embeddings: <code>sentence-transformers/all-MiniLM-L6-v2</code> (ONNX via <code>fastembed</code>). Index: <code>faiss.IndexIVFFlat</code> with inner-product metric. Clustering: <code>sklearn.MiniBatchKMeans(k=400)</code>. Orchestration: <a href="https://burla.dev" target=_blank>Burla</a>'s <code>remote_parallel_map</code> — three stages, one worker for discovery, sixteen for embedding, one for reduce.</p>
+  <p>Source code &amp; artifacts: <a href="https://github.com/Burla-Cloud/arxiv-fossils" target=_blank>github.com/Burla-Cloud/arxiv-fossils</a></p>
+</div>
+
+</div>
+</html>
