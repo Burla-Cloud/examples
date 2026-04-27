@@ -317,11 +317,15 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
                 continue
             for item in section.get("items", []):
                 if item.get("lat") is not None and item.get("lng") is not None:
+                    lid = item.get("listing_id", 0)
+                    lid_str = str(lid)
+                    listing_url = item.get("listing_url") or f"https://www.airbnb.com/rooms/{lid_str}"
                     world.append({
                         "type": section_id,
                         "lat": float(item["lat"]),
                         "lng": float(item["lng"]),
-                        "listing_id": int(item.get("listing_id", 0)),
+                        "listing_id": lid_str,
+                        "listing_url": listing_url,
                     })
         out["world_map"] = world
         out["ok"] = True
