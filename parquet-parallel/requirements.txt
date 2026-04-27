@@ -1,0 +1,4 @@
+burla
+boto3
+pyarrow
+pandas
