@@ -1,0 +1,7 @@
+huggingface_hub>=0.26
+requests>=2.32
+pillow>=10.4
+torch>=2.4
+open-clip-torch>=2.26
+geopandas>=1.0
+shapely>=2.0

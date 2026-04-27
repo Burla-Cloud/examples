@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>World Photo Index — What does Earth photograph?</title>
+  <meta name="description" content="9,487,758 public geotagged photos. 246 countries. One question: what's the most photographed thing in every country? A Burla data pipeline demo." />
+  <meta property="og:title" content="World Photo Index" />
+  <meta property="og:description" content="What's the most photographed thing in every country? 9.49M photos across 246 countries, processed in under 5 minutes on 967 Burla workers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-text">WORLD&nbsp;PHOTO&nbsp;INDEX</span>
+    </div>
+    <nav class="topnav">
+      <a href="#map">The map</a>
+      <a href="#findings">The findings</a>
+      <a href="#methodology">How we built this</a>
+      <a class="badge" href="https://github.com/Burla-Cloud" target="_blank" rel="noopener">
+        Powered by Burla
+      </a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">AN EXPERIMENT · 2026</div>
+    <h1 class="hero-title">What does Earth photograph?</h1>
+    <p class="hero-sub">
+      We scanned <span class="k">9,487,758</span> public geotagged photographs
+      from <span class="k">246</span> countries and asked one question:
+      <em>when the world picks up a camera, what does it point at?</em>
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><span class="big">9.49<span class="unit">M</span></span><span class="sub">photos analyzed</span></div>
+      <div class="stat"><span class="big">246</span><span class="sub">countries + territories</span></div>
+      <div class="stat"><span class="big">53,198</span><span class="sub">cities</span></div>
+      <div class="stat"><span class="big">967</span><span class="sub">parallel workers</span></div>
+      <div class="stat"><span class="big">4<span class="unit">m</span>&nbsp;12<span class="unit">s</span></span><span class="sub">end-to-end pipeline</span></div>
+    </div>
+    <div class="hero-scroll-hint">↓&nbsp;Scroll to the map</div>
+  </section>
+
+  <section class="bigcards" id="headliners"></section>
+
+  <section class="map-section" id="map">
+    <div class="map-header">
+      <h2 class="section-title">Every country. Every camera roll.</h2>
+      <p class="section-sub">
+        Each country is painted by the total public photos we found in it
+        (log scale). <strong>Hover</strong> to see its most-photographed
+        <em>thing</em> — cities, regions, and country names filtered out.
+        <strong>Click</strong> for the full breakdown.
+      </p>
+    </div>
+    <div class="map-wrap">
+      <svg id="worldmap" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="map-legend">
+        <span>fewer photos</span>
+        <span class="legend-bar"></span>
+        <span>more photos</span>
+      </div>
+    </div>
+  </section>
+
+  <aside id="countrypanel" class="country-panel" aria-hidden="true">
+    <button class="close-btn" id="closepanel" aria-label="Close">×</button>
+    <div id="countrybody"></div>
+  </aside>
+
+  <section class="findings-section" id="findings">
+    <h2 class="section-title center">What we found</h2>
+    <p class="section-sub center">
+      Nine things we didn't know until we ran this pipeline.
+    </p>
+    <div id="findings-list" class="findings-list"></div>
+  </section>
+
+  <section class="methodology" id="methodology">
+    <h2 class="section-title">How this was built</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <h3>1. The data</h3>
+        <p>
+          <a href="https://huggingface.co/datasets/dalle-mini/YFCC100M_OpenAI_subset" target="_blank" rel="noopener">
+            YFCC100M (OpenAI subset)
+          </a>
+          — 15M Flickr uploads with public Creative Commons licensing,
+          pre-sharded into 4,094 metadata files on HuggingFace. We filtered
+          to the 9.49M rows with latitude + longitude.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>2. The cluster</h3>
+        <p>
+          <a href="https://burla.dev" target="_blank" rel="noopener">Burla</a>
+          spun up a 13-node cluster (80 vCPUs each). Peak concurrency: 967
+          simultaneous Python workers — each processing one shard of ~2,300
+          photos and reverse-geocoding every lat/lon into a
+          (country, admin, city) tuple against a 30k-city KD-tree.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>3. The map-reduce</h3>
+        <p>
+          Three passes, all on Burla:
+          <strong>extract</strong> (118 s · 967 workers),
+          <strong>tokenize</strong> (107 s · 640 workers), and
+          <strong>reduce</strong> (230 s · 64 workers).
+          End-to-end under 8 minutes of wall-clock.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>4. The analysis</h3>
+        <p>
+          We scored every user-tagged phrase with TF-IDF across all 246
+          countries, then filtered out cities, regions, and country-name
+          aliases so "Paris" wouldn't be France's most photographed thing.
+          What's left is landmarks, events, subcultures, and obsessions.
+        </p>
+      </div>
+    </div>
+    <p class="method-note">
+      Every number you see was computed from the raw data — no editorial
+      curation. Phrases come straight from the authors' Flickr tags.
+      <a href="https://github.com/Burla-Cloud/burla-agent-starter-kit" target="_blank" rel="noopener">
+        See the Burla demo code.
+      </a>
+    </p>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand"><span class="brand-mark">◆</span><span class="brand-text">WORLD&nbsp;PHOTO&nbsp;INDEX</span></div>
+        <p class="footer-sub">
+          A Burla data-pipeline demo. 9.49M photos, 246 countries, under 8
+          minutes wall-clock on a 1,040-CPU cluster.
+        </p>
+      </div>
+      <div>
+        <h4>Credits</h4>
+        <ul>
+          <li>Data: <a href="https://huggingface.co/datasets/dalle-mini/YFCC100M_OpenAI_subset" target="_blank" rel="noopener">YFCC100M (dalle-mini subset)</a></li>
+          <li>Compute: <a href="https://burla.dev" target="_blank" rel="noopener">Burla</a></li>
+          <li>Geocoding: <a href="https://pypi.org/project/reverse_geocoder/" target="_blank" rel="noopener">reverse_geocoder</a></li>
+          <li>Shapes: <a href="https://www.naturalearthdata.com" target="_blank" rel="noopener">Natural Earth</a></li>
+          <li>Visualization: <a href="https://d3js.org" target="_blank" rel="noopener">D3.js</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Demo series</h4>
+        <ul>
+          <li>01 — World Photo Index <span class="here">(you are here)</span></li>
+          <li>02 — Amazon Review Distiller <span class="pending">next</span></li>
+          <li>03 — GitHub Repo Summarizer <span class="pending">next</span></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
