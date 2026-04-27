@@ -1,0 +1,67 @@
+{
+  "total_artworks": 191922,
+  "n_shards": 428,
+  "outlier_count": 24,
+  "twin_count": 30,
+  "reduce_elapsed_s": 49.65,
+  "generated_at_utc": "2026-04-19T22:13:37+00:00",
+  "top_outliers_preview": [
+    {
+      "object_id": 112709,
+      "title": "Hat",
+      "kth_similarity": 0.5363807678222656
+    },
+    {
+      "object_id": 339135,
+      "title": "Palmer Cox's Famous Brownie Books",
+      "kth_similarity": 0.554070770740509
+    },
+    {
+      "object_id": 333802,
+      "title": "Yvette Guilbert",
+      "kth_similarity": 0.5582293272018433
+    },
+    {
+      "object_id": 728107,
+      "title": "Smileage",
+      "kth_similarity": 0.5626012682914734
+    },
+    {
+      "object_id": 18824,
+      "title": "Sampler made at the Westtown Quaker School",
+      "kth_similarity": 0.5928454399108887
+    }
+  ],
+  "top_twins_preview": [
+    {
+      "similarity": 0.9316,
+      "century_gap": 49,
+      "a_id": 186597,
+      "b_id": 244170
+    },
+    {
+      "similarity": 0.9157,
+      "century_gap": 49,
+      "a_id": 568276,
+      "b_id": 63150
+    },
+    {
+      "similarity": 0.9169,
+      "century_gap": 48,
+      "a_id": 559252,
+      "b_id": 73260
+    },
+    {
+      "similarity": 0.9167,
+      "century_gap": 48,
+      "a_id": 551048,
+      "b_id": 202864
+    },
+    {
+      "similarity": 0.9054,
+      "century_gap": 48,
+      "a_id": 202860,
+      "b_id": 551048
+    }
+  ]
+}

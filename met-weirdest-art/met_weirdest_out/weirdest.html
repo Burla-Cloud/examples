@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<title>Room II · The Weirdest Art · The Weirdest Art in History</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel=preconnect href=https://fonts.googleapis.com>
+<link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel=stylesheet>
+<style>
+  :root {
+    color-scheme: light;
+    --wall: #efeae0;
+    --wall-warm: #f5f0e4;
+    --ink: #1c1712;
+    --ink-soft: #4a4439;
+    --ink-mute: #7a7266;
+    --claret: #6b2a3a;
+    --claret-soft: #8d3d4e;
+    --gold: #a88b57;
+    --rule: #c9bfaa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--wall); }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    color: var(--ink);
+    background: radial-gradient(ellipse at top, var(--wall-warm), var(--wall) 60%), var(--wall);
+    min-height: 100vh;
+    padding: 40px 24px 96px;
+  }
+  .page { max-width: 1160px; margin: 0 auto; }
+  .masthead {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-bottom: 14px; border-bottom: 1px solid var(--rule); margin-bottom: 40px;
+  }
+  .masthead a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .masthead a:hover { color: var(--claret); }
+  .masthead .brand em { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 15px; color: var(--ink); text-transform: none; letter-spacing: normal; margin-right: 10px; }
+  .plate-label {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .plate-label .ornament {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600;
+  }
+  .plate-label .ornament::before, .plate-label .ornament::after {
+    content: ''; width: 30px; height: 1px; background: var(--gold);
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400; font-size: clamp(40px, 5vw, 56px); line-height: 1.05;
+    color: var(--ink); margin-bottom: 16px;
+    text-align: center; max-width: 820px; margin-left: auto; margin-right: auto;
+  }
+  h1 em { font-style: italic; color: var(--claret); }
+  .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px; line-height: 1.7; color: var(--ink-soft);
+    text-align: center; max-width: 640px; margin: 0 auto 56px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px; margin: 28px 0;
+  }
+  .card {
+    border: 1px solid var(--rule); background: var(--wall-warm);
+    border-radius: 0; overflow: hidden;
+    box-shadow: 0 2px 10px rgba(28, 23, 18, 0.04), inset 0 0 0 1px rgba(168, 139, 87, 0.05);
+    display: flex; flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 28px rgba(28, 23, 18, 0.08), inset 0 0 0 1px rgba(168, 139, 87, 0.08);
+  }
+  .card a { display: block; overflow: hidden; }
+  .card img {
+    width: 100%; height: 300px; object-fit: cover;
+    display: block; background: var(--wall);
+    transition: transform 0.4s ease;
+  }
+  .card:hover img { transform: scale(1.03); }
+  .card .body {
+    padding: 16px 20px 20px;
+    font-size: 13px; flex: 1;
+    text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+  .card .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--claret); font-weight: 600; margin-bottom: 8px;
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px;
+    color: var(--ink); font-weight: 500; line-height: 1.22;
+    margin: 6px 0 8px;
+  }
+  .card .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-soft); line-height: 1.5;
+    letter-spacing: 0.04em; margin: 2px 0;
+  }
+  .footer {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-mute);
+    margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--rule);
+    text-align: center; letter-spacing: 0.04em;
+  }
+  .footer a { color: var(--claret); }
+  a { color: var(--claret); text-decoration: none; }
+  a:hover { color: var(--claret-soft); }
+</style>
+<div class=page>
+<div class=masthead>
+  <span class=brand><em>The Weirdest Art in History</em> &middot; <a href="../">Home</a></span>
+  <span>Room II &middot; The Weirdest Art</span>
+</div>
+<div class=plate-label>
+  <div class=ornament><span>Room II &middot; 24 Artworks</span></div>
+</div>
+<h1>The <em>weirdest</em> art in the Met.</h1>
+<p class=sub>The 24 most visually isolated artworks in the Met's 191,922-piece public-domain collection. Each was CLIP-embedded, then ranked by how dissimilar its 10th visual neighbor is across five thousand years of human-made objects. No human curated this list.</p>
+<div class=grid><div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/112709' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ci/web-large/C.I.65.2.2a_label.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#1 · isolation 0.46</div>
+    <h3>Hat</h3>
+    <div class=meta>ca. 1840  · American</div>
+    <div class=meta>Costume Institute  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/339135' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/dp/web-large/DP866570.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#2 · isolation 0.45</div>
+    <h3>Palmer Cox's Famous Brownie Books</h3>
+    <div class=meta>1895</div>
+    <div class=meta>Drawings and Prints  · Prints|Posters</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/333802' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/dp/web-large/MM48709.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#3 · isolation 0.44</div>
+    <h3>Yvette Guilbert</h3>
+    <div class=meta>1894</div>
+    <div class=meta>Drawings and Prints  · Prints</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/728107' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/dp/web-large/DP867919.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#4 · isolation 0.44</div>
+    <h3>Smileage</h3>
+    <div class=meta>ca. 1917</div>
+    <div class=meta>Drawings and Prints  · Prints|Posters</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/18824' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/DP168671.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#5 · isolation 0.41</div>
+    <h3>Sampler made at the Westtown Quaker School</h3>
+    <div class=meta>1801  · American</div>
+    <div class=meta>The American Wing  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/286333' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ph/web-large/DP285627.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#6 · isolation 0.41</div>
+    <h3>Panorama of Niagara Falls</h3>
+    <div class=meta>July 1845</div>
+    <div class=meta>Photographs  · Photographs</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/5554' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/97467.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#7 · isolation 0.40</div>
+    <h3>Paul Revere's Autograph</h3>
+    <div class=meta>1745–1818  · American</div>
+    <div class=meta>The American Wing  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/84413' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ci/web-large/C.I.50.5.1_label.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#8 · isolation 0.38</div>
+    <h3>Hat</h3>
+    <div class=meta>ca. 1870  · American</div>
+    <div class=meta>Costume Institute  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/725023' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/dp/web-large/DP876075.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#9 · isolation 0.38</div>
+    <h3>"Tertulia de café", a group of figures seated around a table (number 5)</h3>
+    <div class=meta>ca. 1959</div>
+    <div class=meta>Drawings and Prints  · Prints</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/84239' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ci/web-large/CI58.34.24a_label.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#10 · isolation 0.38</div>
+    <h3>Suit</h3>
+    <div class=meta>1940  · French</div>
+    <div class=meta>Costume Institute  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/113237' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ci/web-large/C.I.53.68.3_label.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#11 · isolation 0.36</div>
+    <h3>Bonnet</h3>
+    <div class=meta>early 1880s  · French</div>
+    <div class=meta>Costume Institute  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/204977' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/193653.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#12 · isolation 0.36</div>
+    <h3>Loving cup</h3>
+    <div class=meta>1772  · Irish, Dublin</div>
+    <div class=meta>European Sculpture and Decorative Arts  · Metalwork-Silver</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/207407' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/233076.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#13 · isolation 0.34</div>
+    <h3>Jean-Baptiste Carpeaux at Work</h3>
+    <div class=meta>modeled ca. 1908–9  · French</div>
+    <div class=meta>European Sculpture and Decorative Arts  · Sculpture-Bronze</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/283200' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ph/web-large/DP274835.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#14 · isolation 0.34</div>
+    <h3>[Broadside for the Capture of John Wilkes Booth, John Surratt, and David Herold]</h3>
+    <div class=meta>April 20, 1865</div>
+    <div class=meta>Photographs  · Collages</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/211478' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/SF2002_399_10_img1.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#15 · isolation 0.34</div>
+    <h3>Unused block of four "Penny Black" postage stamps of Queen Victoria</h3>
+    <div class=meta>issued May 6, 1840  · British</div>
+    <div class=meta>European Sculpture and Decorative Arts  · Postage Stamps|Prints</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/685443' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ph/web-large/DP349634.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#16 · isolation 0.33</div>
+    <h3>[John Burnet]</h3>
+    <div class=meta>1860s</div>
+    <div class=meta>Photographs  · Photographs</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/238576' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/es/web-large/193577.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#17 · isolation 0.33</div>
+    <h3>Flagon (one of a pair)</h3>
+    <div class=meta>1597–98  · British, London</div>
+    <div class=meta>European Sculpture and Decorative Arts  · Metalwork-Silver</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/466540' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/md/web-large/cdi23-229-6-5.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#18 · isolation 0.33</div>
+    <h3>Glass Fragment</h3>
+    <div class=meta>1560  · French</div>
+    <div class=meta>Medieval Art  · Glass-Stained</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/286316' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ph/web-large/DP345508.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#19 · isolation 0.33</div>
+    <h3>Voyage en Orient et en Espagne Vols 3 & 4</h3>
+    <div class=meta>1860 or later</div>
+    <div class=meta>Photographs  · Albums</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/14065' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/ad/web-large/164299.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#20 · isolation 0.33</div>
+    <h3>Embroidered sampler</h3>
+    <div class=meta>1777  · British</div>
+    <div class=meta>The American Wing  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/551092' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/07.229.2-Dimensions.png' alt=''/></a>
+  <div class=body>
+    <div class=label>#21 · isolation 0.33</div>
+    <h3>Fragments of a Palm Column</h3>
+    <div class=meta>ca. 2353–2323 B.C.</div>
+    <div class=meta>Egyptian Art  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/568601' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/eg/web-large/08.201.1-plan.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#22 · isolation 0.32</div>
+    <h3>Tomb chapel of Raemkai: North wall of the entrance corridor</h3>
+    <div class=meta>ca. 2446–2389 B.C.</div>
+    <div class=meta>Egyptian Art  · </div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/24858' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/aa/web-large/DP282811.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#23 · isolation 0.31</div>
+    <h3>Box For Crossbow Bolts (&lt;i&gt;Bolzenkasten&lt;/i&gt;), Probably Made for William IV, Duke of Bavaria (r. 1508–50)</h3>
+    <div class=meta>dated 1539  · German, Munich</div>
+    <div class=meta>Arms and Armor  · Archery Equipment</div>
+  </div>
+</div>
+<div class=card>
+  <a href='https://www.metmuseum.org/art/collection/search/591841' target=_blank><img loading=lazy src='https://images.metmuseum.org/CRDImages/li/web-large/li143.7W41 W413.R.jpg' alt=''/></a>
+  <div class=body>
+    <div class=label>#24 · isolation 0.31</div>
+    <h3>An Address to the Workmen in the Pottery on the Subject of Entering into the Service of Foreign Manufacturers</h3>
+    <div class=meta>1783  · Newcastle: J. Smith, 1783 (1st ed.)</div>
+    <div class=meta>The Libraries  · </div>
+  </div>
+</div></div>
+<div class=footer>Generated 2026-04-19T22:13:37+00:00 &middot; Source: Met Museum Open Access via Burla &middot; <a href="../">Back to home</a></div>
+</div>
