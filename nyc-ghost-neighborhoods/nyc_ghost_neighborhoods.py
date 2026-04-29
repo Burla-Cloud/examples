@@ -58,13 +58,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+import random as _random
+
 os.environ.setdefault("DISABLE_BURLA_TELEMETRY", "True")
 
 import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-# Hard-imported at module scope so Burla's dep-detector ships them to workers.
 import requests  # noqa: F401
 import fsspec  # noqa: F401
 
@@ -183,8 +184,6 @@ def process_month(task_id: str) -> Dict:
 
     url = _hf_url_for_task(task_id)
 
-    import requests as _requests
-    import random as _random
 
     # HF's Xet bridge issues signed S3 URLs via a 302 and has no meaningful
     # per-IP rate ceiling for burla-sized fleets (3k/5min unauthenticated,

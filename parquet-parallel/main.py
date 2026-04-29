@@ -18,8 +18,6 @@ print(f"found {len(parquet_keys)} parquet files")
 
 
 def scan_parquet_file(key: str) -> dict:
-    import boto3
-    import pyarrow.parquet as pq
 
     s3 = boto3.client("s3")
     obj = s3.get_object(Bucket=BUCKET, Key=key)

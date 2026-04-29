@@ -15,9 +15,6 @@ Run with Python 3.11 to match the image. Burla enforces exact major.minor
 Python match between client and worker; the image is based on
 pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime which ships Python 3.11.
 
-Top-level imports are intentionally minimal (no torch, no datasets, no numpy)
-to stop Burla's package-sync from reinstalling client-side CPU wheels on top
-of the CUDA wheels already in the image.
 """
 
 import json
@@ -26,6 +23,10 @@ from pathlib import Path
 
 from burla import remote_parallel_map
 
+import urllib.request
+import pyarrow.parquet as pq
+import torch
+from sentence_transformers import SentenceTransformer
 
 IMAGE = "jakezuliani/burla-embedder:latest"
 MODEL_NAME = "BAAI/bge-large-en-v1.5"
@@ -68,11 +69,6 @@ PROJECT_ID = _resolve_project_id()
 
 
 def download_shard(shard_idx, articles_per_shard, shared_root):
-    import io
-    import json
-    import urllib.request
-    from pathlib import Path
-    import pyarrow.parquet as pq
 
     parquet_url = PARQUET_URL_TEMPLATE.format(shard_idx=shard_idx % N_PARQUET_FILES)
     req = urllib.request.Request(parquet_url, headers={"User-Agent": "burla-demo/1.0"})
@@ -102,11 +98,6 @@ cache = {}
 
 
 def embed_shard(shard_path, model_name, shared_root):
-    import json
-    from pathlib import Path
-    import numpy as np
-    import torch
-    from sentence_transformers import SentenceTransformer
 
     if "model" not in cache:
         print(f"loading {model_name} (cuda={torch.cuda.is_available()}) ...")
@@ -141,8 +132,6 @@ def embed_shard(shard_path, model_name, shared_root):
 
 
 def embed_query(query, model_name):
-    import torch
-    from sentence_transformers import SentenceTransformer
 
     if "model" not in cache:
         print(f"loading {model_name} (cuda={torch.cuda.is_available()}) ...")

@@ -27,10 +27,11 @@ Then set `IMAGE = "<your-registry>/burla-bio-worker:latest"` at the top of `../m
 ```python
 from burla import remote_parallel_map
 
+import subprocess
+
 IMAGE = "us-docker.pkg.dev/test-burla/burla-demos/burla-bio-worker:latest"
 
 def align(sample_id, fq1, fq2):
-    import subprocess
     # bwa, samtools, aws are all on PATH
     ...
 

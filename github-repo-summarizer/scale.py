@@ -27,6 +27,8 @@ from burla import remote_parallel_map
 
 from pipeline import summarize_shard
 
+import base64, os
+import gzip, os, glob
 
 HERE = Path(__file__).parent
 LOCAL_PARQUET = HERE / "samples" / "readmes.parquet"
@@ -63,7 +65,6 @@ def _upload_parquet(local: Path, verbose: bool = True) -> dict:
 
     def write_chunk(idx: int, b64: str) -> dict:
         """Each chunk becomes its own part file, written in parallel."""
-        import base64, os
         out = f"/workspace/shared/grs/_readmes.gz.part.{idx:04d}"
         os.makedirs(os.path.dirname(out), exist_ok=True)
         data = base64.b64decode(b64)
@@ -88,7 +89,6 @@ def _upload_parquet(local: Path, verbose: bool = True) -> dict:
     # Concatenate + decompress on the cluster. Runs on ONE worker that has
     # read access to all part files on the shared GCS-backed FS.
     def finalize(n_parts: int) -> dict:
-        import gzip, os, glob
         base_dir = "/workspace/shared/grs"
         parts = sorted(glob.glob(f"{base_dir}/_readmes.gz.part.*"))
         gz_path = f"{base_dir}/_readmes.gz"

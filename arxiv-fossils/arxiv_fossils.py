@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import os
 
+from huggingface_hub import hf_hub_download
 os.environ.setdefault("DISABLE_BURLA_TELEMETRY", "True")
 # ONNX Runtime / OpenMP will otherwise see the *host* CPU count on Burla's
 # cgroup-limited workers and spawn ~60 threads onto 1 real CPU, thrashing
@@ -60,14 +61,12 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-# Declared at module scope so Burla's dep-detector auto-installs these on workers.
-# We use fastembed (ONNX-based) instead of sentence-transformers to avoid the
-# 2+ GB torch install per worker — fastembed ships a pre-exported ONNX of
-# all-MiniLM-L6-v2 that downloads in ~2 s.
+# Fastembed avoids the 2+ GB torch install per worker and ships a pre-exported
+# ONNX model for all-MiniLM-L6-v2.
 import huggingface_hub  # noqa: F401
 import fastembed  # noqa: F401
 import sklearn  # noqa: F401
-import faiss  # noqa: F401  # faiss-cpu: required, hard-imported so Burla's dep detector installs it
+import faiss  # noqa: F401
 
 SHARED_ROOT = Path(os.environ.get("SHARED_DIR", "/workspace/shared"))
 RAW_DIR = SHARED_ROOT / "arxiv-fossils" / "raw"
@@ -135,7 +134,6 @@ def stage_raw(_ignored) -> List[str]:
         print(f"stage_raw: {len(existing)} shards already on shared FS, skipping")
         return existing
 
-    from huggingface_hub import hf_hub_download
 
     t0 = time.time()
     print(f"stage_raw: downloading {HF_REPO}/{HF_FILENAME} ...")

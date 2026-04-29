@@ -11,8 +11,6 @@ print(f"{len(user_ids)} requests across {len(chunks)} tasks")
 
 
 def enrich_chunk(ids: list[str]) -> list[dict]:
-    import time
-    import httpx
 
     out = []
     with httpx.Client(timeout=30.0, headers={"Authorization": "Bearer $API_KEY"}) as client:
@@ -42,6 +40,7 @@ results = remote_parallel_map(
 )
 
 import json
+
 with open("enriched.jsonl", "w") as f:
     for chunk_result in results:
         for row in chunk_result:

@@ -35,9 +35,6 @@ KEEP_SAMPLE_REPOS = 6000  # random reservoir sample for the UI search index
 def reduce_bucket(bucket_idx: int, n_buckets: int, top_per_cat: int,
                   top_per_lang: int, sample_cap: int) -> Dict[str, Any]:
     """Read shards whose index mod N == bucket_idx."""
-    import heapq
-    import json
-    import os
 
     shard_dir = "/workspace/shared/grs/shards"
     files = sorted(f for f in os.listdir(shard_dir) if f.endswith(".json"))

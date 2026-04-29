@@ -20,8 +20,12 @@ No Docker, no job definition, no cluster. `Pillow` and `boto3` are already on th
 
 ```python
 import boto3
-from PIL import Image, ImageOps  # noqa: F401 -- top-level import so Burla installs Pillow on workers
+from PIL import Image, ImageOps  # noqa: F401
 from burla import remote_parallel_map
+
+import io
+import os
+from PIL import Image, ImageOps
 
 SRC_BUCKET = "my-photos"
 DST_BUCKET = "my-photos-resized"
@@ -41,10 +45,6 @@ print(f"{len(keys):,} images in {len(chunks)} chunks")
 
 
 def resize_chunk(image_keys: list[str]) -> list[dict]:
-    import io
-    import os
-    import boto3
-    from PIL import Image, ImageOps
 
     s3 = boto3.client("s3")
     out = []
@@ -80,6 +80,7 @@ def resize_chunk(image_keys: list[str]) -> list[dict]:
 
 # 5,000 chunks -> Burla grows the cluster on demand and resizes in parallel
 import json
+
 done = 0
 with open("resize_report.jsonl", "w") as f:
     for chunk_result in remote_parallel_map(

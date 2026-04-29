@@ -1,7 +1,11 @@
 import random
-import httpx  # noqa: F401 -- top-level import so Burla installs httpx on workers
-import selectolax  # noqa: F401 -- top-level import so Burla installs selectolax on workers
+import httpx  # noqa: F401
+import selectolax  # noqa: F401
 from burla import remote_parallel_map
+
+import time
+import httpx
+from selectolax.parser import HTMLParser
 
 with open("urls.txt") as f:
     urls = [u.strip() for u in f if u.strip()]
@@ -12,10 +16,6 @@ print(f"{len(urls):,} URLs in {len(chunks)} chunks")
 
 
 def scrape_chunk(urls: list[str]) -> list[dict]:
-    import random
-    import time
-    import httpx
-    from selectolax.parser import HTMLParser
 
     HEADERS = {
         "User-Agent": "Mozilla/5.0 (compatible; MyBot/1.0; +https://example.com/bot)",
@@ -55,6 +55,7 @@ def scrape_chunk(urls: list[str]) -> list[dict]:
 
 # 2,000 chunks capped to 1,000 workers running in parallel
 import json
+
 with open("scraped.jsonl", "w") as f:
     for chunk_rows in remote_parallel_map(
         scrape_chunk,

@@ -40,7 +40,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, List, Optional
 
-import folium  # noqa: F401  # top-level so Burla's dep-detector installs it on workers
+import folium  # noqa: F401
 import requests  # noqa: F401
 
 BY_YEAR_URL = "https://www.ncei.noaa.gov/pub/data/ghcn/daily/by_year/{year}.csv.gz"

@@ -18,9 +18,12 @@ No endpoint, no manifest, no Dockerfile. The model loads from the HuggingFace ca
 
 ```python
 import pyarrow.dataset as ds
-import torch  # noqa: F401 -- top-level import so Burla installs torch on workers
-import transformers  # noqa: F401 -- top-level import so Burla installs transformers on workers
+import torch  # noqa: F401
+import transformers  # noqa: F401
 from burla import remote_parallel_map
+
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
 dataset = ds.dataset("s3://my-bucket/reviews/", format="parquet")
 texts = dataset.to_table(columns=["review_id", "text"]).to_pandas()
@@ -34,8 +37,6 @@ print(f"{len(texts):,} rows, {len(batches)} batches")
 
 
 def predict_batch(rows: list[dict]) -> list[dict]:
-    from transformers import AutoTokenizer, AutoModelForSequenceClassification
-    import torch
 
     if not hasattr(predict_batch, "_model"):
         model_name = "cardiffnlp/twitter-roberta-base-sentiment-latest"
@@ -63,6 +64,7 @@ results = remote_parallel_map(
 )
 
 import json
+
 with open("predictions.jsonl", "w") as f:
     for batch_out in results:
         for row in batch_out:
