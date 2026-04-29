@@ -132,7 +132,6 @@ remote_parallel_map(
 
 - `print()` (and anything written to `stdout` / `stderr`) inside `function_` streams back to the local terminal in real time, as if the code were running locally.
 - Exceptions inside `function_` re-raise **on the client machine** with full remote tracebacks.
-- Python imports inside `function_` are auto-detected and installed on workers.
 - **System dependencies** (ffmpeg, libGL, apt packages) are **not** auto-installed — they require updating the cluster's container image (a cluster-admin action, not an agent action). Use the `image` kwarg to target a pre-built image that already has what you need.
 - Return values must be picklable. Prefer plain `dict` / `list` / `int` / `str` / `float`.
 - If the cluster is off, pass `grow=True` to auto-boot nodes (or rely on the kit's escalation ladder; see §4).
@@ -206,7 +205,6 @@ remote_parallel_map(crawl, urls, detach=True)   # returns immediately
 - Defined at **module top level** in the file you run.
 - No lambdas, no inner functions, no closures over state that won't pickle.
 - Total pickled size `< 100 MB`.
-- Imports the worker needs should be either at module top level or inside the function body.
 - Return values must pickle cleanly (no open file handles, no threading locks, no DB connections).
 
 ---
@@ -393,7 +391,6 @@ python run_job.py path/to/script.py
    from burla import remote_parallel_map
 
    def work(item):
-       # must be picklable; imports inside are auto-installed on workers
        return {"in": item, "out": ...}
 
    def main():

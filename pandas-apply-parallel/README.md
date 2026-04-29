@@ -23,6 +23,8 @@ import pandas as pd
 import pyarrow.dataset as ds
 from burla import remote_parallel_map
 
+import re
+
 DATASET = "s3://my-bucket/events/"
 
 dataset = ds.dataset(DATASET, format="parquet")
@@ -34,9 +36,6 @@ print(f"splitting {len(all_users):,} users into {N_CHUNKS} chunks")
 
 
 def apply_on_chunk(user_ids: list[str]) -> pd.DataFrame:
-    import re
-    import pandas as pd
-    import pyarrow.dataset as ds
 
     # Force numpy-backed strings instead of arrow-backed (pandas 3.x default)
     # so downstream .apply / .values paths stay purely numpy.

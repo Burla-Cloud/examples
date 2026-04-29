@@ -11,7 +11,6 @@ tasks = [(i, PER_CHUNK, params) for i in range(N_CHUNKS)]
 
 
 def run_chunk(chunk_id: int, n: int, p: dict) -> dict:
-    import numpy as np
 
     rng = np.random.default_rng(seed=42 + chunk_id)
 

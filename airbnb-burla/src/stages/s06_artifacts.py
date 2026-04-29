@@ -26,6 +26,9 @@ from ..config import (
 from ..lib.budget import BudgetTracker
 from ..lib.io import ensure_dir, register_src_for_burla, write_json, read_json
 
+import pandas as pd
+import pyarrow.parquet as pq
+import traceback as _tb
 
 @dataclass
 class ArtifactsArgs:
@@ -42,7 +45,6 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
     """Run on Burla: read all shared parquets, build small per-section dicts."""
     out = {"ok": False, "sections": {}, "stats": {}, "world_map": [], "error": None}
     try:
-        import pandas as pd
 
         listings = pd.read_parquet(
             args.listings_path,
@@ -88,7 +90,6 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
         out["stats"]["n_gpu_images"] = int(len(gpu))
 
         try:
-            import pyarrow.parquet as pq
             out["stats"]["n_photo_manifest_rows"] = int(
                 pq.read_metadata(args.photo_manifest_path).num_rows
             )
@@ -96,7 +97,6 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
             out["stats"]["n_photo_manifest_rows"] = 0
 
         try:
-            import pyarrow.parquet as pq
             reviews_raw_path = args.reviews_scored_path.rsplit("/", 1)[0] + "/reviews_raw.parquet"
             out["stats"]["n_reviews"] = int(
                 pq.read_metadata(reviews_raw_path).num_rows
@@ -330,7 +330,6 @@ def build_artifacts(args: ArtifactsArgs) -> dict:
         out["world_map"] = world
         out["ok"] = True
     except Exception as e:
-        import traceback as _tb
         out["error"] = f"{type(e).__name__}: {str(e)[:200]}"
         out["traceback"] = _tb.format_exc()[:1000]
     return out

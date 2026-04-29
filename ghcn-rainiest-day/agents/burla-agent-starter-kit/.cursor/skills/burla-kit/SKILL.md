@@ -119,7 +119,7 @@ Full current signature (keep this up to date with https://docs.burla.dev):
 
 ```python
 remote_parallel_map(
-    function_,            # picklable, <100MB pickled, module-top-level
+    function_,            # picklable, <100MB pickled
     inputs,               # list; tuples are unpacked into *args
     func_cpu=1,
     func_ram=4,
@@ -153,7 +153,6 @@ Key runtime behaviors:
 - Tuple items in `inputs` are unpacked into `*args` (`function_(*item)`); all other types are passed as a single argument.
 - Exceptions on workers re-raise on the client with full tracebacks.
 - `print()` (and any `stdout`/`stderr`) streams back in real time.
-- Worker function imports are auto-detected and installed on workers.
 - Non-Python system deps (ffmpeg, libGL, etc.) require either a pre-built `image=...` or updating the cluster's container image.
 
 ---

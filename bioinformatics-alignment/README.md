@@ -34,6 +34,10 @@ Pass it to Burla via the `image=` argument on `remote_parallel_map`.
 import boto3
 from burla import remote_parallel_map
 
+import os
+import subprocess
+import time
+
 IMAGE = "us-docker.pkg.dev/test-burla/burla-demos/burla-bio-worker:latest"
 S3_IN = "s3://my-fastq-bucket"
 S3_OUT = "s3://my-bam-bucket"
@@ -49,9 +53,6 @@ print(f"aligning {len(sample_jobs)} samples")
 
 
 def align_sample(job: dict) -> dict:
-    import os
-    import subprocess
-    import time
 
     sid, fq1, fq2 = job["sample_id"], job["fq1"], job["fq2"]
     work = f"/tmp/{sid}"
@@ -94,6 +95,7 @@ reports = remote_parallel_map(
 )
 
 import pandas as pd
+
 pd.DataFrame(reports).to_csv("alignment_report.csv", index=False)
 ```
 

@@ -51,6 +51,9 @@ from __future__ import annotations
 
 import os
 
+from PIL import Image
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 os.environ.setdefault("DISABLE_BURLA_TELEMETRY", "True")
 os.environ.setdefault("OMP_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
@@ -70,7 +73,6 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-# Top-level so Burla's dep-detector auto-installs these on every worker.
 import fastembed  # noqa: F401
 import PIL  # noqa: F401
 import requests  # noqa: F401
@@ -320,9 +322,6 @@ def fetch_and_embed(batch: List[int]) -> str:
 
     Idempotent: if the output shard already exists with rows, returns immediately.
     """
-    import requests
-    from PIL import Image
-    from concurrent.futures import ThreadPoolExecutor, as_completed
 
     _ensure_dirs()
     shard_name = _batch_shard_name(batch)

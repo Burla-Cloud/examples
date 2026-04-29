@@ -1,6 +1,12 @@
 import boto3
-import psycopg2  # noqa: F401 -- top-level import so Burla installs psycopg2 on workers
+import psycopg2  # noqa: F401
 from burla import remote_parallel_map
+
+import gzip
+import json
+import os
+import psycopg2
+from psycopg2.extras import execute_values
 
 BUCKET = "my-events-bucket"
 DATE = "2025-04-19"
@@ -17,12 +23,6 @@ print(f"ETL for {DATE}: {len(keys)} files")
 
 
 def etl_one_file(key: str) -> dict:
-    import gzip
-    import json
-    import os
-    import boto3
-    import psycopg2
-    from psycopg2.extras import execute_values
 
     s3 = boto3.client("s3")
     body = s3.get_object(Bucket="my-events-bucket", Key=key)["Body"].read()

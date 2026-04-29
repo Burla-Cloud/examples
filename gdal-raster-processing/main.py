@@ -1,7 +1,11 @@
 import boto3
-import numpy as np  # noqa: F401 -- top-level import so Burla installs numpy on workers
-import rasterio  # noqa: F401 -- top-level import so Burla installs rasterio (bundles GDAL) on workers
+import numpy as np  # noqa: F401
+import rasterio  # noqa: F401
 from burla import remote_parallel_map
+
+import numpy as np
+import rasterio
+from rasterio.io import MemoryFile
 
 SRC_BUCKET = "sentinel-s2-l2a"
 DST_BUCKET = "my-ndvi-outputs"
@@ -14,10 +18,6 @@ print(f"processing {len(tile_ids)} Sentinel-2 tiles")
 
 
 def compute_ndvi(tile_id: str) -> dict:
-    import boto3
-    import numpy as np
-    import rasterio
-    from rasterio.io import MemoryFile
 
     s3 = boto3.client("s3", region_name="eu-central-1")
 
@@ -45,4 +45,5 @@ def compute_ndvi(tile_id: str) -> dict:
 results = remote_parallel_map(compute_ndvi, tile_ids, func_cpu=2, func_ram=8, grow=True)
 
 import pandas as pd
+
 pd.DataFrame(results).to_csv("ndvi_report.csv", index=False)

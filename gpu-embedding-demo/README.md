@@ -59,7 +59,7 @@ Top 5 results for: 'Who invented the telephone?'
 The demo is 4 stages, all orchestrated by `main()`:
 
 1. **Stage 1 — download (CPU).** Each worker downloads one Wikipedia parquet file from HuggingFace's CDN, takes the first `ARTICLES_PER_SHARD` rows, writes `shard-{i}.jsonl` to `/workspace/shared/vector_embeddings_demo/texts/`.
-2. **Stage 2 — embed (GPU A100).** Each worker reads its JSONL shard, lazy-imports `torch` + `sentence_transformers`, loads `bge-large` into a module-level `cache` on first call, batch-embeds (`batch_size=64`, `normalize_embeddings=True`), writes `emb-{i}.npy` + `ids-{i}.json` to `/workspace/shared/vector_embeddings_demo/embeddings/`.
+2. **Stage 2 — embed (GPU A100).** Each worker reads its JSONL shard, uses `torch` + `sentence_transformers`, loads `bge-large` into a module-level `cache` on first call, batch-embeds (`batch_size=64`, `normalize_embeddings=True`), writes `emb-{i}.npy` + `ids-{i}.json` to `/workspace/shared/vector_embeddings_demo/embeddings/`.
 3. **Stage 3 — query embed (GPU A100).** One `remote_parallel_map` call on one A100 to embed the query string (keeps the client free of torch/CUDA).
 4. **Stage 4 — local search (client).** Downloads all `.npy` + `.json` shards from the GCS bucket (not the worker-side `/workspace/shared` path — the client doesn't mount that), concatenates into one matrix, computes cosine similarity against the query embedding, prints top-K titles with dedup.
 
@@ -74,8 +74,8 @@ Burla rejects job assignment with HTTP 409 "No compatible containers" when the c
 Node burla-node-xxxxxxxx refused job assignment, removed from job.
 ```
 
-**2. Lazy-import ML libraries inside worker functions.**
-Burla's package auto-sniffer walks `function_.__globals__` and re-installs anything it finds into the worker container. If `torch` or `sentence_transformers` appear at the top level of `demo.py`, the client's CPU-only wheels get installed on top of the image's CUDA wheels, breaking GPU support. Keep `import torch` and `from sentence_transformers import ...` inside `embed_shard` / `embed_query`. No top-level `import numpy`, `import datasets`, etc.
+**2. Use the GPU image for CUDA libraries.**
+The image already includes CUDA-ready `torch` and `sentence_transformers`; using the client environment's CPU wheels would break the GPU path.
 
 **3. Grown nodes get a 60-second inactivity timeout.**
 `GROW_INACTIVITY_SHUTDOWN_TIME_SEC = 60` in `main_service`. If the real job doesn't reach the node within 60s of it becoming READY and idle, the node shuts itself down. In practice, stages 1→2→3 happen back-to-back so the timer never fires mid-run, but if you step through stages manually, each new stage may have to re-boot nodes.

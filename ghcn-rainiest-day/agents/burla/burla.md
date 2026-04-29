@@ -96,7 +96,6 @@ Key parameters:
 Key constraints:
 
 - Worker functions must be **top-level and picklable** — no lambdas, no closures over outer state.
-- Python package imports inside the function are auto-detected and installed on workers.
 - Non-Python system deps (ffmpeg, libGL, etc.) require updating the cluster's container image.
 
 ---
