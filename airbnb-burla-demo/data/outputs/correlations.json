@@ -1,0 +1,131 @@
+{
+  "title": "5 hypotheses, bootstrapped 95% CIs",
+  "hypotheses": [
+    {
+      "hypothesis": "brightness_quartile",
+      "verdict": "rejected",
+      "reason": "overlapping CIs across all bucket pairs",
+      "buckets": [
+        {
+          "bucket": "q1",
+          "n": 390258,
+          "median": 0.47671232876712333,
+          "ci_low": 0.4712328767123287,
+          "ci_high": 0.48
+        },
+        {
+          "bucket": "q2",
+          "n": 390257,
+          "median": 0.43561643835616437,
+          "ci_low": 0.4328767123287671,
+          "ci_high": 0.4383561643835616
+        },
+        {
+          "bucket": "q3",
+          "n": 390257,
+          "median": 0.4054794520547945,
+          "ci_low": 0.40273972602739727,
+          "ci_high": 0.40821917808219177
+        },
+        {
+          "bucket": "q4",
+          "n": 390258,
+          "median": 0.40273972602739727,
+          "ci_low": 0.4,
+          "ci_high": 0.4054794520547945
+        }
+      ]
+    },
+    {
+      "hypothesis": "has_pet",
+      "verdict": "accepted",
+      "reason": "",
+      "buckets": [
+        {
+          "bucket": "False",
+          "n": 1343949,
+          "median": 0.4,
+          "ci_low": 0.4,
+          "ci_high": 0.40273972602739727
+        },
+        {
+          "bucket": "True",
+          "n": 396128,
+          "median": 0.4904109589041096,
+          "ci_low": 0.4849315068493151,
+          "ci_high": 0.4931506849315068
+        }
+      ]
+    },
+    {
+      "hypothesis": "is_wtf",
+      "verdict": "accepted",
+      "reason": "",
+      "buckets": [
+        {
+          "bucket": "False",
+          "n": 1739717,
+          "median": 0.4191780821917809,
+          "ci_low": 0.4164383561643835,
+          "ci_high": 0.4191780821917809
+        },
+        {
+          "bucket": "True",
+          "n": 360,
+          "median": 0.6589041095890411,
+          "ci_low": 0.5068493150684932,
+          "ci_high": 0.7561643835616438
+        }
+      ]
+    },
+    {
+      "hypothesis": "messiness_quartile",
+      "verdict": "accepted",
+      "reason": "",
+      "buckets": [
+        {
+          "bucket": "q1",
+          "n": 390150,
+          "median": 0.3890410958904109,
+          "ci_low": 0.38630136986301367,
+          "ci_high": 0.39178082191780816
+        },
+        {
+          "bucket": "q2",
+          "n": 390146,
+          "median": 0.36986301369863017,
+          "ci_low": 0.3671232876712329,
+          "ci_high": 0.3726027397260274
+        },
+        {
+          "bucket": "q3",
+          "n": 390148,
+          "median": 0.40821917808219177,
+          "ci_low": 0.4054794520547945,
+          "ci_high": 0.410958904109589
+        },
+        {
+          "bucket": "q4",
+          "n": 390148,
+          "median": 0.5452054794520548,
+          "ci_low": 0.5424657534246575,
+          "ci_high": 0.547945205479452
+        }
+      ]
+    },
+    {
+      "hypothesis": "plant_count_bucket",
+      "verdict": "rejected",
+      "reason": "single bucket",
+      "buckets": [
+        {
+          "bucket": "0",
+          "n": 1740077,
+          "median": 0.4191780821917809,
+          "ci_low": 0.4164383561643835,
+          "ci_high": 0.4191780821917809
+        }
+      ]
+    }
+  ]
+}

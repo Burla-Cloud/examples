@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Airbnb at scale: every public listing, looked at all at once on Burla</title>
+<meta name="description" content="Every public Airbnb listing in Inside Airbnb's open dump across 119 cities and four quarterly snapshots. 1.7M photos CLIP-scored, the most suspicious shortlists double-checked with Claude Haiku. All parallelized on Burla." />
+<meta property="og:title" content="Every public Airbnb, looked at all at once on Burla" />
+<meta property="og:description" content="119 cities x 4 quarterly snapshots of Inside Airbnb data. 1.7M photos through CLIP, the most suspicious shortlists double-checked with Claude Haiku Vision, 50.7M reviews scored through Haiku, all parallelized on Burla." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Open the TCP+TLS handshake to Airbnb's CDN as soon as the HTML
+     parses, so the first photo cards render seconds faster. -->
+<link rel="preconnect" href="https://a0.muscache.com" crossorigin />
+<link rel="dns-prefetch" href="https://a0.muscache.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="style.css?v=41" />
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#">airbnb<span class="x">×</span>burla</a>
+    <div class="nav__links">
+      <a href="#drug-den">Drug dens</a>
+      <a href="#hectic-kitchens">Kitchens</a>
+      <a href="#pets">Pets</a>
+      <a href="#worst-tv">TVs</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#correlations">Findings</a>
+      <a class="nav__cta" href="https://github.com/Burla-Cloud/examples/tree/main/airbnb-burla-demo">View on GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__eyebrow">
+    <span class="live"></span>
+    Burla demo · April 2026
+  </div>
+  <h1>Every Airbnb,<br/>looked at <span class="accent">all at once</span>.</h1>
+  <p class="lede">
+    Every public listing in Inside Airbnb's open dump, 119 cities, 4 quarterly
+    snapshots. We scored <strong>1.7M photos</strong> with
+    <a href="https://github.com/mlfoundations/open_clip" target="_blank" rel="noopener">CLIP</a>
+    (a model that turns an image into a vector you can compare to a text
+    prompt), shortlisted the most suspicious ones, and had Claude Haiku Vision
+    double-check each shortlist. We also scored every review and reranked the
+    weirdest 12K with Haiku.     Everything was parallelized on
+    <a href="https://docs.burla.dev" target="_blank" rel="noopener">Burla</a>,
+    on a single dynamic cluster that scaled to ~1.7K CPU workers for photo
+    download and CLIP, with 20 A100 GPUs running embedding clusters in
+    parallel on the same cluster.
+  </p>
+
+  <div class="stats-card">
+    <div class="stats" id="stats-banner">
+      <!-- Row 1: data we ingested. Row 2: compute that processed it. -->
+      <div class="stat"><span class="num" data-stat="n_listings">--</span><span class="label">Listings</span></div>
+      <div class="stat"><span class="num" data-stat="n_photo_manifest_rows">--</span><span class="label">Photos scraped</span></div>
+      <div class="stat"><span class="num" data-stat="n_reviews">--</span><span class="label">Reviews scored</span></div>
+      <div class="stat"><span class="num" data-stat="n_cpu_images">--</span><span class="label">CLIP-scored</span></div>
+      <div class="stat"><span class="num" data-stat="n_gpu_images">--</span><span class="label">GPU detections</span></div>
+      <div class="stat"><span class="num" data-stat="peak_workers">--</span><span class="label">Peak workers</span></div>
+    </div>
+  </div>
+
+  <p class="meta-line">
+    Listings, reviews, and calendars come straight from public Inside Airbnb
+    dumps. The findings cards below use bootstrap 95% confidence intervals on
+    each listing's <strong>365-night calendar occupancy</strong> (how booked a
+    listing is over the next year, our demand proxy). Click any photo to
+    expand it. Click any review to read it in full.
+  </p>
+</header>
+
+<section class="map-section">
+  <div class="section__head">
+    <div>
+      <h2>Every flagged listing on a map</h2>
+      <p class="section-lede">
+        Each dot is a listing flagged by one of the Haiku-validated photo
+        detectors below, color-coded by category. Drag, zoom, click for the
+        listing.
+      </p>
+    </div>
+  </div>
+  <div class="map-frame">
+    <div id="map" aria-label="World map of flagged Airbnb listings"></div>
+  </div>
+  <div class="legend" id="map-legend"></div>
+</section>
+
+<section id="drug-den" class="grid-section">
+  <div class="section__head">
+    <div>
+      <h2>Listings with drug-den vibes</h2>
+      <p class="section-lede">
+        CLIP shortlisted &ldquo;messy room&rdquo; candidates, then Claude
+        Haiku Vision kept only the ones that look less like an Airbnb and
+        more like an opium den. Bare bulb, mattress on the floor, peeling
+        walls, you can almost smell it through the photo.
+      </p>
+    </div>
+    <span class="section__count">--</span>
+  </div>
+  <div class="grid" data-section="drug_den_vibes"></div>
+</section>
+
+<div class="alt-bg">
+  <section id="hectic-kitchens" class="grid-section alt-inner">
+    <div class="section__head">
+      <div>
+        <h2>The most hectic kitchens</h2>
+        <p class="section-lede">
+          CLIP shortlisted &ldquo;messy room&rdquo; candidates, then Claude
+          Haiku Vision said the photo is genuinely a chaotic kitchen, not just
+          a small one.
+        </p>
+      </div>
+      <span class="section__count">--</span>
+    </div>
+    <div class="grid" data-section="hectic_kitchens"></div>
+  </section>
+</div>
+
+<section id="pets" class="grid-section">
+  <div class="section__head">
+    <div>
+      <h2>Cats and dogs Claude said are actually real</h2>
+      <p class="section-lede">
+        CLIP shortlisted pet-shaped candidates from 1.7M photos, then Claude
+        Haiku Vision said &ldquo;yes, that is a real cat or dog.&rdquo;
+        Paintings, throw pillows, and rugs that looked vaguely animal-shaped
+        were rejected.
+      </p>
+    </div>
+    <span class="section__count">--</span>
+  </div>
+  <div class="grid" data-section="pets_in_photos"></div>
+</section>
+
+<div class="alt-bg">
+  <section id="worst-tv" class="grid-section alt-inner">
+    <div class="section__head">
+      <div>
+        <h2>Worst TV placements across every public Airbnb</h2>
+        <p class="section-lede">
+          CLIP shortlisted &ldquo;TV mounted way too high&rdquo;
+          candidates from 1.7M photos, then Claude Haiku Vision confirmed each
+          one as either above-fireplace or unusually-high.
+        </p>
+      </div>
+      <span class="section__count">--</span>
+    </div>
+    <div class="grid" data-section="worst_tv_placements"></div>
+  </section>
+</div>
+
+<section id="reviews" class="cards-section">
+  <div class="section__head">
+    <div>
+      <h2>Funniest reviews from 50 million</h2>
+      <p class="section-lede">
+        A 3-tier funnel: regex on every review, embedding cluster on the top
+        200k, Claude Haiku on the top 12k. Filter by category, city, or year,
+        or just type any word to search. Click any card to read it in full.
+      </p>
+    </div>
+    <span class="section__count" data-counter="reviews-visible">--</span>
+  </div>
+
+  <div class="filter-bar" id="review-filters">
+    <div class="filter-bar__row">
+      <input type="search" id="review-search" class="filter-input"
+             placeholder="Search reviews (e.g. 'raccoon', 'fireworks', 'rooster')"
+             aria-label="Search reviews" />
+      <select id="review-city" class="filter-select" aria-label="Filter by city">
+        <option value="">All cities</option>
+      </select>
+      <select id="review-year" class="filter-select" aria-label="Filter by year">
+        <option value="">All years</option>
+      </select>
+      <button id="review-reset" class="filter-reset" type="button">Reset</button>
+    </div>
+    <div class="filter-chips" id="review-chips"></div>
+  </div>
+
+  <div class="card-grid" data-section="funniest_reviews"></div>
+  <div class="cards-more" id="reviews-more-wrap" hidden>
+    <button type="button" class="cards-more__btn" id="reviews-more-btn">
+      Show 24 more
+    </button>
+  </div>
+  <div class="cards-empty" id="reviews-empty" hidden>
+    No reviews match those filters. Try clearing the search or picking a
+    different category.
+  </div>
+</section>
+
+<section id="how-it-ran" class="method-section">
+  <div class="method">
+    <div class="method__copy">
+      <h2>How it ran on <span class="accent">Burla</span></h2>
+      <p>
+        <a href="https://docs.burla.dev" target="_blank" rel="noopener">Burla</a>
+        is a high-performance parallel processing library for data teams that
+        iterate quickly. You write a Python function, you call
+        <code>remote_parallel_map</code>, and it runs across a cluster with a
+        shared filesystem mounted at <code>./shared</code>. No Docker, no
+        Kubernetes, no&nbsp;orchestration&nbsp;glue.
+      </p>
+      <p>
+        For this run a single dynamic cluster scaled CPU workers up to ~1.7K
+        for photo download and CLIP scoring, and the same cluster ran
+        20 A100 GPUs for embedding-cluster work, in parallel with the CPU
+        jobs. Claude Haiku validation ran rate-limited on top.
+      </p>
+
+      <div class="peak-callout">
+        <span class="peak-num" data-stat="peak_workers">--</span>
+        <span class="peak-text">
+          <strong>concurrent workers</strong> at peak across photo download,
+          CLIP scoring, and review tier-1. 20 A100 GPUs ran in parallel on
+          the same cluster, while CPU jobs kept going.
+        </span>
+      </div>
+
+      <p style="margin-top: 24px;">
+        Full writeup is on
+        <a href="https://github.com/Burla-Cloud/examples/blob/main/airbnb-burla-demo/WRITEUP.md" target="_blank" rel="noopener">GitHub</a>.
+        <br />
+        Burla docs are at <a href="https://docs.burla.dev" target="_blank" rel="noopener">docs.burla.dev</a>.
+      </p>
+    </div>
+
+    <div class="code-card">
+      <div class="code-card__head">
+        <span class="code-card__dots"><i></i><i></i><i></i></span>
+        <div class="code-tabs" role="tablist">
+          <button type="button" class="code-tab is-active" role="tab"
+                  aria-selected="true" data-tab="score">score_photos.py</button>
+          <button type="button" class="code-tab" role="tab"
+                  aria-selected="false" data-tab="encode">embed_reviews.py</button>
+          <button type="button" class="code-tab" role="tab"
+                  aria-selected="false" data-tab="haiku">haiku_validate.py</button>
+        </div>
+      </div>
+      <div class="code-card__panes">
+      <pre class="code-block is-active" data-pane="score"><span class="c"># s02b: download every photo URL, score with CLIP,</span>
+<span class="c"># write parquet shards to ./shared. 6K batches.</span>
+<span class="k">from</span> burla <span class="k">import</span> remote_parallel_map
+<span class="k">import</span> open_clip
+
+<span class="k">def</span> <span class="f">score_batch</span>(args):
+    model, _, prep = open_clip.create_model_and_transforms(
+        <span class="s">"ViT-B-32"</span>, pretrained=<span class="s">"laion2b_s34b_b79k"</span>,
+        cache_dir=<span class="s">"./shared/clip_weights"</span>,
+    )
+    <span class="c"># download -&gt; encode -&gt; cosine vs PROMPTS -&gt; parquet</span>
+    <span class="k">return</span> {<span class="s">"shard"</span>: shard, <span class="s">"n_ok"</span>: n_ok}
+
+remote_parallel_map(
+    score_batch, batch_args,
+    func_cpu=<span class="n">2</span>, func_ram=<span class="n">8</span>,
+    max_parallelism=<span class="n">1000</span>,   <span class="c"># 1k concurrent at peak</span>
+    grow=<span class="n">True</span>,
+)</pre>
+      <pre class="code-block" data-pane="encode"><span class="c"># s04 tier 2: embed top 200K reviews with SBERT,</span>
+<span class="c"># one parquet shard per worker on ./shared.</span>
+<span class="k">from</span> burla <span class="k">import</span> remote_parallel_map
+<span class="k">from</span> sentence_transformers <span class="k">import</span> SentenceTransformer
+
+<span class="k">def</span> <span class="f">embed_batch</span>(args):
+    model = SentenceTransformer(
+        <span class="s">"all-MiniLM-L6-v2"</span>,
+        cache_folder=<span class="s">"./shared/sbert"</span>,
+    )
+    rows = read_slice(
+        args.input_path, args.row_start, args.row_end,
+    )
+    vecs = model.encode(
+        rows[<span class="s">"comments"</span>].tolist(), batch_size=<span class="n">128</span>,
+    )
+    write_shard(args.output_root, rows, vecs)
+    <span class="k">return</span> {<span class="s">"n_ok"</span>: len(rows)}
+
+remote_parallel_map(
+    embed_batch, embed_args,
+    func_cpu=<span class="n">2</span>, func_ram=<span class="n">8</span>, max_parallelism=<span class="n">200</span>,
+    grow=<span class="n">True</span>,
+)</pre>
+      <pre class="code-block" data-pane="haiku"><span class="c"># s05c: Haiku Vision double-checks the CLIP</span>
+<span class="c"># shortlists. Rate-limited at 64 workers.</span>
+<span class="k">from</span> burla <span class="k">import</span> remote_parallel_map
+<span class="k">import</span> anthropic, json
+
+<span class="k">def</span> <span class="f">validate_pet</span>(args):
+    client = anthropic.Anthropic()
+    rows = []
+    <span class="k">for</span> url, listing_id <span class="k">in</span> args.batch:
+        msg = client.messages.create(
+            model=<span class="s">"claude-haiku-4-5"</span>, max_tokens=<span class="n">200</span>,
+            messages=pet_prompt(fetch(url)),
+        )
+        verdict = json.loads(msg.content[<span class="n">0</span>].text)
+        rows.append({<span class="s">"listing_id"</span>: listing_id, **verdict})
+    write_shard(args.output_path, rows)
+    <span class="k">return</span> {<span class="s">"n_ok"</span>: len(rows)}
+
+remote_parallel_map(
+    validate_pet, pet_batches,
+    func_cpu=<span class="n">2</span>, func_ram=<span class="n">8</span>, max_parallelism=<span class="n">64</span>,
+    grow=<span class="n">True</span>,
+)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="correlations" class="corr-section">
+  <div class="section__head">
+    <div>
+      <h2>Does any of this actually predict demand?</h2>
+      <p class="section-lede">
+        For each idea below, we sort every listing into a few groups (like
+        &ldquo;darkest photos&rdquo; vs &ldquo;brightest photos&rdquo;) and
+        check whether the higher-occupancy ones really do land in one group.
+        We accept an idea only when no two groups overlap.
+      </p>
+    </div>
+  </div>
+
+  <div class="corr-key">
+    <h3 class="corr-key__title">How to read these cards</h3>
+    <div class="corr-key__items">
+      <div class="corr-key__row">
+        <span class="corr-key__bar" aria-hidden="true">
+          <span class="corr-key__bar-fill"></span>
+          <span class="corr-key__bar-median"></span>
+        </span>
+        <span class="corr-key__text">
+          <strong>The bar</strong> shows the median <strong>% booked</strong>
+          over the next 365 nights for each group, our demand proxy. Further
+          right means more booked. The tick is our best guess; the wider band
+          is the range we're confident covers the real number.
+        </span>
+      </div>
+      <div class="corr-key__row">
+        <span class="corr-key__pill">n = 240.5K</span>
+        <span class="corr-key__text">
+          <strong>n</strong> is how many listings ended up in that group.
+          240.5K means 240,500. Bigger groups give us tighter, more
+          trustworthy bars.
+        </span>
+      </div>
+      <div class="corr-key__row">
+        <span class="corr-key__verdicts">
+          <span class="corr-key__verdict accepted">ACCEPTED</span>
+          <span class="corr-key__verdict rejected">REJECTED</span>
+        </span>
+        <span class="corr-key__text">
+          <strong>Accepted</strong> means the bars in the card are clearly
+          separated, so the groups really are different.
+          <strong>Rejected</strong> means the bars overlap, so we cannot tell
+          the groups apart.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div id="corr-list"></div>
+</section>
+
+<footer>
+  <div class="footer__inner">
+    <p>
+      Built on <a href="https://docs.burla.dev">Burla</a>. Caveats: the demand
+      proxy is calendar occupancy over the next 365 nights, which leaks future
+      cancellations and host blocks. Photo coverage is whatever Inside Airbnb
+      publishes. Reviews are public Inside Airbnb dumps, no Airbnb API access.
+    </p>
+    <span class="footer__brand">airbnb<span class="x">×</span>burla</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js?v=42" defer></script>
+</body>
+</html>
