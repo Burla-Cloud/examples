@@ -33,8 +33,8 @@ jobs:
           touch public/.nojekyll
           cp index.html public/index.html
 
-          mkdir -p public/airbnb-burla
-          cp -R airbnb-burla/site/. public/airbnb-burla/
+          mkdir -p public/airbnb-burla-demo
+          cp -R airbnb-burla-demo/site/. public/airbnb-burla-demo/
           mkdir -p public/amazon-review-distiller
           cp -R amazon-review-distiller/. public/amazon-review-distiller/
           mkdir -p public/met-weirdest-art
