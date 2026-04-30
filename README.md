@@ -12,7 +12,7 @@ These examples already had GitHub Pages sites, so they are published under this 
 
 | Demo | What it shows |
 | --- | --- |
-| [Airbnb at continental scale](https://burla-cloud.github.io/examples/airbnb-burla/) | 1.1M listings, 1.4M photos, and 50M reviews processed with vision and text pipelines. |
+| [Airbnb at continental scale](https://burla-cloud.github.io/examples/airbnb-burla-demo/) | 1.7M photos and 50.7M reviews across 119 cities processed with CLIP, Claude Haiku Vision, and bootstrap CIs. |
 | [Amazon Review Distiller](https://burla-cloud.github.io/examples/amazon-review-distiller/) | 571M reviews ranked and searched with parallel deterministic text analysis. |
 | [The Met's Hidden Twins](https://burla-cloud.github.io/examples/met-weirdest-art/) | 192K museum artworks embedded to find visual near-duplicates across centuries. |
 | [NYC Ghost Neighborhoods](https://burla-cloud.github.io/examples/nyc-ghost-neighborhoods/) | 2.76B taxi trips processed to find neighborhoods that changed after the pandemic. |

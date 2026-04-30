@@ -1,0 +1,494 @@
+{
+  "_doc": "Listings (by city + name) the human reviewer flagged as not passing visual review. s06_artifacts and any sync script should drop these from the surfaced top-K. Add new (section, city, name) tuples here; the sync script will resolve them to listing_ids and persist those too. `pinned_top` maps section -> ordered list of listing_ids to surface first in that section.",
+  "pinned_top": {
+    "worst_tv_placements": [
+      717227307748719708,
+      502235608092478513,
+      1229981912555665475
+    ]
+  },
+  "by_city_name": [
+    {
+      "section": "worst_tv_placements",
+      "city": "new-zealand",
+      "name": "Poraiti, Napier Room"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Clark County, NV",
+      "name": "Comfortable Room in Townhouse"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Rio de Janeiro",
+      "name": "Luxo 2 minutos a pé praia prédio seguro24h WI-FI"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Mornington Peninsula",
+      "name": "Capella Villa No. 2 - stylish coastal living"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "South Aegean",
+      "name": "Villa next to the sea"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Los Angeles",
+      "name": "Woodland Hills Heavenly Gateway"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "New York City",
+      "name": "Rossini's Place"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "ireland",
+      "name": "1 Double bed bottom floor apartment,wifi & parking"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "malta",
+      "name": "Imperial Residence St Pauls Bay"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Paris",
+      "name": "Location appartement Paris"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Amsterdam",
+      "name": "125m2 fully equipped modern apartment next to park"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Mallorca",
+      "name": "Sweet home"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "London",
+      "name": "Refurbished South Norwood Cosy Corner"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Los Angeles",
+      "name": "Modern 5BR Luxury Paradise Villa"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Los Angeles",
+      "name": "Bel Air Zen Charming House"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Malaga",
+      "name": "Echegaray Grand Luxe by Living4Malaga"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Greater Manchester",
+      "name": "5-Bed Near City • Free Parking • Roku • Workspace"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Zurich",
+      "name": "Exclusive Loft in Seefeld (Mühle)"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Sydney",
+      "name": "Spacious Trendy Home with Superb Convenience"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "London",
+      "name": "Mayfair Mews Apartment- 2 Bed (1)"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Rio de Janeiro",
+      "name": "Apartamento Completo - Flamengo"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Clark County, NV",
+      "name": "Beautiful Remodeled 1BR Condo Great Location!!!"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Pays Basque",
+      "name": "Appartement T3 à Ciboure"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Clark County, NV",
+      "name": "Your getaway! 4br w/Pool"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Tasmania",
+      "name": "Travellers Rest | Bicheno"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Toronto",
+      "name": "Yonge and Lawrence Village"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Barcelona",
+      "name": "Hermosa Habitación con balcón!"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Nashville",
+      "name": "East Nash Walk to Eateries & Bars"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "London",
+      "name": "Modern 3 Bedroom House in London"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Portland",
+      "name": "Calm 2BD unit in SE Portland"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Chicago",
+      "name": "Luxe SFH Bucktown Retreat with Garage Parking"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Los Angeles",
+      "name": "West LA Oasis | Perfect for Families"
+    },
+    {
+      "section": "worst_tv_placements",
+      "city": "Columbus",
+      "name": "Merion Village House Near Downtown"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "New York City",
+      "name": "Friendly and well located place to get away"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Singapore",
+      "name": "Full Student Care home for foreign students"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "London",
+      "name": "ENSUITE w Double bed; near WEMBLEY ARENA, STADIUM"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Lyon",
+      "name": "Charmant t3 lumineux et agréable à vivre"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Berlin",
+      "name": "OASE im PRENZL'BERG || central, cosy, be welcome!"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Vienna",
+      "name": "Cosy sunny and quiet room near city center"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "New York City",
+      "name": "Comfy Room in Large E Williamsburg Apartment"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Paris",
+      "name": "Appartement cosy proche du canal"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Melbourne",
+      "name": "One private bedroom with its own bathroom!"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Paris",
+      "name": "grand loft d'artiste, avec terrasse arborée"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "New York City",
+      "name": "Café DuChill (backyard facing)"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "New York City",
+      "name": "Times Square / Broadway Area - Midtown Manhattan"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "ireland",
+      "name": "Superb Ensuite Bedroom IN Gorey"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Berlin",
+      "name": "Large room with double bed in Neukölln"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Belize",
+      "name": "es una aldea trankila con jente linda"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Istanbul",
+      "name": "Evimin bir odasını açıyorum"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "London",
+      "name": "HACKNEY CENTRAL, HOMERTON & VICTORIA PARK AREAS"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "London",
+      "name": "Cozy Single Bedroom in Stockwell"
+    },
+    {
+      "section": "hectic_kitchens",
+      "city": "Milan",
+      "name": "WHITE: Center Milan Relax Apartment"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Rome",
+      "name": "Stanza in affitto per 2 persone"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Istanbul",
+      "name": "Ali&Harvey Home"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Private Bedroom on Prospect Park"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Los Angeles",
+      "name": "Classic Koreatown Pad-- 1920s Charm, Hip Locale"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Private room in great apt bwick"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Room in Williamsburg Duplex"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Paris",
+      "name": "Chambre privée"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Spacious studio apt in Jackson Hts"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Madrid",
+      "name": "Habitación privada alto Extremadura"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Buenos Aires",
+      "name": "single habitacion en villa del Parque"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Lyon",
+      "name": "Appartement agréable"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Upper East Side apt for Super Bowl"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Los Angeles",
+      "name": "Hollywood furnished master bedroom"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Paris",
+      "name": "Luminus Studio (25m2) in the 10ème"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "Istanbul",
+      "name": "1 oda 1 salon temiz yüksek giriş"
+    },
+    {
+      "section": "drug_den_vibes",
+      "city": "New York City",
+      "name": "Private bedroom in East Village"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "London",
+      "name": "nice and bright"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Copenhagen",
+      "name": "Central location in the old city"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Sydney",
+      "name": "Bedroom by the Beach"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Edinburgh",
+      "name": "One bedroom flat in Edinburgh"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Tokyo",
+      "name": "BRT102 池袋站| 繁华商圈双人公寓， 山手线及8条地铁直达新宿 涩谷 银座 秋叶原，设施齐全"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Toronto",
+      "name": "Boho 🏡 🍭Room - 10Mins to Downtown"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Ireland",
+      "name": "Gorgeous home in Greystones!"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Ireland",
+      "name": "Shackleton at The Mountain Lodge"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Paris",
+      "name": "single room heart of paris, quiet and cool"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Oslo",
+      "name": "By the sea with breathtaking View – Sunset Magic"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Athens",
+      "name": "Centrally located apartment with Acropolis view"
+    },
+    {
+      "section": "pets_in_photos",
+      "city": "Trentino",
+      "name": "El Rocol"
+    }
+  ],
+  "by_listing_id": [
+    786441,
+    2127382,
+    2701487,
+    4335903,
+    4525589,
+    5147549,
+    5695509,
+    5931261,
+    6669104,
+    6910875,
+    6911965,
+    7698619,
+    7987503,
+    8026966,
+    12324428,
+    13240737,
+    15257676,
+    16914299,
+    18803268,
+    19114872,
+    19250621,
+    19750901,
+    20651206,
+    20880300,
+    20921518,
+    21230538,
+    21291783,
+    22884053,
+    24935620,
+    26510324,
+    29739020,
+    31315134,
+    31909196,
+    32410299,
+    33520950,
+    34624525,
+    35039182,
+    35497497,
+    36258404,
+    36400986,
+    39505719,
+    42279971,
+    50457012,
+    53584501,
+    53597273,
+    592156952824969700,
+    620812697031211627,
+    648680183790580891,
+    679751616948749909,
+    775814099791683499,
+    835607212684713795,
+    844949744966672409,
+    859158280500922950,
+    861086199122456791,
+    867469789437779479,
+    913925857782908119,
+    931551865890022546,
+    935336064341840362,
+    945039581908566050,
+    947194907630778612,
+    1039637716292079820,
+    1081286947929287594,
+    1149999062963058463,
+    1158368227593729569,
+    1190013686260460536,
+    1191120702036940316,
+    1255045708808969946,
+    1273187103573510844,
+    1315893675405330667,
+    1324582558658696769,
+    1413144121208834230,
+    1431993907850301445,
+    1439285180619309824,
+    1441366854805334738,
+    1460095022278341930,
+    1485734515088976672,
+    1492318363192792833,
+    1498481982973554652,
+    1502658265418960984,
+    1518987557142845503
+  ]
+}

@@ -1,0 +1,846 @@
+{
+  "title": "Every flagged Airbnb in the demo, on a Leaflet map",
+  "n": 120,
+  "points": [
+    {
+      "type": "worst_tv_placements",
+      "lat": -22.91684,
+      "lng": -43.17941,
+      "listing_id": "717227307748719708",
+      "listing_url": "https://www.airbnb.com/rooms/717227307748719708"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 40.71055,
+      "lng": -73.73961,
+      "listing_id": "502235608092478513",
+      "listing_url": "https://www.airbnb.com/rooms/502235608092478513"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": -23.0292864,
+      "lng": -43.4725459,
+      "listing_id": "1229981912555665475",
+      "listing_url": "https://www.airbnb.com/rooms/1229981912555665475"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 34.08877,
+      "lng": -118.30703,
+      "listing_id": "21737188",
+      "listing_url": "https://www.airbnb.com/rooms/21737188"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 48.86934,
+      "lng": 2.37031,
+      "listing_id": "23165825",
+      "listing_url": "https://www.airbnb.com/rooms/23165825"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 45.49578,
+      "lng": -73.59549,
+      "listing_id": "1594236260436915308",
+      "listing_url": "https://www.airbnb.com/rooms/1594236260436915308"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 46.21257,
+      "lng": 6.14467,
+      "listing_id": "1231603820647409624",
+      "listing_url": "https://www.airbnb.com/rooms/1231603820647409624"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 55.6844119,
+      "lng": 12.5663967,
+      "listing_id": "1255789296887053031",
+      "listing_url": "https://www.airbnb.com/rooms/1255789296887053031"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 40.68837377037037,
+      "lng": -73.93953425062634,
+      "listing_id": "1374209075339266256",
+      "listing_url": "https://www.airbnb.com/rooms/1374209075339266256"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 36.62740705682075,
+      "lng": -121.9280237197876,
+      "listing_id": "1143736284934826935",
+      "listing_url": "https://www.airbnb.com/rooms/1143736284934826935"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": -22.85976,
+      "lng": -43.25302,
+      "listing_id": "40640341",
+      "listing_url": "https://www.airbnb.com/rooms/40640341"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 30.181108146519104,
+      "lng": -97.80192552100806,
+      "listing_id": "844315167467484886",
+      "listing_url": "https://www.airbnb.com/rooms/844315167467484886"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 40.66749,
+      "lng": -73.8836,
+      "listing_id": "41725492",
+      "listing_url": "https://www.airbnb.com/rooms/41725492"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 43.7828229,
+      "lng": 11.2625436,
+      "listing_id": "1491152964224826113",
+      "listing_url": "https://www.airbnb.com/rooms/1491152964224826113"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 36.06385,
+      "lng": -115.0886,
+      "listing_id": "1310338139243436644",
+      "listing_url": "https://www.airbnb.com/rooms/1310338139243436644"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 45.52426,
+      "lng": -122.68787,
+      "listing_id": "1576303138511606785",
+      "listing_url": "https://www.airbnb.com/rooms/1576303138511606785"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 53.38924,
+      "lng": -2.26331,
+      "listing_id": "1499450610804947479",
+      "listing_url": "https://www.airbnb.com/rooms/1499450610804947479"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 36.189,
+      "lng": -86.7433,
+      "listing_id": "54006529",
+      "listing_url": "https://www.airbnb.com/rooms/54006529"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 34.0370815991511,
+      "lng": -117.7569149141625,
+      "listing_id": "1319116205935144111",
+      "listing_url": "https://www.airbnb.com/rooms/1319116205935144111"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 32.799016,
+      "lng": -117.157922,
+      "listing_id": "913298894762219267",
+      "listing_url": "https://www.airbnb.com/rooms/913298894762219267"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": -22.85629,
+      "lng": -43.30605,
+      "listing_id": "1450026660185157591",
+      "listing_url": "https://www.airbnb.com/rooms/1450026660185157591"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 37.35248,
+      "lng": 13.51674,
+      "listing_id": "1303085178526287349",
+      "listing_url": "https://www.airbnb.com/rooms/1303085178526287349"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 53.38947370192716,
+      "lng": -6.185841638524771,
+      "listing_id": "1304838017856573218",
+      "listing_url": "https://www.airbnb.com/rooms/1304838017856573218"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": -22.9108,
+      "lng": -43.18612,
+      "listing_id": "20015144",
+      "listing_url": "https://www.airbnb.com/rooms/20015144"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 53.53632848157201,
+      "lng": -2.6185136322155733,
+      "listing_id": "1340631568798018996",
+      "listing_url": "https://www.airbnb.com/rooms/1340631568798018996"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 53.21015,
+      "lng": -8.85175,
+      "listing_id": "1412766219118213095",
+      "listing_url": "https://www.airbnb.com/rooms/1412766219118213095"
+    },
+    {
+      "type": "worst_tv_placements",
+      "lat": 33.99672,
+      "lng": -118.31106,
+      "listing_id": "5184818",
+      "listing_url": "https://www.airbnb.com/rooms/5184818"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 52.49771,
+      "lng": 13.46385,
+      "listing_id": "26078663",
+      "listing_url": "https://www.airbnb.com/rooms/26078663"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 40.60631,
+      "lng": -73.99047,
+      "listing_id": "14743469",
+      "listing_url": "https://www.airbnb.com/rooms/14743469"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 34.2073350785207,
+      "lng": -118.56165323406458,
+      "listing_id": "1252613014752249229",
+      "listing_url": "https://www.airbnb.com/rooms/1252613014752249229"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 48.24356,
+      "lng": 16.36119,
+      "listing_id": "42768667",
+      "listing_url": "https://www.airbnb.com/rooms/42768667"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 48.848448181173694,
+      "lng": 2.331871438623065,
+      "listing_id": "1050190121890838178",
+      "listing_url": "https://www.airbnb.com/rooms/1050190121890838178"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 35.80515935099589,
+      "lng": 139.29271828383207,
+      "listing_id": "1047350856088215437",
+      "listing_url": "https://www.airbnb.com/rooms/1047350856088215437"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 25.01578216066733,
+      "lng": 121.52557927663824,
+      "listing_id": "1297828692765091206",
+      "listing_url": "https://www.airbnb.com/rooms/1297828692765091206"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 45.50089,
+      "lng": -73.64062,
+      "listing_id": "47226105",
+      "listing_url": "https://www.airbnb.com/rooms/47226105"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": -22.981511567541794,
+      "lng": -43.19537926465273,
+      "listing_id": "1410294980724276516",
+      "listing_url": "https://www.airbnb.com/rooms/1410294980724276516"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 52.52384,
+      "lng": 13.4346,
+      "listing_id": "10147019",
+      "listing_url": "https://www.airbnb.com/rooms/10147019"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 22.27813,
+      "lng": 114.18272,
+      "listing_id": "30679005",
+      "listing_url": "https://www.airbnb.com/rooms/30679005"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 1.34408,
+      "lng": 103.7726,
+      "listing_id": "1209115483295579932",
+      "listing_url": "https://www.airbnb.com/rooms/1209115483295579932"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 40.75597,
+      "lng": -73.99619,
+      "listing_id": "5568524",
+      "listing_url": "https://www.airbnb.com/rooms/5568524"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 22.28593,
+      "lng": 114.15242,
+      "listing_id": "2999248",
+      "listing_url": "https://www.airbnb.com/rooms/2999248"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 48.8472774906503,
+      "lng": 2.3532204183046432,
+      "listing_id": "1076021831201025131",
+      "listing_url": "https://www.airbnb.com/rooms/1076021831201025131"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 41.04681,
+      "lng": 28.98421,
+      "listing_id": "747552839702032217",
+      "listing_url": "https://www.airbnb.com/rooms/747552839702032217"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": -22.89407,
+      "lng": -43.22173,
+      "listing_id": "13998273",
+      "listing_url": "https://www.airbnb.com/rooms/13998273"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 40.73255,
+      "lng": -73.98234,
+      "listing_id": "16071397",
+      "listing_url": "https://www.airbnb.com/rooms/16071397"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": -34.60115,
+      "lng": -58.39888,
+      "listing_id": "11505979",
+      "listing_url": "https://www.airbnb.com/rooms/11505979"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 40.74048,
+      "lng": -73.98262,
+      "listing_id": "19459142",
+      "listing_url": "https://www.airbnb.com/rooms/19459142"
+    },
+    {
+      "type": "hectic_kitchens",
+      "lat": 40.76263,
+      "lng": -73.99401,
+      "listing_id": "189135",
+      "listing_url": "https://www.airbnb.com/rooms/189135"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 41.0322915,
+      "lng": 28.9816115,
+      "listing_id": "1027630050827672737",
+      "listing_url": "https://www.airbnb.com/rooms/1027630050827672737"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 34.03188,
+      "lng": -118.28777,
+      "listing_id": "21615080",
+      "listing_url": "https://www.airbnb.com/rooms/21615080"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 48.17055,
+      "lng": 16.38015,
+      "listing_id": "14227029",
+      "listing_url": "https://www.airbnb.com/rooms/14227029"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 43.66517,
+      "lng": -79.43081,
+      "listing_id": "4711223",
+      "listing_url": "https://www.airbnb.com/rooms/4711223"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 29.98043,
+      "lng": -90.07455,
+      "listing_id": "37751033",
+      "listing_url": "https://www.airbnb.com/rooms/37751033"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 40.68827,
+      "lng": -73.90981,
+      "listing_id": "18487817",
+      "listing_url": "https://www.airbnb.com/rooms/18487817"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 40.72954,
+      "lng": -73.98306,
+      "listing_id": "16354659",
+      "listing_url": "https://www.airbnb.com/rooms/16354659"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 41.0183767494968,
+      "lng": 28.85947532951832,
+      "listing_id": "988178752120341661",
+      "listing_url": "https://www.airbnb.com/rooms/988178752120341661"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 52.470127820266455,
+      "lng": 13.420815323989002,
+      "listing_id": "697416875592998942",
+      "listing_url": "https://www.airbnb.com/rooms/697416875592998942"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 48.83866,
+      "lng": 2.28573,
+      "listing_id": "1215884540358188789",
+      "listing_url": "https://www.airbnb.com/rooms/1215884540358188789"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 13.751417077054649,
+      "lng": 100.57417277738352,
+      "listing_id": "1007778952319545187",
+      "listing_url": "https://www.airbnb.com/rooms/1007778952319545187"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 52.48606,
+      "lng": 13.43106,
+      "listing_id": "37289543",
+      "listing_url": "https://www.airbnb.com/rooms/37289543"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 34.05019,
+      "lng": -118.27525,
+      "listing_id": "42481499",
+      "listing_url": "https://www.airbnb.com/rooms/42481499"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 52.48016,
+      "lng": 13.42229,
+      "listing_id": "5074146",
+      "listing_url": "https://www.airbnb.com/rooms/5074146"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 51.67049971257595,
+      "lng": -0.023981906331388,
+      "listing_id": "1174067818494156063",
+      "listing_url": "https://www.airbnb.com/rooms/1174067818494156063"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 1.2746,
+      "lng": 103.84181,
+      "listing_id": "18646333",
+      "listing_url": "https://www.airbnb.com/rooms/18646333"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 51.57616,
+      "lng": -0.12644,
+      "listing_id": "5102977",
+      "listing_url": "https://www.airbnb.com/rooms/5102977"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 40.68647,
+      "lng": -73.92494,
+      "listing_id": "7761394",
+      "listing_url": "https://www.airbnb.com/rooms/7761394"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 51.58069,
+      "lng": -0.1236,
+      "listing_id": "987014010405216740",
+      "listing_url": "https://www.airbnb.com/rooms/987014010405216740"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 33.95409,
+      "lng": -118.35095,
+      "listing_id": "8883139",
+      "listing_url": "https://www.airbnb.com/rooms/8883139"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 52.48534,
+      "lng": 13.4358,
+      "listing_id": "9323006",
+      "listing_url": "https://www.airbnb.com/rooms/9323006"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 40.72932,
+      "lng": -73.99989,
+      "listing_id": "27278924",
+      "listing_url": "https://www.airbnb.com/rooms/27278924"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 51.53726,
+      "lng": -0.04754,
+      "listing_id": "21226952",
+      "listing_url": "https://www.airbnb.com/rooms/21226952"
+    },
+    {
+      "type": "drug_den_vibes",
+      "lat": 40.86886,
+      "lng": 14.23614,
+      "listing_id": "1213064717704314528",
+      "listing_url": "https://www.airbnb.com/rooms/1213064717704314528"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 51.558478044019445,
+      "lng": -0.1464874320036702,
+      "listing_id": "917440706911803962",
+      "listing_url": "https://www.airbnb.com/rooms/917440706911803962"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -38.70776,
+      "lng": 176.02461,
+      "listing_id": "582689493937245354",
+      "listing_url": "https://www.airbnb.com/rooms/582689493937245354"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 26.16712691259225,
+      "lng": -80.13239287502584,
+      "listing_id": "1416792348024869709",
+      "listing_url": "https://www.airbnb.com/rooms/1416792348024869709"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 52.20985285419826,
+      "lng": -7.526722427399774,
+      "listing_id": "1429580088161284447",
+      "listing_url": "https://www.airbnb.com/rooms/1429580088161284447"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 46.458720392175984,
+      "lng": 6.891536079347134,
+      "listing_id": "1437120888823998588",
+      "listing_url": "https://www.airbnb.com/rooms/1437120888823998588"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 26.2994269,
+      "lng": -80.0920123,
+      "listing_id": "1105122538444624828",
+      "listing_url": "https://www.airbnb.com/rooms/1105122538444624828"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 52.56215,
+      "lng": 13.39815,
+      "listing_id": "5528676",
+      "listing_url": "https://www.airbnb.com/rooms/5528676"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 53.01618690000001,
+      "lng": -6.9945274,
+      "listing_id": "660563181057501356",
+      "listing_url": "https://www.airbnb.com/rooms/660563181057501356"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 59.913,
+      "lng": 10.76535,
+      "listing_id": "1332129772933417020",
+      "listing_url": "https://www.airbnb.com/rooms/1332129772933417020"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 43.63844,
+      "lng": -79.44389,
+      "listing_id": "24945720",
+      "listing_url": "https://www.airbnb.com/rooms/24945720"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -37.58951686059726,
+      "lng": 175.88133167463386,
+      "listing_id": "1281287259181032509",
+      "listing_url": "https://www.airbnb.com/rooms/1281287259181032509"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 22.21212,
+      "lng": 114.02903,
+      "listing_id": "46471893",
+      "listing_url": "https://www.airbnb.com/rooms/46471893"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 52.3553338,
+      "lng": 4.8318847,
+      "listing_id": "1025199090641357767",
+      "listing_url": "https://www.airbnb.com/rooms/1025199090641357767"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 29.97368,
+      "lng": -90.03079,
+      "listing_id": "1287819060010081478",
+      "listing_url": "https://www.airbnb.com/rooms/1287819060010081478"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 44.9121,
+      "lng": -66.91926,
+      "listing_id": "1148627584158157292",
+      "listing_url": "https://www.airbnb.com/rooms/1148627584158157292"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -22.98429,
+      "lng": -43.21693,
+      "listing_id": "1395733769098995230",
+      "listing_url": "https://www.airbnb.com/rooms/1395733769098995230"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 30.23899,
+      "lng": -97.73341,
+      "listing_id": "28912786",
+      "listing_url": "https://www.airbnb.com/rooms/28912786"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -34.02057,
+      "lng": 18.37543,
+      "listing_id": "591318761585784585",
+      "listing_url": "https://www.airbnb.com/rooms/591318761585784585"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -43.5720791,
+      "lng": 172.7649366,
+      "listing_id": "916753998285135942",
+      "listing_url": "https://www.airbnb.com/rooms/916753998285135942"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 45.69855,
+      "lng": 9.90206,
+      "listing_id": "1155720263896116168",
+      "listing_url": "https://www.airbnb.com/rooms/1155720263896116168"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 48.86359,
+      "lng": 2.37938,
+      "listing_id": "557715183082332092",
+      "listing_url": "https://www.airbnb.com/rooms/557715183082332092"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 43.506528,
+      "lng": -1.486974,
+      "listing_id": "39693103",
+      "listing_url": "https://www.airbnb.com/rooms/39693103"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 30.40312549486133,
+      "lng": -97.69946939757465,
+      "listing_id": "959664488881346638",
+      "listing_url": "https://www.airbnb.com/rooms/959664488881346638"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 55.6478225,
+      "lng": 12.5485305,
+      "listing_id": "1271918110351790871",
+      "listing_url": "https://www.airbnb.com/rooms/1271918110351790871"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 36.13714,
+      "lng": -86.76969,
+      "listing_id": "737504076520849139",
+      "listing_url": "https://www.airbnb.com/rooms/737504076520849139"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 46.05647080553896,
+      "lng": 11.237364280952836,
+      "listing_id": "1299953879240959980",
+      "listing_url": "https://www.airbnb.com/rooms/1299953879240959980"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 19.42382,
+      "lng": -99.14667,
+      "listing_id": "31508253",
+      "listing_url": "https://www.airbnb.com/rooms/31508253"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 36.14065,
+      "lng": -86.76718,
+      "listing_id": "924076402217225856",
+      "listing_url": "https://www.airbnb.com/rooms/924076402217225856"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 51.47895707420465,
+      "lng": -0.0890723174649957,
+      "listing_id": "975412443657462577",
+      "listing_url": "https://www.airbnb.com/rooms/975412443657462577"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 59.33312,
+      "lng": 18.04513,
+      "listing_id": "20039225",
+      "listing_url": "https://www.airbnb.com/rooms/20039225"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 40.70132,
+      "lng": -73.90883,
+      "listing_id": "233638",
+      "listing_url": "https://www.airbnb.com/rooms/233638"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 51.43354,
+      "lng": -0.05592,
+      "listing_id": "16092808",
+      "listing_url": "https://www.airbnb.com/rooms/16092808"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 52.499691046609215,
+      "lng": 13.511280853956087,
+      "listing_id": "969485949838183209",
+      "listing_url": "https://www.airbnb.com/rooms/969485949838183209"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -38.36429,
+      "lng": 144.77883,
+      "listing_id": "959004132742034815",
+      "listing_url": "https://www.airbnb.com/rooms/959004132742034815"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -37.74468,
+      "lng": 145.7435,
+      "listing_id": "893040330223981050",
+      "listing_url": "https://www.airbnb.com/rooms/893040330223981050"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": -22.96303319018199,
+      "lng": -43.19084357108396,
+      "listing_id": "1062400980174424164",
+      "listing_url": "https://www.airbnb.com/rooms/1062400980174424164"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 43.7028765,
+      "lng": -79.3501864,
+      "listing_id": "1097091091075236977",
+      "listing_url": "https://www.airbnb.com/rooms/1097091091075236977"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 37.43,
+      "lng": 25.31058,
+      "listing_id": "696085183663566189",
+      "listing_url": "https://www.airbnb.com/rooms/696085183663566189"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 51.40019957554964,
+      "lng": -0.2351730957965546,
+      "listing_id": "1406516431637981250",
+      "listing_url": "https://www.airbnb.com/rooms/1406516431637981250"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 34.04514,
+      "lng": -118.46975,
+      "listing_id": "15001135",
+      "listing_url": "https://www.airbnb.com/rooms/15001135"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 51.44408851320013,
+      "lng": -0.0029071006537488,
+      "listing_id": "920989057267839502",
+      "listing_url": "https://www.airbnb.com/rooms/920989057267839502"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 55.69791,
+      "lng": 12.55276,
+      "listing_id": "25207848",
+      "listing_url": "https://www.airbnb.com/rooms/25207848"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 34.00924471204749,
+      "lng": -118.40097834807518,
+      "listing_id": "1421449955598484860",
+      "listing_url": "https://www.airbnb.com/rooms/1421449955598484860"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 19.407453908299296,
+      "lng": -99.1692769534904,
+      "listing_id": "923965448190636929",
+      "listing_url": "https://www.airbnb.com/rooms/923965448190636929"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 55.70190565787665,
+      "lng": 12.478717997734767,
+      "listing_id": "812361339609512248",
+      "listing_url": "https://www.airbnb.com/rooms/812361339609512248"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 52.98220443725586,
+      "lng": -9.297940254211426,
+      "listing_id": "556335145531323281",
+      "listing_url": "https://www.airbnb.com/rooms/556335145531323281"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 38.71444962197865,
+      "lng": -9.150146774996951,
+      "listing_id": "848364917909248277",
+      "listing_url": "https://www.airbnb.com/rooms/848364917909248277"
+    },
+    {
+      "type": "pets_in_photos",
+      "lat": 34.16623,
+      "lng": -118.25389,
+      "listing_id": "22673311",
+      "listing_url": "https://www.airbnb.com/rooms/22673311"
+    }
+  ]
+}
