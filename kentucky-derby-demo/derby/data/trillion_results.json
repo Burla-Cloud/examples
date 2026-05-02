@@ -139,7 +139,7 @@
       "winPct": 4.8115,
       "placePct": 10.0461,
       "showPct": 15.4627,
-      "value": "BET",
+      "value": "FAIR",
       "kelly": 0.015
     },
     {
@@ -173,7 +173,7 @@
       "winPct": 4.4436,
       "placePct": 9.3451,
       "showPct": 14.4726,
-      "value": "BET",
+      "value": "FAIR",
       "kelly": 0.008
     },
     {
@@ -207,7 +207,7 @@
       "winPct": 3.9494,
       "placePct": 8.3911,
       "showPct": 13.1094,
-      "value": "FADE",
+      "value": "FAIR",
       "kelly": 0.0
     },
     {
@@ -292,7 +292,7 @@
       "winPct": 2.4713,
       "placePct": 5.4411,
       "showPct": 8.7688,
-      "value": "BET",
+      "value": "FAIR",
       "kelly": 0.006
     },
     {

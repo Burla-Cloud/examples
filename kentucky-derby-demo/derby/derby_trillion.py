@@ -181,9 +181,17 @@ def _build_snapshot(total_counts, total_sims, elapsed, n_workers_done):
         sp = round(float(show_pct[i]), 4)
         kf = kelly_fraction(wp / 100, h["odds"])
         implied = h["impliedPct"]
-        if wp > implied * 1.15:
+        # v2 thresholds: match the primer card on the site, which tells the
+        # reader that BET means "model is at least 1.5x the market-implied"
+        # and FAIR means "within ~15% of the market". The v1 code used 1.15x
+        # which was looser than the primer and tagged ~8 horses as BET. The
+        # 1.5x rule narrows that to the 3 to 5 horses where the multiplier is
+        # actually meaningful.
+        if implied <= 0:
+            val = "FAIR"
+        elif wp >= implied * 1.5:
             val = "BET"
-        elif wp < implied * 0.85:
+        elif wp <= implied / 1.5:
             val = "FADE"
         else:
             val = "FAIR"
