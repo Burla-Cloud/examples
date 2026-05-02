@@ -1135,7 +1135,7 @@ footer a:hover { color: var(--accent); }
 
   <h3 class="primer-subhead">The back-test clears its own null</h3>
   <p class="primer-subhead-lede">
-    A permutation test shuffles the actual winners across our 16 historical Derbies (2010 through 2025), then re-runs the same 5,000-combo weight search on those shuffled labels. If the published score reflects real signal, the shuffled-label scores should land well below it. We ran 2,000 permutations on Burla.
+    <strong>In plain English:</strong> we tried to fool the model. We re-ran the full 5,000-combo search after secretly scrambling which horse actually won each historical Derby (a "permutation test"). If the model is real, the scrambled runs should score much worse than the truth run. We ran 2,000 scrambles on Burla. Every single one scored lower. The model is finding real signal, not memorising the data.
   </p>
   <div class="stats-card" style="margin: 6px 0 14px;">
     <div class="stats">
@@ -1165,23 +1165,23 @@ footer a:hover { color: var(--accent); }
   <ol class="primer-list audit-list">
     <li>
       <strong>No synthesized Beyer figures.</strong>
-      <span>The historical pipeline reads only the year-level winner Beyer (from the Washington Post archive and BloodHorse recaps). No per-horse Beyer is fabricated by working backwards from finishing position. Per-horse historical signal comes from post position, per-post historical win rate, and trainer / jockey Derby win counts instead.</span>
+      <span>Historical Beyers come straight from the Washington Post archive and BloodHorse recaps (winner only). No per-horse Beyer is back-calculated from finishing position; per-horse signal comes from post draw and connections instead.</span>
     </li>
     <li>
       <strong>The scrape actually saves what it scrapes.</strong>
-      <span><code>derby/derby_ingest.py</code> dispatches a real Burla call across 114 scrape tasks (Wikipedia 2010 through 2025, BloodHorse, Pedigree Query, TrackMaster, Churchill press) and writes every payload to <code>derby/data/raw/</code>. <code>derby/derby_build.py</code> consolidates those raw files into the historical and 2026 CSVs the pipeline reads. You can re-run the pipeline from raw bytes; nothing is hard-coded as a fallback.</span>
+      <span><code>derby_ingest.py</code> dispatches a real Burla call across 114 scrape tasks and writes every payload to <code>derby/data/raw/</code>. Nothing is hard-coded as a fallback; the pipeline reproduces from raw bytes.</span>
     </li>
     <li>
       <strong>The back-test runs on real fields, not curated rows.</strong>
-      <span>The 5,000-combo search reads <code>derby/data/historical_results.csv</code>, top-5 favourites by closing odds plus the actual winner, across 16 years (2010 through 2025). About 80 starters drive the search; no horse is hand-picked into or out of it.</span>
+      <span>The 5,000-combo search reads <code>historical_results.csv</code>: top-5 favourites by closing odds plus the actual winner, across 16 years. About 80 starters drive the search, no horse is hand-picked.</span>
     </li>
     <li>
       <strong>The ML model does not see the market price.</strong>
-      <span><code>implied_prob = 1 / (odds + 1)</code> is intentionally excluded from <code>FEATURE_COLS</code>. The 8 features the gradient-boosted model sees are post position, real per-post historical win rate, normalised trainer Derby wins, normalised jockey Derby wins, year-level winner Beyer, dosage score, run-style score, and a binary muddy-track flag. Predictions are independent of the betting market it is being compared against.</span>
+      <span><code>implied_prob = 1 / (odds + 1)</code> is excluded from the feature set. The 8 inputs are post, per-post historical win rate, trainer and jockey Derby wins, year-level Beyer, dosage, run-style, and a muddy-track flag. Predictions are independent of the market they are compared against.</span>
     </li>
     <li>
       <strong>No hand-coded &ldquo;expert&rdquo; dictionaries.</strong>
-      <span>Trainer and jockey scores are computed from real Derby win counts in the historical CSV. Pace fit is derived from each horse&rsquo;s scraped HRN Last-3f figure. Post-draw adjustments are zero unless a measured signal supports a non-zero number. There are no Python dicts pretending to be features.</span>
+      <span>Trainer and jockey scores come from real Derby win counts. Pace fit comes from each horse&rsquo;s scraped HRN Last-3f figure. Post-draw adjustments are zero unless a measured signal supports them.</span>
     </li>
   </ol>
 
