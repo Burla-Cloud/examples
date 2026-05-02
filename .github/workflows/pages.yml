@@ -35,6 +35,8 @@ jobs:
 
           mkdir -p public/airbnb-burla-demo
           cp -R airbnb-burla-demo/site/. public/airbnb-burla-demo/
+          mkdir -p public/kentucky-derby-demo
+          cp -R kentucky-derby-demo/docs/. public/kentucky-derby-demo/
           mkdir -p public/amazon-review-distiller
           cp -R amazon-review-distiller/. public/amazon-review-distiller/
           mkdir -p public/met-weirdest-art
