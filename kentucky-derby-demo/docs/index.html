@@ -397,6 +397,51 @@ ol.primer-list li::before {
 }
 .skeptic-card .primer-card__label { color: var(--ink-2); letter-spacing: .07em; }
 .skeptic-card .primer-card__title { color: var(--ink); }
+
+.stat .num.red { color: #B91C1C; }
+
+.refresh-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  margin: 6px 0 18px;
+}
+.refresh-table {
+  width: 100%; min-width: 640px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.refresh-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line);
+}
+.refresh-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.refresh-table tr:last-child td { border-bottom: 0; }
+.refresh-table .horse { font-weight: 600; color: var(--ink); }
+.refresh-table .bad  { color: #B91C1C; }
+.refresh-table .good { color: var(--accent-dark); }
+.refresh-table .row--highlight { background: #FFF7ED; }
+
+.audit-list { font-size: 14px; line-height: 1.7; max-width: 820px; }
+.audit-list code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--ink);
+}
 @media (max-width: 960px) {
   .primer-grid { grid-template-columns: 1fr; }
   .primer-grid--2col { grid-template-columns: 1fr; }
@@ -578,6 +623,8 @@ footer a:hover { color: var(--accent); }
     <a class="brand" href="#">derby<span class="x">×</span>burla</a>
     <div class="nav__links">
       <a href="#picks">Top Picks</a>
+      <a href="#refresh">Real-Data Check</a>
+      <a href="#audit" style="color:#B91C1C;">Audit</a>
       <a href="#rankings">All 20 Horses</a>
       <a href="#exotics">Exotic Plays</a>
       <a href="#how-it-ran">How It Ran</a>
@@ -945,6 +992,97 @@ footer a:hover { color: var(--accent); }
       </p>
     </div>
   </div>
+</section>
+
+<!-- ── Real-data refresh ── -->
+<section class="primer skeptic-section" id="refresh">
+  <h2>Real-data refresh</h2>
+  <p class="primer-lede">
+    The original pipeline ran on hand-typed inputs. We pulled public data on the 20 horses (NBC post-position draw, US Racing / DRF Beyer figures) and corrected what was wrong. No retraining, just better inputs.
+  </p>
+
+  <h3 class="primer-subhead">What we corrected</h3>
+  <div class="refresh-table-wrap">
+    <table class="refresh-table">
+      <thead>
+        <tr>
+          <th>Horse</th>
+          <th>Field</th>
+          <th>Hard-coded</th>
+          <th>Real (verified)</th>
+          <th>Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row--highlight"><td class="horse">So Happy</td><td>Odds</td><td class="bad">6-1 (14.3% implied)</td><td class="good">15-1 (6.3% implied)</td><td>Was a strong fade, now mild</td></tr>
+        <tr><td class="horse">Renegade</td><td>Implied %</td><td class="bad">18.2% (computed from 4.5-1)</td><td class="good">20.0% (4-1)</td><td>Bigger fade against the actual favorite</td></tr>
+        <tr><td class="horse">Further Ado</td><td>Odds</td><td class="bad">6.5-1 (13.3%)</td><td class="good">6-1 (14.3%)</td><td>Still BET, edge 2.4&times; to 2.2&times;</td></tr>
+        <tr><td class="horse">Commandment</td><td>Odds &amp; Beyer</td><td class="bad">6.5-1 / 104</td><td class="good">6-1 / 101</td><td>Stays FADE, profile slightly weaker</td></tr>
+        <tr><td>15 others</td><td>All fields</td><td colspan="2">Match real morning line and post draw</td><td>No change</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="primer-subhead-lede">
+    Sources: NBC Sports official post-position draw, US Racing / DRF Beyer rankings. Field of 20 confirmed (Silent Tactic, Fulleffort, Right to Party scratched; Great White, Ocelli, Robusta drew in). Race-day forecast is sunny, fast track, no muddy adjustment needed.
+  </p>
+
+  <p class="primer-subhead-lede">
+    <strong>Net:</strong> after the fix, the model&rsquo;s top three (Further Ado, Chief Wallabee, The Puma) match the rough shape of the public handicapping consensus across DRF, BloodHorse, US Racing, CBS, and SportsLine. Where it differs is in the magnitude of the win probabilities, which the audit below addresses.
+  </p>
+</section>
+
+<!-- ── Methodology audit ── -->
+<section class="primer skeptic-section" id="audit">
+  <h2>Methodology audit</h2>
+  <p class="primer-lede">
+    A skeptical data scientist would tear into this pipeline. Rather than wait, we ran the audit ourselves, including a real permutation test on Burla. Receipts in <code>derby/derby_audit.py</code>.
+  </p>
+
+  <h3 class="primer-subhead">The 22/40 backtest doesn&rsquo;t beat its own null</h3>
+  <p class="primer-subhead-lede">
+    A permutation test asks: if we shuffle who actually won and re-run the same 5,000-combo weight search, what does the best score look like under random labels? If the model is real, shuffled labels should produce much lower scores. We ran 2,000 permutations on Burla in 13.8 seconds.
+  </p>
+  <div class="stats-card" style="margin: 6px 0 18px;">
+    <div class="stats">
+      <div class="stat">
+        <span class="num">22/40</span>
+        <span class="label">Published model</span>
+      </div>
+      <div class="stat">
+        <span class="num red">30/40</span>
+        <span class="label">Median score on shuffled labels</span>
+      </div>
+      <div class="stat">
+        <span class="num red">87.4%</span>
+        <span class="label">P( null score &ge; 22 )</span>
+      </div>
+      <div class="stat">
+        <span class="num accent">+7</span>
+        <span class="label">Real edge over random pick</span>
+      </div>
+    </div>
+  </div>
+  <p class="primer-subhead-lede">
+    <strong>Read:</strong> the &ldquo;best of 5,000 random weights&rdquo; search has so much capacity that 22/40 is below the median of what it gets on shuffled labels. The headline is consistent with search noise. There is a real +7-point edge over a random pick, so the framework isn&rsquo;t worthless, but &ldquo;empirically validated&rdquo; is a stretch.
+  </p>
+
+  <h3 class="primer-subhead">Five data issues compute can&rsquo;t fix</h3>
+  <ol class="primer-list audit-list">
+    <li><strong>Synthesized Beyers.</strong> <code>derby_scraper.py</code> computes non-winner Beyers as <code>winner_beyer minus 3 times (finish_pos minus 1)</code>. The historical Beyer distribution is invented arithmetic, not measurement. Same goes for dosage.</li>
+    <li><strong>The &ldquo;Burla scrape&rdquo; never wrote anything.</strong> The script calls <code>remote_parallel_map</code>, ignores the result, and saves hard-coded <code>FALLBACK_DATA</code>. The &ldquo;parallel scraping bypassed IP blocks&rdquo; pitch is theatrical.</li>
+    <li><strong>Hand-typed backtest fields.</strong> <code>derby_sensitivity.py</code> defines <code>BACKTEST_FIELDS</code> with literal entries chosen by hand, not derived from the same feature pipeline. The backtest also covers only 4 to 5 horses per year, not the 20-horse field.</li>
+    <li><strong>The ML feature set leaks the answer.</strong> <code>FEATURE_COLS</code> includes <code>implied_prob = 1 / (odds + 1)</code>. Since odds embed the market&rsquo;s prediction, the classifier mostly relearns the market.</li>
+    <li><strong>Hand-coded &ldquo;expert&rdquo; features.</strong> <code>EXPERT_SCORES</code>, <code>PACE_FIT</code>, and <code>POST_DRAW_ADJUSTMENTS</code> are Python dicts dressed as features, with no aggregation code or sources.</li>
+  </ol>
+
+  <h3 class="primer-subhead" style="margin-top:24px;">What this site is and isn&rsquo;t</h3>
+  <p class="primer-subhead-lede">
+    <strong>Trust:</strong> the 2026 horse stats are face-valid (Beyer, run style, jockey/trainer Derby wins, sire pedigree). The relative ranking (Further Ado, Chief Wallabee, The Puma, then everyone else) tracks how a thoughtful handicapper would order these horses. As a ranking, it&rsquo;s a defensible first pass.
+  </p>
+  <p class="primer-subhead-lede">
+    <strong>Don&rsquo;t trust:</strong> the specific probabilities to four decimals, the BET / FAIR / FADE classifications as if they were calibrated, or the implication that more compute equals more truth. This is a ranked handicapper&rsquo;s sheet with a Burla flex on top, not a calibrated probability model.
+  </p>
 </section>
 
 <!-- ── Full Rankings ── -->
