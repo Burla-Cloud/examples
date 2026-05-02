@@ -1,6 +1,6 @@
 # Kentucky Derby 2026 on Burla
 
-> **One trillion Monte Carlo simulations of the 2026 Kentucky Derby in 45 minutes**, plus a 5,000-combination weight backtest, 164 ML configurations trained in parallel, and a 2,000-permutation null-test on the backtest score.
+> **One trillion Monte Carlo simulations of the 2026 Kentucky Derby in 49 minutes**, plus a 5,000-combination weight backtest, 164 ML configurations trained in parallel, and a 2,000-permutation null-test on the backtest score.
 >
 > Live demo: **[burla-cloud.github.io/examples/kentucky-derby-demo](https://burla-cloud.github.io/examples/kentucky-derby-demo/)**
 
@@ -14,17 +14,17 @@ The model finds **five value bets**, headlined by the chalky horse:
 
 | Horse | Post | ML Odds | Model Win % | Market Implied % | Multiplier |
 |---|---|---|---|---|---|
-| Further Ado | 18 | 6-1 | 27.9% | 14.3% | **1.95x** |
-| Litmus Test | 4 | 30-1 | 6.2% | 3.2% | **1.94x** |
-| Intrepido | 3 | 50-1 | 3.7% | 2.0% | **1.85x** |
-| Robusta | 23 | 50-1 | 3.7% | 2.0% | **1.85x** |
-| Pavlovian | 16 | 30-1 | 5.6% | 3.2% | **1.75x** |
+| Further Ado | 18 | 6-1 | 27.90% | 14.30% | **1.95x** |
+| Litmus Test | 4 | 30-1 | 6.12% | 3.20% | **1.91x** |
+| Intrepido | 3 | 50-1 | 3.75% | 2.00% | **1.88x** |
+| Robusta | 23 | 50-1 | 3.73% | 2.00% | **1.86x** |
+| Pavlovian | 16 | 30-1 | 5.58% | 3.20% | **1.74x** |
 
 **Further Ado** is the headline play: field-leading 106 Beyer, drew post 18 (the highest historical-win-rate gate in the 2010-2025 sample, where Authentic won in 2020), Cox / Velazquez. The chalky horse at 6-1 is also the value play.
 
-The four longshots behind him are 30-1 and 50-1 saver tickets; multiplier sizes (1.75x to 1.94x) clear Churchill's 17 to 22% takeout but stake sizes have to stay light.
+The four longshots behind him are 30-1 and 50-1 saver tickets; multiplier sizes (1.74x to 1.91x) clear Churchill's 17 to 22% takeout but stake sizes have to stay light.
 
-The headline favorite **Renegade** (4-1 ML, post 1) is the model's cleanest fade: 4.2% model vs 20.0% implied (4.7x market over model). Post 1 has not produced a Derby winner in our 2010 to 2025 sample (none since Ferdinand 1986).
+The headline favorite **Renegade** (4-1 ML, post 1) is the model's cleanest fade: 4.15% model vs 20.00% implied (4.81x market over model). Post 1 has not produced a Derby winner in our 2010 to 2025 sample (none since Ferdinand 1986).
 
 ## Pipeline
 
@@ -51,7 +51,7 @@ derby_audit.py         Burla: 2,000-run permutation test that
                        (null distribution for the backtest score)
 derby_trillion.py      Burla: 1,000,000,000,000 race simulations
                        across 10,000 worker tasks, 1,000 concurrent
-                       workers, 45.1 minutes wall clock
+                       workers, 48.9 minutes wall clock
 ```
 
 ## Setup
@@ -72,7 +72,7 @@ python derby/derby_model.py         # ~2 min on Burla (164 configs)
 python derby/derby_sensitivity.py   # ~7 sec on Burla (5,000 combos)
 python derby/derby_montecarlo.py    # ~1 min local
 python derby/derby_audit.py         # ~30 sec on Burla
-python derby/derby_trillion.py      # ~45 min on Burla (1T sims)
+python derby/derby_trillion.py      # ~49 min on Burla (1T sims)
 ```
 
 Each Burla script falls back to a single-machine implementation if a cluster isn't available, so you can develop locally and only burn cluster time on the final run.
@@ -115,7 +115,7 @@ A **2,000-permutation null test** (run on Burla in `derby_audit.py`) re-ran the 
 The site has a full audit section at [#audit](https://burla-cloud.github.io/examples/kentucky-derby-demo/#audit). The short version:
 
 1. **Morning line is not the closing tote.** BET / FAIR / FADE compares to the morning line. The closing tote will move; the model's calls reflect the field at posted ML.
-2. **Takeout eats edge.** Churchill keeps ~17% of the win pool, ~22% of exotics. Multipliers under ~1.2x do not clear takeout. The five BET-tagged horses (1.75x to 1.95x) all clear it. Further Ado at 6-1 is the only one stake-able at full bankroll; the four longshots (30-1 to 50-1) stay as small saver tickets.
+2. **Takeout eats edge.** Churchill keeps ~17% of the win pool, ~22% of exotics. Multipliers under ~1.2x do not clear takeout. The five BET-tagged horses (1.74x to 1.95x) all clear it. Further Ado at 6-1 is the only one stake-able at full bankroll; the four longshots (30-1 to 50-1) stay as small saver tickets.
 3. **Per-horse historical Beyers for losing finishers are paywalled** behind DRF. The historical training set therefore carries the same year-level winner Beyer for every horse in a given Derby. Per-horse historical signal comes from post position and connections instead.
 4. **No Ragozin / Thoro-Graph / Brisnet pace sheets.** Sectional times for losers, current jockey-trainer combo win rates, recent workouts, and live odds movement are all outside the model's view.
 5. **Two of the model's top-five weights are placeholder features for the 2026 field.** Dosage score (16% weight) and career win-rate (13% weight) were trained on per-horse historical data, but for the 2026 field every runner currently carries `dosage_score = 7.0` and `win_rate = 0.5`. Those columns earned their weight on 2010 to 2025 winners (where they varied), but they do not differentiate any 2026 horse from any other 2026 horse. The 2026 ranking effectively leans on year-Beyer, the binary stamina test, post-position win %, trainer/jockey Derby scores, and run style.
@@ -131,7 +131,7 @@ def simulate_race_batch(scores, n_sims, seed):
     # ...one batch of Monte Carlo sims...
     return {"counts": counts.tolist()}
 
-# 10,000 worker tasks across 1,000 concurrent workers in ~45 minutes
+# 10,000 worker tasks across 1,000 concurrent workers in ~49 minutes
 args = [(log_probs, 100_000_000, seed) for seed in range(10_000)]
 results = remote_parallel_map(simulate_race_batch, args, grow=True)
 ```
