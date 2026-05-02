@@ -19,6 +19,7 @@ These examples already had GitHub Pages sites, so they are published under this 
 | [Fossils of the arXiv](https://burla-cloud.github.io/examples/arxiv-fossils/) | 2.71M abstracts embedded and clustered to find extinct and emerging research topics. |
 | [World Photo Index](https://burla-cloud.github.io/examples/world-photo-index/) | 9.49M geotagged Flickr photos analyzed to find what every country photographs. |
 | [One Million GitHub READMEs](https://burla-cloud.github.io/examples/github-repo-summarizer/) | 1.2M READMEs classified, summarized, and searched without an LLM. |
+| [Kentucky Derby 2026](https://jackburla.github.io/BurlaKentuckyDerby/) | 1 trillion Monte Carlo race sims in 18 minutes, then a 2,000-permutation null test in 14 seconds &mdash; same cluster, same API, including the audit that calls out where the model is fragile. |
 
 ## Examples
 
@@ -43,5 +44,6 @@ These examples already had GitHub Pages sites, so they are published under this 
 | [pandas-apply-parallel](pandas-apply-parallel/) | Scaling slow `pandas.apply()` functions. |
 | [parquet-parallel](parquet-parallel/) | Processing many Parquet files in parallel. |
 | [monte-carlo-simulation](monte-carlo-simulation/) | Independent Monte Carlo simulations across many cores. |
+| [kentucky-derby-prediction](kentucky-derby-prediction/) | 1 trillion Monte Carlo sims + a 2,000-permutation null test of the model's own backtest. |
 
 GitHub Pages only deploys examples that already had Pages sites before this repo was created.
