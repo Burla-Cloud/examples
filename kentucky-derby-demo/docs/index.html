@@ -1552,7 +1552,7 @@ function buildRows() {
   const tbody = document.getElementById("horse-rows");
   HORSES.forEach((h, i) => {
     const tr = document.createElement("tr");
-    if (i < 2) tr.className = "top-row";
+    if (STRONG_BETS.has(h.name)) tr.className = "top-row";
     const barW = Math.round(h.win / maxWin * 100);
     const mktRank = MARKET_RANK[h.name];
     const isStrong = STRONG_BETS.has(h.name);
