@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kentucky Derby 2026 on Burla: 1,000,000,000,000 Race Simulations in ~48 minutes</title>
-<meta name="description" content="5,000 weight combinations tested in 7 seconds. 164 ML model configs trained in parallel. 1,000,000,000,000 Monte Carlo race simulations in ~48 minutes. All on Burla." />
+<title>Kentucky Derby 2026 on Burla: 1,000,000,000,000 Race Simulations in ~45 minutes</title>
+<meta name="description" content="5,000 weight combinations tested in 7 seconds. 164 ML model configs trained in parallel. 1,000,000,000,000 Monte Carlo race simulations in ~45 minutes. All on Burla." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -1252,6 +1252,7 @@ footer a:hover { color: var(--accent); }
     <li><strong>Takeout eats real edge.</strong> Churchill keeps ~17% of the win pool, ~22% of exotics. To break even after takeout the model needs roughly a +20% gap over the market, not +15%. The five BET-tagged horses are all longshot saver tickets; the multipliers (1.5&times; to 2.9&times;) are wide enough that the multiplier still clears takeout, but stake sizes have to stay light.</li>
     <li><strong>Per-horse historical Beyers for losing finishers are paywalled.</strong> DRF charges for them and we did not subscribe. The historical training set therefore has the same year-level Beyer for every horse in a given Derby. Per-horse historical signal has to come from post position and connections, not from speed figures.</li>
     <li><strong>No Ragozin / Thoro-Graph / Brisnet pace sheets.</strong> Pace figures, trip notes, sectional times for losers, current jockey-trainer combo win rate, recent workouts, and live-odds movement in the last ten minutes are all outside the model&rsquo;s view.</li>
+    <li><strong>Two of the model&rsquo;s top-five weights ride on placeholder features for the 2026 field.</strong> Dosage score (16% weight) and career win-rate (13% weight) are pulled per-horse historically, but for 2026 we hadn&rsquo;t scraped them per-horse, so every runner carries the same dosage_score = 7.0 and win_rate = 0.5. Those columns still earned their weight on 2010&ndash;2025 winners (where they varied), but they aren&rsquo;t differentiating any 2026 horse from any other 2026 horse. Effectively the 2026 ranking leans on year-Beyer (16%), stamina-test (19%, binary), post-position win-rate (12%), trainer/jockey edges, and run style.</li>
   </ol>
 
   <h3 class="primer-subhead" style="margin-top:24px;">What this site is and isn&rsquo;t</h3>
@@ -1284,17 +1285,17 @@ footer a:hover { color: var(--accent); }
         a 114-task scrape pulling 16 years of Wikipedia results plus the 2026
         field; 164 ML model configurations trained in parallel; 5,000 weight
         combinations back-tested against 16 historical Derbies (2010 through
-        2025); and 1 trillion race simulations run as 10,000 parallel Burla
-        workers in 47.8 minutes.
+        2025); and 1 trillion race simulations dispatched as 10,000 worker
+        tasks across 1,000 concurrent Burla workers in 45.1 minutes.
       </p>
 
       <div class="peak-callout">
-        <span class="peak-num">10,000</span>
+        <span class="peak-num">1,000</span>
         <span class="peak-text">
           <strong>concurrent Burla workers</strong> at peak during Monte Carlo,
-          each running 100,000,000 race simulations. 5,000 weight-combo workers
-          ran simultaneously during sensitivity analysis, all results
-          back in <strong>7 seconds</strong>.
+          chewing through 10,000 worker tasks (100,000,000 sims each). 5,000
+          weight-combo workers ran simultaneously during sensitivity analysis,
+          all results back in <strong>7 seconds</strong>.
         </span>
       </div>
 
@@ -1386,7 +1387,7 @@ ensemble_probs = np.mean([r[<span class="s">"field_probs"</span>] <span class="k
             counts[idx][rank] += <span class="n">1</span>
     <span class="k">return</span> {<span class="s">"counts"</span>: counts.tolist()}
 
-<span class="c"># 10,000 workers × 100,000,000 sims = 1,000,000,000,000 total in ~48 minutes</span>
+<span class="c"># 10,000 worker tasks × 100,000,000 sims = 1,000,000,000,000 total in ~45 minutes</span>
 args = [(log_probs, <span class="n">100_000_000</span>, seed) <span class="k">for</span> seed <span class="k">in</span> <span class="n">range</span>(<span class="n">10_000</span>)]
 results = remote_parallel_map(simulate_race_batch, args, grow=<span class="n">True</span>)
 total = np.sum([r[<span class="s">"counts"</span>] <span class="k">for</span> r <span class="k">in</span> results], axis=<span class="n">0</span>)
