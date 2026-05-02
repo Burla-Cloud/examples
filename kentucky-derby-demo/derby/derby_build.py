@@ -122,7 +122,8 @@ def build_2026_csv(hist_df: pd.DataFrame) -> pd.DataFrame:
     derby_model.py / derby_sensitivity.py / derby_montecarlo.py / derby_trillion.py
     don't need schema changes -- only data sources change.
     """
-    hrn = {h["post"]: h for h in _load_json(RAW / "hrn_2026.json")["horses"]}
+    hrn_raw = _load_json(RAW / "hrn_2026.json")["horses"]
+    hrn_by_name = {h["name"]: h for h in hrn_raw}
     ml_data = _load_json(RAW / "morning_line.json")
     morning_line = ml_data["horses"]
 
@@ -157,11 +158,10 @@ def build_2026_csv(hist_df: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for ml in morning_line:
         post = ml["post"]
-        if ml.get("also_eligible") or post >= 21:
-            # Skip AEs in the field CSV (they don't run unless drawn in).
+        if ml.get("also_eligible"):
             continue
-        h = hrn.get(post, {})
         name = ml["name"]
+        h = hrn_by_name.get(name, {})
         trainer = ml.get("trainer", "")
         jockey = ml.get("jockey", "")
 
