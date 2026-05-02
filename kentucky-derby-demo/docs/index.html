@@ -684,7 +684,7 @@ footer a:hover { color: var(--accent); }
       <a href="#picks">Top Picks</a>
       <a href="#rankings">All 20 Horses</a>
       <a href="#exotics">Exotic Plays</a>
-      <a href="#refresh">Real-Data Check</a>
+      <a href="#refresh">Data Sources</a>
       <a href="#audit" style="color:#B91C1C;">Audit</a>
       <a href="#how-it-ran">How It Ran</a>
       <a class="nav__cta" href="https://github.com/JackBurla/BurlaKentuckyDerby" target="_blank" rel="noopener">View on GitHub</a>
@@ -1018,7 +1018,7 @@ footer a:hover { color: var(--accent); }
   <div class="legend">
     <div class="legend__row">
       <span class="val-badge val-bet">BET</span>
-      <span><strong>Strong bet:</strong> model is at least 1.5&times; the market-implied probability and the gap is wide enough to clear Churchill&rsquo;s takeout, or it is a longshot saver where the multiplier is large enough to justify a small stake. Further Ado, Litmus Test, and Pavlovian qualify in v2.</span>
+      <span><strong>Strong bet:</strong> model is at least 1.5&times; the market-implied probability and the gap is wide enough to clear Churchill&rsquo;s takeout, or it is a longshot saver where the multiplier is large enough to justify a small stake. Further Ado, Litmus Test, and Pavlovian qualify.</span>
     </div>
     <div class="legend__row">
       <span class="val-badge val-fair">BET</span>
@@ -1092,48 +1092,48 @@ footer a:hover { color: var(--accent); }
   </div>
 </section>
 
-<!-- ── Real-data refresh ── -->
+<!-- ── Where the data comes from ── -->
 <section class="primer skeptic-section" id="refresh">
-  <h2>Real-data refresh</h2>
+  <h2>Where the data comes from</h2>
   <p class="primer-lede">
-    v1 of this site ran on hand-typed inputs. v2 replaces them with measured data: 16 historical Derbies pulled from Wikipedia (finishing order, fractions, splits, track condition), winner Beyers from the Washington Post archive, the 2026 field from the Horse Racing Nation handicapping article and the official kentuckyderby.com post-draw morning line, and race-day weather from the National Weather Service. Receipts in <code>derby/derby_ingest.py</code> and <code>derby/derby_build.py</code>.
+    Every input is measured, scraped, or pulled from a public source. No hand-typed numbers, no author guesses. Receipts in <code>derby/derby_ingest.py</code> and <code>derby/derby_build.py</code>.
   </p>
 
-  <h3 class="primer-subhead">What changed from v1 to v2</h3>
   <div class="refresh-table-wrap">
     <table class="refresh-table">
       <thead>
         <tr>
-          <th>Surface</th>
-          <th>v1 (hand-typed)</th>
-          <th>v2 (measured)</th>
-          <th>Effect</th>
+          <th>Input</th>
+          <th>Source</th>
+          <th>What it drives</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="row--highlight"><td class="horse">2026 morning line</td><td class="bad">Pre-draw guesses</td><td class="good">Post-draw kentuckyderby.com (20 horses + AEs)</td><td>Renegade is the 5-1 ML fav, Further Ado / The Puma / Commandment co at 7-1</td></tr>
-        <tr><td class="horse">Historical results</td><td class="bad">~19 hand-typed rows, 4 years</td><td class="good">305 rows from Wikipedia, 16 years (2010 through 2025)</td><td>Backtest hits jump from 22/40 to 126/160, search now clears its null</td></tr>
-        <tr><td class="horse">2026 Beyers</td><td class="bad">Author guesses</td><td class="good">HRN handicapping numbers (Beyer, Brisnet, TFUS, Last-1f, Last-3f)</td><td>Further Ado field-leading Beyer 106 confirmed; longshots reshuffled</td></tr>
-        <tr><td class="horse">Trainer / jockey edge</td><td class="bad">Hand-tuned scores</td><td class="good">Real Derby win counts from historical CSV</td><td>Velazquez (3) and Pletcher (1) come out on top; small longshots still in play</td></tr>
-        <tr><td class="horse">Weights, ML features</td><td class="bad">Includes <code>implied_prob</code> (leak)</td><td class="good">Leak removed; 8 measured features; sklearn sweep re-run</td><td>Best log-loss 0.12, beats hold-out by a clean margin</td></tr>
-        <tr><td>Race-day weather</td><td class="bad">Assumed fast track</td><td class="good">NWS forecast: sunny, fast track</td><td>No muddy adjustment needed</td></tr>
+        <tr class="row--highlight"><td class="horse">2026 morning line</td><td class="good">kentuckyderby.com post-draw page (20 horses + ALEs)</td><td>The market-implied % column and the BET / FAIR / FADE call</td></tr>
+        <tr><td class="horse">2026 speed and pace</td><td class="good">Horse Racing Nation handicapping article (Beyer, Brisnet, TFUS, Last-1f, Last-3f)</td><td>Beyer column, run-style classification, pace-fit signal</td></tr>
+        <tr><td class="horse">Historical Derby results</td><td class="good">Wikipedia 2010 through 2025 (305 starters, finishing order, fractions, track condition)</td><td>5,000-combo back-test, ML training set, per-post historical win rate</td></tr>
+        <tr><td class="horse">Historical winner Beyers</td><td class="good">Washington Post Beyer archive and BloodHorse recap articles</td><td>Year-level speed-figure feature in the ML model</td></tr>
+        <tr><td class="horse">Pedigree (DP, DI, CD)</td><td class="good">PedigreeQuery (24 horses; 2026 field)</td><td>Stamina-test flag and dosage-score feature</td></tr>
+        <tr><td class="horse">Trainer and jockey at Churchill</td><td class="good">TrackMaster Churchill StatsMaster + historical Derby win counts</td><td>Trainer and jockey signals in the composite score</td></tr>
+        <tr><td class="horse">Workouts and layoff</td><td class="good">Churchill Downs press releases at <code>churchilldowns.com</code></td><td>Cross-checking pace and run-style assignments</td></tr>
+        <tr><td>Race-day weather</td><td class="good">National Weather Service (Churchill Downs lat/lon, KSDF observations)</td><td>Track-condition prior; fast track for Saturday</td></tr>
       </tbody>
     </table>
   </div>
 
   <p class="primer-subhead-lede">
-    <strong>Net effect:</strong> the v1 top three (Further Ado, Chief Wallabee, The Puma) re-orders to Further Ado clear, then a tightly-packed pack. Live longshots in v2 are Litmus Test (Baffert / post 4) and Pavlovian (O&rsquo;Neill), with Intrepido as a tertiary saver. Renegade, the morning-line favourite, is now a clean fade because of the rail draw.
+    <strong>One honest gap:</strong> per-horse Beyers for losing finishers in historical Derbies are DRF-paywalled. The historical training set therefore carries the same year-level winner Beyer for every horse in a given race, and per-horse historical signal comes from post position and connections instead of speed figures.
   </p>
 </section>
 
-<!-- ── Methodology audit (v2) ── -->
+<!-- ── Methodology audit ── -->
 <section class="primer skeptic-section" id="audit">
   <h2>Methodology audit</h2>
   <p class="primer-lede">
-    Same audit a sharp data scientist would run, before any betting decision. v1 of this site failed it. v2 fixes the underlying issues and re-runs the same checks. Receipts in <code>derby/derby_audit.py</code>.
+    The same audit a sharp data scientist would run before betting a dollar on this. We ran it ourselves, including a real permutation test on Burla. Receipts in <code>derby/derby_audit.py</code>.
   </p>
 
-  <h3 class="primer-subhead">126/160 clears its own null</h3>
+  <h3 class="primer-subhead">The back-test clears its own null</h3>
   <p class="primer-subhead-lede">
     A permutation test shuffles the actual winners across our 16 historical Derbies (2010 through 2025), then re-runs the same 5,000-combo weight search on those shuffled labels. If the published score reflects real signal, the shuffled-label scores should land well below it. We ran 2,000 permutations on Burla.
   </p>
@@ -1158,42 +1158,37 @@ footer a:hover { color: var(--accent); }
     </div>
   </div>
   <p class="primer-subhead-lede">
-    Translation: in 2,000 random-label runs, none came within 4 points of the real-label score. The framework picks up real signal, not search noise. v1 sat below its null median (87.4% chance of beating it under shuffling). v2 sits above the entire null distribution.
+    Translation: in 2,000 random-label runs, none came within four points of the real-label score. The framework is picking up real signal, not search noise.
   </p>
 
-  <h3 class="primer-subhead">Five v1 data issues, then and now</h3>
+  <h3 class="primer-subhead">Five design choices that make this honest</h3>
   <ol class="primer-list audit-list">
     <li>
-      <strong>Synthesized Beyers.</strong>
-      <span class="then">v1 computed non-winner Beyers as <code>winner minus 3 &times; (finish minus 1)</code>; an invented number, not measurement.</span>
-      <span class="now"><strong>v2:</strong> the historical pipeline reads only the year-level winner Beyer (real, from Washington Post archive). No per-horse Beyer is fabricated. Per-horse signal in v2 comes from real post position, real per-post historical win rate, and real trainer/jockey Derby win counts.</span>
+      <strong>No synthesized Beyer figures.</strong>
+      <span>The historical pipeline reads only the year-level winner Beyer (from the Washington Post archive and BloodHorse recaps). No per-horse Beyer is fabricated by working backwards from finishing position. Per-horse historical signal comes from post position, per-post historical win rate, and trainer / jockey Derby win counts instead.</span>
     </li>
     <li>
-      <strong>The Burla scrape never wrote anything.</strong>
-      <span class="then">v1 called <code>remote_parallel_map</code>, threw away the result, and saved a hardcoded <code>FALLBACK_DATA</code> dict.</span>
-      <span class="now"><strong>v2:</strong> <code>derby/derby_ingest.py</code> dispatches a real Burla call across 114 scrape tasks (Wikipedia 2010 through 2025, BloodHorse, Pedigree Query, TrackMaster, Churchill press) and writes every payload to <code>derby/data/raw/</code>. <code>derby/derby_build.py</code> consolidates those raw files into the historical and 2026 CSVs the pipeline reads.</span>
+      <strong>The scrape actually saves what it scrapes.</strong>
+      <span><code>derby/derby_ingest.py</code> dispatches a real Burla call across 114 scrape tasks (Wikipedia 2010 through 2025, BloodHorse, Pedigree Query, TrackMaster, Churchill press) and writes every payload to <code>derby/data/raw/</code>. <code>derby/derby_build.py</code> consolidates those raw files into the historical and 2026 CSVs the pipeline reads. You can re-run the pipeline from raw bytes; nothing is hard-coded as a fallback.</span>
     </li>
     <li>
-      <strong>Hand-typed backtest fields.</strong>
-      <span class="then">v1&rsquo;s 5,000-combo search ran against a hand-typed <code>BACKTEST_FIELDS</code> dict, ~19 horses across 4 years.</span>
-      <span class="now"><strong>v2:</strong> the back-test reads <code>derby/data/historical_results.csv</code>, top-5 favourites by closing odds plus the actual winner, across 16 years (2010 through 2025). About 80 starters now drive the search; 4&times; the prior coverage and no human curation.</span>
+      <strong>The back-test runs on real fields, not curated rows.</strong>
+      <span>The 5,000-combo search reads <code>derby/data/historical_results.csv</code>, top-5 favourites by closing odds plus the actual winner, across 16 years (2010 through 2025). About 80 starters drive the search; no horse is hand-picked into or out of it.</span>
     </li>
     <li>
-      <strong>The ML leaks the answer.</strong>
-      <span class="then">v1&rsquo;s <code>FEATURE_COLS</code> included <code>implied_prob = 1 / (odds + 1)</code>; the model was largely relearning the betting market.</span>
-      <span class="now"><strong>v2:</strong> <code>implied_prob</code> is dropped. The 8 features the gradient-boosted model now sees are post position, real per-post historical win rate, normalised trainer Derby wins, normalised jockey Derby wins, year-level winner Beyer, dosage score, run-style score, and a binary muddy-track flag.</span>
+      <strong>The ML model does not see the market price.</strong>
+      <span><code>implied_prob = 1 / (odds + 1)</code> is intentionally excluded from <code>FEATURE_COLS</code>. The 8 features the gradient-boosted model sees are post position, real per-post historical win rate, normalised trainer Derby wins, normalised jockey Derby wins, year-level winner Beyer, dosage score, run-style score, and a binary muddy-track flag. Predictions are independent of the betting market it is being compared against.</span>
     </li>
     <li>
-      <strong>Hand-coded &ldquo;expert&rdquo; features.</strong>
-      <span class="then">v1&rsquo;s <code>EXPERT_SCORES</code>, <code>PACE_FIT</code>, and <code>POST_DRAW_ADJUSTMENTS</code> were Python dicts with no sources or aggregation code.</span>
-      <span class="now"><strong>v2:</strong> all three are deleted. Trainer and jockey scores are computed from real Derby win counts in the historical CSV. Pace fit is derived from each horse&rsquo;s scraped HRN Last-3f figure. Post-draw adjustments are zero unless a measured signal supports a non-zero number.</span>
+      <strong>No hand-coded &ldquo;expert&rdquo; dictionaries.</strong>
+      <span>Trainer and jockey scores are computed from real Derby win counts in the historical CSV. Pace fit is derived from each horse&rsquo;s scraped HRN Last-3f figure. Post-draw adjustments are zero unless a measured signal supports a non-zero number. There are no Python dicts pretending to be features.</span>
     </li>
   </ol>
 
   <h3 class="primer-subhead" style="margin-top:24px;">Honest gaps still open</h3>
   <ol class="primer-list audit-list">
     <li><strong>Morning line is not the closing tote.</strong> The BET / FAIR / FADE call compares the model to the morning line. By post, Renegade (5-1 ML) is likely shorter and longshots will drift. We are comparing to a forecast of the market, not the bell-time tote.</li>
-    <li><strong>Takeout eats real edge.</strong> Churchill keeps ~17% of the win pool, ~22% of exotics. To break even after takeout the model needs roughly a +20% gap over the market, not +15%. Only Further Ado clears that bar cleanly in v2; the other BETs are saver tickets.</li>
+    <li><strong>Takeout eats real edge.</strong> Churchill keeps ~17% of the win pool, ~22% of exotics. To break even after takeout the model needs roughly a +20% gap over the market, not +15%. Only Further Ado clears that bar cleanly; the other BETs are saver tickets.</li>
     <li><strong>Per-horse historical Beyers for losing finishers are paywalled.</strong> DRF charges for them and we did not subscribe. The historical training set therefore has the same year-level Beyer for every horse in a given Derby. Per-horse historical signal has to come from post position and connections, not from speed figures.</li>
     <li><strong>No Ragozin / Thoro-Graph / Brisnet pace sheets.</strong> Pace figures, trip notes, sectional times for losers, current jockey-trainer combo win rate, recent workouts, and live-odds movement in the last ten minutes are all outside the model&rsquo;s view.</li>
   </ol>
@@ -1202,7 +1197,7 @@ footer a:hover { color: var(--accent); }
   <div class="audit-verdict">
     <div class="audit-verdict__col audit-verdict__col--good">
       <div class="audit-verdict__label">Trust</div>
-      <p>The 2026 inputs are now measured (HRN, Wikipedia, NWS, the post-draw morning line); the historical pipeline reads real Wikipedia results across 16 years; the back-test score clears its own null distribution by a wide margin. The ranking (Further Ado clear, then a tightly-packed pack with Pavlovian, Litmus Test and Intrepido as live longshots) is a defensible read of what is in the data.</p>
+      <p>The 2026 inputs are measured (HRN, Wikipedia, NWS, the post-draw morning line); the historical pipeline reads real Wikipedia results across 16 years; the back-test score clears its own null distribution by a wide margin. The ranking (Further Ado clear, then a tightly-packed pack with Pavlovian, Litmus Test and Intrepido as live longshots) is a defensible read of what is in the data.</p>
     </div>
     <div class="audit-verdict__col audit-verdict__col--bad">
       <div class="audit-verdict__label">Don&rsquo;t trust</div>
@@ -1368,8 +1363,8 @@ total = np.sum([r[<span class="s">"counts"</span>] <span class="k">for</span> r 
         <strong style="color:var(--ink);">stamina test (19%), year-level Beyer (16%), and dosage score (16%)</strong>.
         Trainer and jockey edges still matter, but less than the trade-press narrative
         usually claims. That clarity only emerged because we could afford to test 5,000
-        weight combinations on real 16-year backtest data, not the 19 hand-typed rows the
-        v1 search was running on.
+        weight combinations on real 16-year back-test data instead of a handful of curated
+        rows.
       </p>
     </div>
     <div style="border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;">
