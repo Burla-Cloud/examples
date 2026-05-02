@@ -926,74 +926,6 @@ footer a:hover { color: var(--accent); }
   </div>
 </section>
 
-<!-- ── Skeptic's read ── -->
-<section class="primer skeptic-section" id="skeptic">
-  <h2>Skeptic&rsquo;s read</h2>
-  <p class="primer-lede">
-    Before you fire $100 on Further Ado: the questions a sharp horseplayer
-    would ask of any model like this one, answered honestly.
-  </p>
-  <div class="primer-grid skeptic-grid">
-    <div class="primer-card skeptic-card">
-      <div class="primer-card__label">Pari-mutuel reality</div>
-      <div class="primer-card__title">Morning line &ne; closing odds</div>
-      <p>
-        The morning line is the track oddsmaker&rsquo;s <em>guess</em> at
-        where the public will bet, not the actual market. By post,
-        Renegade (4-1 ML) will likely be 7-2 or shorter; Further Ado
-        will move too. We&rsquo;re comparing the model to a
-        <em>prediction of the market</em>, not the closing tote. Real
-        edge gets evaluated at the bell.
-      </p>
-    </div>
-    <div class="primer-card skeptic-card">
-      <div class="primer-card__label">The takeout problem</div>
-      <div class="primer-card__title">Churchill keeps ~17%</div>
-      <p>
-        Churchill removes ~17% from the win pool and ~22% from exotics
-        before payouts. To break even, the model must be roughly
-        <strong>+20% above market</strong>, not +15%. After takeout,
-        only <strong>Further Ado</strong> (+15.3 net) and
-        <strong>Chief Wallabee</strong> (+13.0 net) clear cleanly. The
-        Puma and Emerging Market are washes; Six Speed is a sprinkle.
-      </p>
-    </div>
-    <div class="primer-card skeptic-card">
-      <div class="primer-card__label">The backtest is small</div>
-      <div class="primer-card__title">Only 4 Derbies tested</div>
-      <p>
-        Quick refresher: a <strong>backtest</strong> is when you run the model on past races whose results you already know, to see if it would have picked the winners.
-      </p>
-      <p>
-        We tested 5,000 different ways of weighting the factors against the 2022 to 2025 Derbies. The best one scored <strong>22 out of 40</strong> possible points. It nailed Mage (2023) and Sovereignty (2025), got partial credit on Mystik Dan (2024), and missed Rich Strike (2022, the 80-1 shocker).
-      </p>
-      <p>
-        Two honest caveats: 4 races is a small sample, and when you try 5,000 different weight combos, some are going to look great just by luck. Treat the 22/40 as a sanity check, not proof the model will print money.
-      </p>
-    </div>
-    <div class="primer-card skeptic-card">
-      <div class="primer-card__label">What the model doesn&rsquo;t know</div>
-      <div class="primer-card__title">It&rsquo;s a starting point, not a full card</div>
-      <p>
-        Real handicappers look at a bunch of stuff this model can&rsquo;t see. In plain English, the model is missing:
-      </p>
-      <p style="font-size:13px;color:var(--ink-2);margin-top:4px;">
-        &middot; <strong>Pace figures</strong>: how fast each horse ran the EARLY fractions, separate from final speed.<br/>
-        &middot; <strong>Trip notes</strong>: did the horse get blocked or have a clean run last time?<br/>
-        &middot; <strong>Ragozin / Thoro-Graph sheets</strong>: rival speed-rating systems some pros prefer over Beyer.<br/>
-        &middot; <strong>Recent workouts</strong>: how the horse looked training the week of the race.<br/>
-        &middot; <strong>Layoff days</strong>: how long since the horse last raced.<br/>
-        &middot; <strong>Current jockey/trainer combo</strong>: their hit rate together this meet.<br/>
-        &middot; <strong>Weather and track condition</strong> on race day.<br/>
-        &middot; <strong>Live-odds movement</strong>: where the smart money is going in the final 10 minutes.
-      </p>
-      <p style="margin-top:8px;">
-        Beyer plus run style plus breeding is a strong starting point, not a complete picture. If you have access to those extras, weight these calls accordingly.
-      </p>
-    </div>
-  </div>
-</section>
-
 <!-- ── Full Rankings ── -->
 <div class="alt-bg">
 <section id="rankings" class="alt-inner">
@@ -1181,6 +1113,16 @@ footer a:hover { color: var(--accent); }
     <li><strong>Hand-typed backtest fields.</strong> <code>derby_sensitivity.py</code> defines <code>BACKTEST_FIELDS</code> with literal entries chosen by hand, not derived from the same feature pipeline. The backtest also covers only 4 to 5 horses per year, not the 20-horse field.</li>
     <li><strong>The ML feature set leaks the answer.</strong> <code>FEATURE_COLS</code> includes <code>implied_prob = 1 / (odds + 1)</code>. Since odds embed the market&rsquo;s prediction, the classifier mostly relearns the market.</li>
     <li><strong>Hand-coded &ldquo;expert&rdquo; features.</strong> <code>EXPERT_SCORES</code>, <code>PACE_FIT</code>, and <code>POST_DRAW_ADJUSTMENTS</code> are Python dicts dressed as features, with no aggregation code or sources.</li>
+  </ol>
+
+  <h3 class="primer-subhead" style="margin-top:24px;">Three more reasons not to bet face value</h3>
+  <p class="primer-subhead-lede">
+    Even if every input were clean and the methodology were calibrated, three things still sit between you and a printable ticket.
+  </p>
+  <ol class="primer-list audit-list">
+    <li><strong>Morning line is not the closing market.</strong> The morning line is the track oddsmaker&rsquo;s guess at where the public will bet, not where money actually closes. By post, Renegade (4-1 ML) will likely be 7-2 or shorter; Further Ado will move too. We&rsquo;re comparing the model to a prediction of the market, not the actual tote at the bell.</li>
+    <li><strong>Takeout eats real edge.</strong> Churchill removes ~17% from the win pool and ~22% from exotics before payouts. To break even, the model needs to be roughly +20% above market, not +15%. After takeout, only Further Ado (+15.3 net) and Chief Wallabee (+13.0 net) clear cleanly. The Puma and Emerging Market are washes, Six Speed is a sprinkle.</li>
+    <li><strong>The model can&rsquo;t see a lot.</strong> Pace figures (early fractions), trip notes, Ragozin / Thoro-Graph sheets, recent workouts, layoff days, current jockey-trainer combo win rate, weather and track condition, and live-odds movement in the last 10 minutes. Beyer plus run style plus breeding is a starting point, not a full picture.</li>
   </ol>
 
   <h3 class="primer-subhead" style="margin-top:24px;">What this site is and isn&rsquo;t</h3>
