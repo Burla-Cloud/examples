@@ -1,0 +1,32 @@
+# Cursor internals
+agent-transcripts/
+agent-tools/
+terminals/
+mcps/
+
+# Other canvases (unrelated projects)
+canvases/burla-boston-tech-week.canvas.tsx
+canvases/mayer-brown-antitrust-bdm-search.canvas.tsx
+canvases/resume-job-matches.canvas.tsx
+canvases/shannon-white-phoenix-targets.canvas.tsx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Data files (large/generated — reproducible by running the pipeline)
+derby/data/train_features.csv
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log
