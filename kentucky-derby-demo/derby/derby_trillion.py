@@ -42,96 +42,69 @@ if hasattr(sys.stdout, "reconfigure"):
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# ── Horse data (canvas scores = final_score from compute_final_scores) ───────
-HORSES = [
-    {"post": 16, "name": "Further Ado",     "odds": "6.5-1",  "beyer": 106,
-     "dosage": 2.08,  "style": "Press", "trainerDW": 1, "jockeyDW": 3,
-     "score": 50.7,   "impliedPct": 13.3},
-    {"post": 11, "name": "Chief Wallabee",  "odds": "8-1",    "beyer":  93,
-     "dosage": 1.92,  "style": "Press", "trainerDW": 1, "jockeyDW": 1,
-     "score": 49.3,   "impliedPct": 11.1},
-    {"post":  8, "name": "The Puma",        "odds": "10-1",   "beyer":  99,
-     "dosage": 2.47,  "style": "Close", "trainerDW": 1, "jockeyDW": 1,
-     "score": 42.8,   "impliedPct":  9.1},
-    {"post": 13, "name": "Emerging Market", "odds": "15-1",   "beyer":  98,
-     "dosage": 2.20,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 1,
-     "score": 40.1,   "impliedPct":  6.2},
-    {"post":  5, "name": "Commandment",     "odds": "6.5-1",  "beyer": 104,
-     "dosage": 3.44,  "style": "Stalk", "trainerDW": 1, "jockeyDW": 1,
-     "score": 38.0,   "impliedPct": 13.3},
-    {"post":  7, "name": "So Happy",        "odds": "6-1",    "beyer":  98,
-     "dosage": 7.00,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 2,
-     "score": 36.8,   "impliedPct": 14.3},
-    {"post": 15, "name": "Six Speed",       "odds": "50-1",   "beyer":  91,
-     "dosage": 5.00,  "style": "Pace",  "trainerDW": 0, "jockeyDW": 1,
-     "score": 35.6,   "impliedPct":  2.0},
-    {"post": 10, "name": "Incredibolt",     "odds": "20-1",   "beyer":  91,
-     "dosage": 3.00,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 0,
-     "score": 30.7,   "impliedPct":  4.8},
-    {"post": 20, "name": "Robusta",         "odds": "50-1",   "beyer":  93,
-     "dosage": 3.44,  "style": "Pace",  "trainerDW": 2, "jockeyDW": 0,
-     "score": 30.1,   "impliedPct":  2.0},
-    {"post":  2, "name": "Albus",           "odds": "30-1",   "beyer":  95,
-     "dosage": 2.60,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 0,
-     "score": 28.2,   "impliedPct":  3.2},
-    {"post":  3, "name": "Intrepido",       "odds": "50-1",   "beyer":  94,
-     "dosage": 3.40,  "style": "Press", "trainerDW": 0, "jockeyDW": 0,
-     "score": 27.5,   "impliedPct":  2.0},
-    {"post":  4, "name": "Litmus Test",     "odds": "30-1",   "beyer":  96,
-     "dosage": 3.36,  "style": "Stalk", "trainerDW": 6, "jockeyDW": 0,
-     "score": 26.9,   "impliedPct":  3.2},
-    {"post":  9, "name": "Wonder Dean",     "odds": "30-1",   "beyer":  95,
-     "dosage": 2.11,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 0,
-     "score": 26.6,   "impliedPct":  3.2},
-    {"post":  1, "name": "Renegade",        "odds": "4-1",    "beyer":  97,
-     "dosage": 3.00,  "style": "Close", "trainerDW": 2, "jockeyDW": 0,
-     "score": 26.3,   "impliedPct": 18.2},
-    {"post": 14, "name": "Pavlovian",       "odds": "30-1",   "beyer":  93,
-     "dosage": 1.29,  "style": "Pace",  "trainerDW": 2, "jockeyDW": 0,
-     "score": 23.4,   "impliedPct":  3.2},
-    {"post": 12, "name": "Potente",         "odds": "20-1",   "beyer":  96,
-     "dosage": 3.44,  "style": "Pace",  "trainerDW": 6, "jockeyDW": 0,
-     "score": 23.2,   "impliedPct":  4.8},
-    {"post": 18, "name": "Great White",     "odds": "50-1",   "beyer":  94,
-     "dosage": 3.00,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 0,
-     "score": 22.2,   "impliedPct":  2.0},
-    {"post":  6, "name": "Danon Bourbon",   "odds": "20-1",   "beyer":  94,
-     "dosage": 1.86,  "style": "Stalk", "trainerDW": 0, "jockeyDW": 0,
-     "score": 20.4,   "impliedPct":  4.8},
-    {"post": 19, "name": "Ocelli",          "odds": "50-1",   "beyer":  81,
-     "dosage": 1.73,  "style": "Deep",  "trainerDW": 0, "jockeyDW": 0,
-     "score": 16.2,   "impliedPct":  2.0},
-    {"post": 17, "name": "Golden Tempo",    "odds": "30-1",   "beyer":  90,
-     "dosage": 3.00,  "style": "Deep",  "trainerDW": 0, "jockeyDW": 0,
-     "score":  9.9,   "impliedPct":  3.2},
-]
+# v2: HORSES is loaded from data/model_results.json after the sklearn sweep
+# + Dirichlet weight search produce per-horse final scores. The v1 inline
+# literal could drift out of sync with the rest of the pipeline -- audit
+# fix #6 in the rebuild plan.
+def _load_horses_from_model_results():
+    path = os.path.join(DATA_DIR, "model_results.json")
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"{path} not found. Run derby_features.py + derby_model.py "
+            f"+ derby_sensitivity.py + derby_montecarlo.py first."
+        )
+    with open(path) as f:
+        results = json.load(f)
+    horses = results.get("horses_with_final_scores")
+    if not horses:
+        raise ValueError(f"{path} has no 'horses_with_final_scores' key")
+    return horses
+
+
+try:
+    HORSES = _load_horses_from_model_results()
+except Exception:
+    # Fallback: inline horses (will be replaced once Phase 3 produces
+    # model_results.json). Kept short to avoid drift; only used during dev.
+    HORSES = []
 
 NOISE_SIGMA     = 1.8
 
 # ── Scale settings ────────────────────────────────────────────────────────
-N_WORKERS       = 50_000        # 50,000 workers × 20M sims = 1T total
-SIMS_PER_WORKER = 20_000_000
+# v2: 10,000 workers × 100M sims each = 1T total. Single Burla call,
+# generator=True, with periodic snapshots so a mid-run node disconnect
+# doesn't lose progress. If a node disconnect aborts the call, the most
+# recent snapshot in trillion_results.json is the real intermediate data
+# (it'll show the actual completed sim count, not the target).
+N_WORKERS       = 10_000
+SIMS_PER_WORKER = 100_000_000
 CHUNK_SIZE      = 100_000
 TOTAL_SIMS      = N_WORKERS * SIMS_PER_WORKER  # 1,000,000,000,000
 
 # Burla dispatch settings (idiomatic per burla-agent-starter-kit Recipe #2:
 # pass all inputs in one call). Generator mode lets us aggregate counts as
 # workers complete and persist progress incrementally.
-MAX_PARALLELISM = 2_081         # full GCP CPUS_PER_VM_FAMILY quota
-FUNC_CPU        = 1             # 1 vCPU per worker → up to 2,081 concurrent
+#
+# v2 pragmatic choice: cluster has 13 × 80vCPU = 1,040 vCPU at full warm.
+# We cap parallelism at 1,000 so grow=True can boot any sleeping nodes
+# without overshooting GCP's CPUS_PER_VM_FAMILY quota of 2,080 in
+# us-central1 (which previously caused boot failures + a hung generator).
+MAX_PARALLELISM = 1_000
+FUNC_CPU        = 1             # 1 vCPU per worker → up to 1,000 concurrent
 FUNC_RAM        = 2             # 2GB is plenty for 100K x 20-horse arrays
-GROW_CLUSTER    = False         # cluster is pre-provisioned at 65 × 32vCPU
-                                 # = 2,080 vCPU which is *exactly* the GCP
-                                 # CPUS_PER_VM_FAMILY quota of 2,081.
-                                 # grow=True asks for MORE, blowing the
-                                 # quota. Don't grow; queue on existing.
-PERSIST_EVERY   = 500           # write a partial snapshot every N workers
+GROW_CLUSTER    = True          # boot warm-pool nodes if any are asleep
+PERSIST_EVERY   = 50            # write a partial snapshot every N workers
 
 
 def _compute_log_probs(horses):
-    """Reproduce the exact log_probs used in derby_montecarlo.py."""
+    """Reproduce the exact log_probs used in derby_montecarlo.py.
+
+    v2 note: softmax temperature is 15.0 (was 5.0 in v1). See the matching
+    comment in derby_montecarlo.compute_final_scores. The trillion-sim run
+    has to use the SAME temperature as the 1M run so the two outputs agree.
+    """
     scores = np.array([h["score"] for h in horses], dtype=np.float64)
-    exp_s = np.exp((scores - scores.mean()) / 5.0)
+    exp_s = np.exp((scores - scores.mean()) / 15.0)
     win_probs = exp_s / exp_s.sum()
     return np.log(win_probs + 1e-9).tolist()
 

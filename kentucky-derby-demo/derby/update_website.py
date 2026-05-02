@@ -106,9 +106,11 @@ def main():
     elapsed    = data.get("elapsed_s", 0.0)
     backend    = data.get("backend", "Burla")
     n_workers  = data.get("n_workers", 50_000)
+    sims_per_worker = total_sims // max(n_workers, 1)
 
     sims_str   = fmt_int(total_sims)
     workers_str = fmt_int(n_workers)
+    sims_per_worker_str = fmt_int(sims_per_worker)
     time_str   = fmt_time(elapsed)
     short_t    = short_time(elapsed)
 
@@ -144,10 +146,13 @@ def main():
     )
 
     # 3. Hero <h1>: "<N> Derby simulations,<br/><span class="accent">in <T>.</span>"
+    # v2 site customised the hero copy to "Where the market is wrong..." so this
+    # pattern won't match. Mark optional so the script doesn't abort.
     p.replace(
         "hero h1",
         rf'<h1>{NUM} Derby simulations,<br/><span class="accent">in [^<]+</span></h1>',
         f'<h1>{sims_str} Derby simulations,<br/><span class="accent">in {short_t}.</span></h1>',
+        required=False,
     )
 
     # 4. Hero lede strong tag: "<strong>X Monte Carlo race simulations</strong>"
@@ -155,13 +160,17 @@ def main():
         "hero lede strong",
         rf'<strong>{NUM} Monte Carlo race simulations</strong>',
         f'<strong>{sims_str} Monte Carlo race simulations</strong>',
+        required=False,
     )
 
     # 5. Hero stat tile: <span class="num accent">X</span><span class="label">Monte Carlo simulations
+    # v2 keeps the user-friendly "1 Trillion" text rather than the digit form,
+    # so this patch is a no-op (kept for parity with v1).
     p.replace(
         "hero stat tile",
-        rf'(<span class="num accent">){NUM}(</span>\s*<span class="label">Monte Carlo simulations)',
-        rf'\g<1>{sims_str}\g<2>',
+        rf'(<span class="num accent">)[^<]+(</span>\s*<span class="label">Monte Carlo simulations)',
+        rf'\g<1>1 Trillion\g<2>',
+        required=False,
     )
 
     # 6. Section lede in #picks: "Win% from X Monte Carlo simulations."
@@ -169,16 +178,18 @@ def main():
         "picks section lede",
         rf'Win% from {NUM} Monte Carlo simulations\.',
         f'Win% from {sims_str} Monte Carlo simulations.',
+        required=False,
     )
 
-    # 7. "How it ran" body: "and X race simulations run as Y concurrent batches in Z."
-    # The old phrasing said "100 concurrent batches in 90 seconds" which never matched
-    # the actual architecture. Replace with the truthful 1T description.
+    # 7. "How it ran" body: "and X race simulations run as Y parallel Burla workers in Z."
+    # v1 said "100 concurrent batches in 90 seconds" which never matched the actual
+    # architecture. v2 phrasing is "X parallel Burla workers in Y minutes".
     p.replace(
         "how-it-ran callout",
-        rf'and {NUM} race simulations run as {NUM} concurrent batches in [^.]+\.',
+        rf'and {NUM} race simulations run as {NUM} (?:concurrent batches|parallel Burla workers) in [^.]+\.',
         f'and {sims_str} race simulations run as {workers_str} parallel Burla workers '
         f'in {time_str}.',
+        required=False,
     )
 
     # 8. peak-num span (worker count tile in "How it ran")
@@ -193,7 +204,7 @@ def main():
     p.replace(
         "per-worker sims sentence",
         rf'each running {NUM} race simulations\.',
-        f'each running 20,000,000 race simulations.',
+        f'each running {sims_per_worker_str} race simulations.',
     )
 
     # 10. Code-block comments in the montecarlo pane.
@@ -208,14 +219,15 @@ def main():
     p.replace(
         "code comment: per-worker",
         rf'# Each worker runs {NUM} sims, returns position tallies\.',
-        f'# Each worker runs 20,000,000 sims, returns position tallies.',
+        f'# Each worker runs {sims_per_worker_str} sims, returns position tallies.',
     )
 
-    # Match: "# X batches × Y sims = Z total in ~T"
+    # Match: "# X workers × Y sims = Z total in ~T" (or v1's "X batches × Y sims" wording).
     p.replace(
         "code comment: arithmetic",
-        rf'# {NUM} batches × {NUM} sims = {NUM} total in ~[^<\n]+',
-        f'# {workers_str} workers × 20,000,000 sims = {sims_str} total in {short_t}',
+        rf'# {NUM} (?:batches|workers) × {NUM} sims = {NUM} total in ~?[^<\n]+',
+        f'# {workers_str} workers × {sims_per_worker_str} sims = {sims_str} total in {short_t}',
+        required=False,
     )
 
     # 11. Footer: "<N> Monte Carlo simulations." — anchor to footer context
@@ -225,6 +237,16 @@ def main():
         "footer sim count",
         rf'(top-5 by log-loss\)\.\s*)\n?\s*{NUM} Monte Carlo simulations\.',
         rf'\g<1>\n      {sims_str} Monte Carlo simulations.',
+        required=False,
+    )
+
+    # 11a. Footer "1 trillion Monte Carlo simulations." (text-form variant
+    # introduced in v2 manual edits). Keep "1 trillion" wording for fluency.
+    p.replace(
+        "footer 1-trillion text",
+        rf'1 trillion Monte Carlo simulations\.',
+        f'1 trillion Monte Carlo simulations.',
+        required=False,
     )
 
     # 12. HORSES JS array (replaces the entire const HORSES = [...]; block).

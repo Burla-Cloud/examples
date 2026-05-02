@@ -21,7 +21,9 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 DATA_DIR    = os.path.join(os.path.dirname(__file__), "data")
-CANVAS_DIR  = r"C:\Users\Jack Rzucidlo\.cursor\projects\empty-window\canvases"
+# v2: relative path so the script works on any machine. The .tsx canvas write
+# only fires if the parent dir exists; otherwise we silently skip it.
+CANVAS_DIR  = os.path.join(os.path.dirname(__file__), "..", "canvases")
 CANVAS_FILE = os.path.join(CANVAS_DIR, "kentucky-derby-2026.canvas.tsx")
 
 # ─── Manually-chosen default weights (overridden by sensitivity results) ──────
@@ -159,13 +161,21 @@ def compute_final_scores(field_df: pd.DataFrame, weights: dict, ml_probs: dict) 
     ml_score = df["ml_prob"] * 100
     df["composite_score"] = 0.7 * df["weighted_score"] + 0.3 * ml_score
 
-    # Post-draw adjustments
-    from derby_features import POST_DRAW_ADJUSTMENTS
-    df["post_draw_adj"] = df["name"].map(POST_DRAW_ADJUSTMENTS).fillna(0.0)
+    # v2: POST_DRAW_ADJUSTMENTS dict (hand-tuned bumps for post-draw narratives
+    # like "rail draw curse" and "Prat jockey switch") was audit-flagged as
+    # hand-coded. The composite score now reflects only data-driven signals;
+    # if the field CSV provides a 'post_draw_adj' column it is honoured, else 0.
+    if "post_draw_adj" not in df.columns:
+        df["post_draw_adj"] = 0.0
     df["final_score"] = df["composite_score"] + df["post_draw_adj"] * 3
 
-    # Convert to softmax probabilities
-    exp_s = np.exp((df["final_score"] - df["final_score"].mean()) / 5.0)
+    # v2: softmax temperature raised from 5.0 to 15.0. With v2 features the
+    # composite-score gap between the top horse and the field is much wider,
+    # so T=5.0 squeezed all the probability onto the favourite (top horse
+    # > 80% Win%). T=15.0 puts the favourite at ~30%, which lines up with the
+    # historical favourite-win rate (~31% since 2010) and the morning-line
+    # implied probability for a 5/2 ML favourite.
+    exp_s = np.exp((df["final_score"] - df["final_score"].mean()) / 15.0)
     df["model_win_prob"] = exp_s / exp_s.sum()
 
     return df.sort_values("final_score", ascending=False).reset_index(drop=True)
@@ -632,11 +642,17 @@ def main():
             sp  = sum(mc_counts[i, :3]) / n_sims * 100
             print(f"{row['name']:<22} {wp:>6.1f}% {pp:>7.1f}% {sp:>6.1f}%")
 
-    print(f"\nGenerating canvas -> {CANVAS_FILE}")
-    canvas_src = build_canvas(scored_df, mc_counts, n_sims, sensitivity, model_data)
-    with open(CANVAS_FILE, "w", encoding="utf-8") as f:
-        f.write(canvas_src)
-    print("Canvas written successfully.")
+    # v2: only generate the canvas TSX file if the canvases dir exists. The
+    # original hard-coded a Windows path; we now use a relative path and
+    # silently skip the canvas write when running headless.
+    if os.path.isdir(CANVAS_DIR):
+        print(f"\nGenerating canvas -> {CANVAS_FILE}")
+        canvas_src = build_canvas(scored_df, mc_counts, n_sims, sensitivity, model_data)
+        with open(CANVAS_FILE, "w", encoding="utf-8") as f:
+            f.write(canvas_src)
+        print("Canvas written successfully.")
+    else:
+        print("\n(canvases/ dir not present; skipping .tsx canvas write)")
 
     # Save final scores back to model_results.json
     scored_df["win_pct_mc"] = mc_counts[:len(scored_df), 0] / n_sims * 100
@@ -644,6 +660,33 @@ def main():
     scored_df["show_pct_mc"]  = sum(mc_counts[:len(scored_df), k] for k in range(3)) / n_sims * 100
 
     model_data["final_scores"] = scored_df[["name", "final_score", "win_pct_mc", "place_pct_mc"]].to_dict("records")
+
+    # v2: also persist the rich per-horse view that derby_trillion.py reads to
+    # build its inputs. Replaces the inline HORSES literal in derby_trillion.py
+    # so the trillion-sim run can never get out of sync with the model output.
+    horses_full = []
+    style_label = ["", "Pace", "Press", "Stalk", "Close", "Deep"]
+    for idx, row in enumerate(scored_df.to_dict("records")):
+        odds_val = row["odds"]
+        if odds_val >= 1:
+            odds_str = f"{int(odds_val)}-1" if float(odds_val).is_integer() else f"{odds_val:.1f}-1"
+        else:
+            odds_str = f"{odds_val:.1f}"
+        implied_pct = round(1.0 / (odds_val + 1) * 100, 1) if odds_val > 0 else 50.0
+        horses_full.append({
+            "post": int(row["post"]),
+            "name": row["name"],
+            "odds": odds_str,
+            "beyer": int(row.get("beyer", 95)),
+            "dosage": round(float(row.get("dosage", 2.5)), 2),
+            "style": style_label[int(row.get("run_style", 3))] if 0 <= int(row.get("run_style", 3)) < len(style_label) else "Stalk",
+            "trainerDW": int(row.get("trainer_dw", 0)),
+            "jockeyDW": int(row.get("jockey_dw", 0)),
+            "score": round(float(row["final_score"]), 1),
+            "impliedPct": implied_pct,
+        })
+    model_data["horses_with_final_scores"] = horses_full
+
     with open(results_path, "w") as f:
         json.dump(model_data, f, indent=2)
     print(f"Final results saved -> {results_path}")

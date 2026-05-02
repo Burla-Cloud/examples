@@ -1,0 +1,200 @@
+{
+  "url": "https://www.washingtonpost.com/wp-srv/sports/horse-racing/2012-kentucky-derby/preview/bsf.html",
+  "winners": {
+    "1987": {
+      "horse": "Alysheba",
+      "beyer": 104,
+      "source": "wapo_snapshot"
+    },
+    "1988": {
+      "horse": "Winning Colors",
+      "beyer": 113,
+      "source": "wapo_snapshot"
+    },
+    "1989": {
+      "horse": "Sunday Silence",
+      "beyer": 101,
+      "source": "wapo_snapshot"
+    },
+    "1990": {
+      "horse": "Unbridled",
+      "beyer": 116,
+      "source": "wapo_snapshot"
+    },
+    "1991": {
+      "horse": "Strike the Gold",
+      "beyer": 107,
+      "source": "wapo_snapshot"
+    },
+    "1992": {
+      "horse": "Lil E. Tee",
+      "beyer": 107,
+      "source": "wapo_snapshot"
+    },
+    "1993": {
+      "horse": "Sea Hero",
+      "beyer": 105,
+      "source": "wapo_snapshot"
+    },
+    "1994": {
+      "horse": "Go for Gin",
+      "beyer": 112,
+      "source": "wapo_snapshot"
+    },
+    "1995": {
+      "horse": "Thunder Gulch",
+      "beyer": 108,
+      "source": "wapo_snapshot"
+    },
+    "1996": {
+      "horse": "Grindstone",
+      "beyer": 112,
+      "source": "wapo_snapshot"
+    },
+    "1997": {
+      "horse": "Silver Charm",
+      "beyer": 115,
+      "source": "wapo_snapshot"
+    },
+    "1998": {
+      "horse": "Real Quiet",
+      "beyer": 107,
+      "source": "wapo_snapshot"
+    },
+    "1999": {
+      "horse": "Charismatic",
+      "beyer": 108,
+      "source": "wapo_snapshot"
+    },
+    "2000": {
+      "horse": "Fusaichi Pegasus",
+      "beyer": 108,
+      "source": "wapo_snapshot"
+    },
+    "2001": {
+      "horse": "Monarchos",
+      "beyer": 116,
+      "source": "wapo_snapshot"
+    },
+    "2002": {
+      "horse": "War Emblem",
+      "beyer": 114,
+      "source": "wapo_snapshot"
+    },
+    "2003": {
+      "horse": "Funny Cide",
+      "beyer": 108,
+      "source": "wapo_snapshot"
+    },
+    "2004": {
+      "horse": "Smarty Jones",
+      "beyer": 107,
+      "source": "wapo_snapshot"
+    },
+    "2005": {
+      "horse": "Giacomo",
+      "beyer": 100,
+      "source": "wapo_snapshot"
+    },
+    "2006": {
+      "horse": "Barbaro",
+      "beyer": 111,
+      "source": "wapo_snapshot"
+    },
+    "2007": {
+      "horse": "Street Sense",
+      "beyer": 111,
+      "source": "wapo_snapshot"
+    },
+    "2008": {
+      "horse": "Big Brown",
+      "beyer": 109,
+      "source": "wapo_snapshot"
+    },
+    "2009": {
+      "horse": "Mine That Bird",
+      "beyer": 105,
+      "source": "wapo_snapshot"
+    },
+    "2010": {
+      "horse": "Super Saver",
+      "beyer": 104,
+      "source": "wapo_snapshot"
+    },
+    "2011": {
+      "horse": "Animal Kingdom",
+      "beyer": 103,
+      "source": "wapo_snapshot"
+    },
+    "2012": {
+      "horse": "I'll Have Another",
+      "beyer": 101,
+      "source": "bloodhorse_drf"
+    },
+    "2013": {
+      "horse": "Orb",
+      "beyer": 104,
+      "source": "bloodhorse_drf"
+    },
+    "2014": {
+      "horse": "California Chrome",
+      "beyer": 107,
+      "source": "bloodhorse_drf"
+    },
+    "2015": {
+      "horse": "American Pharoah",
+      "beyer": 105,
+      "source": "bloodhorse_drf"
+    },
+    "2016": {
+      "horse": "Nyquist",
+      "beyer": 103,
+      "source": "bloodhorse_drf"
+    },
+    "2017": {
+      "horse": "Always Dreaming",
+      "beyer": 103,
+      "source": "bloodhorse_drf"
+    },
+    "2018": {
+      "horse": "Justify",
+      "beyer": 103,
+      "source": "bloodhorse_drf"
+    },
+    "2019": {
+      "horse": "Country House",
+      "beyer": 91,
+      "source": "bloodhorse_drf"
+    },
+    "2020": {
+      "horse": "Authentic",
+      "beyer": 102,
+      "source": "bloodhorse_drf"
+    },
+    "2021": {
+      "horse": "Mandaloun",
+      "beyer": 96,
+      "source": "bloodhorse_drf"
+    },
+    "2022": {
+      "horse": "Rich Strike",
+      "beyer": 99,
+      "source": "bloodhorse_drf"
+    },
+    "2023": {
+      "horse": "Mage",
+      "beyer": 96,
+      "source": "bloodhorse_drf"
+    },
+    "2024": {
+      "horse": "Mystik Dan",
+      "beyer": 99,
+      "source": "bloodhorse_drf"
+    },
+    "2025": {
+      "horse": "Sovereignty",
+      "beyer": 99,
+      "source": "bloodhorse_drf"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "n_permutations": 2000,
+  "n_combos_per_perm": 5000,
+  "n_years": 16,
+  "max_possible_score": 160,
+  "published_score": 126,
+  "null_median": 75.0,
+  "null_min": 34,
+  "null_max": 122,
+  "null_p25": 67.0,
+  "null_p75": 84.0,
+  "p_null_ge_published": 0.0,
+  "expected_random_pick_score": 47.92,
+  "edge_over_random": 78.08,
+  "elapsed_seconds": 1578.6
+}
