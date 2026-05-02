@@ -22,9 +22,19 @@ from sklearn.pipeline import Pipeline
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
+# NOTE: dropped `implied_prob = 1 / (odds + 1)` from FEATURE_COLS in v2.
+# That feature embedded the closing-market signal directly into the training
+# features, so the model was largely relearning the betting market rather than
+# adding any independent edge. Removing it is the v2 audit fix #4.
 FEATURE_COLS = [
-    "beyer_norm", "dosage_score", "run_style_score",
-    "implied_prob", "post", "post_wp_approx", "muddy",
+    "beyer_norm",        # year-level Beyer signal (real winner Beyer, normalized)
+    "dosage_score",      # placeholder for historical (real for 2026 via HRN)
+    "run_style_score",   # placeholder for historical (real for 2026 via HRN Last-3f)
+    "post",              # real post position
+    "post_wp_real",      # historical per-post win rate (computed from data)
+    "muddy",             # real binary indicator from track condition
+    "trainer_dw_norm",   # real Derby-win count, normalized 0-10
+    "jockey_dw_norm",    # real Derby-win count, normalized 0-10
 ]
 HOLDOUT_YEARS = [2022, 2023, 2024, 2025]
 
@@ -86,9 +96,11 @@ def train_and_eval(cfg, train_rows, holdout_rows, field_rows) -> dict:
     holdout_df = pd.DataFrame(holdout_rows)
     field_df   = pd.DataFrame(field_rows)
 
+    # Match FEATURE_COLS at module top -- v2 dropped implied_prob.
     feature_cols = [
         "beyer_norm", "dosage_score", "run_style_score",
-        "implied_prob", "post", "post_wp_approx", "muddy",
+        "post", "post_wp_real", "muddy",
+        "trainer_dw_norm", "jockey_dw_norm",
     ]
 
     X_train = train_df[feature_cols].values
@@ -143,9 +155,12 @@ def run_parallel_training(configs, train_df, holdout_df, field_df):
     # Package DataFrames as row-lists so they're picklable across workers
     train_rows   = train_df.to_dict("records")
     holdout_rows = holdout_df.to_dict("records")
-    field_rows   = field_df[["beyer_norm", "dosage_score", "run_style_score",
-                              "implied_prob", "post", "post_wp_approx", "muddy",
-                              "name", "odds"]].to_dict("records")
+    field_rows   = field_df[[
+        "beyer_norm", "dosage_score", "run_style_score",
+        "post", "post_wp_real", "muddy",
+        "trainer_dw_norm", "jockey_dw_norm",
+        "name", "odds",
+    ]].to_dict("records")
 
     args_list = [(cfg, train_rows, holdout_rows, field_rows) for cfg in configs]
 
@@ -176,13 +191,30 @@ def ensemble_top_k(results: list[dict], field_df: pd.DataFrame, k: int = 5) -> n
     return probs.mean(axis=0)
 
 
-def build_field_features_for_model(field_df: pd.DataFrame) -> pd.DataFrame:
-    """Add ML-specific columns to the 2026 field DataFrame."""
+def build_field_features_for_model(field_df: pd.DataFrame, hist_df: pd.DataFrame = None) -> pd.DataFrame:
+    """Add ML-specific columns to the 2026 field DataFrame.
+
+    v2: real per-post historical win rate (from `hist_df`) replaces the
+    8.0/5.0 heuristic. `implied_prob` is no longer in the feature list (audit
+    fix #4); the column is dropped from upstream feature engineering too.
+    """
     df = field_df.copy()
-    df["beyer_norm"]      = np.clip((df["beyer"] - 80) / 3.0, 0, 10)
-    df["implied_prob"]    = 1.0 / (df["odds"] + 1)
-    df["post_wp_approx"]  = df["post"].apply(lambda p: 8.0 if 5 <= p <= 12 else 5.0)
-    df["muddy"]           = 0  # fast track confirmed
+    df["beyer_norm"] = np.clip((df["beyer"] - 80) / 3.0, 0, 10)
+    df["muddy"] = 0  # 2026 forecast: dry/fast at post time (NWS, May 1 2026)
+    # Real per-post historical win rate from 2010-2025 data (no synthesis).
+    if hist_df is not None and not hist_df.empty:
+        post_wp_pct = (
+            hist_df.groupby("post")["is_winner"].mean() * 100.0
+        ).to_dict()
+        df["post_wp_real"] = df["post"].apply(lambda p: post_wp_pct.get(int(p), 5.0))
+    else:
+        df["post_wp_real"] = 5.0
+    # Trainer / jockey Derby-win counts already on the field CSV; normalize 0-10.
+    def _norm(s):
+        lo, hi = float(s.min()), float(s.max())
+        return (s - lo) / (hi - lo) * 10.0 if hi > lo else s * 0 + 5.0
+    df["trainer_dw_norm"] = _norm(df["trainer_dw"])
+    df["jockey_dw_norm"] = _norm(df["jockey_dw"])
     return df
 
 
@@ -196,18 +228,20 @@ def main():
         print("Missing input files. Run derby_scraper.py and derby_features.py first.")
         return
 
-    all_df   = pd.read_csv(train_path)
+    all_df = pd.read_csv(train_path)
     field_df = pd.read_csv(field_path)
+    hist_path = os.path.join(DATA_DIR, "historical_results.csv")
+    hist_df = pd.read_csv(hist_path) if os.path.exists(hist_path) else None
 
     # Add model-specific cols to field_df
-    field_df = build_field_features_for_model(field_df)
+    field_df = build_field_features_for_model(field_df, hist_df=hist_df)
     if "dosage_score" not in field_df.columns:
-        field_df["dosage_score"] = np.clip(10 - (field_df["dosage"] - 1.0) * (10/6.0), 0, 10)
+        field_df["dosage_score"] = np.clip(10 - (field_df["dosage"] - 1.0) * (10 / 6.0), 0, 10)
     if "run_style_score" not in field_df.columns:
         style_map = {1: 4.0, 2: 8.5, 3: 8.0, 4: 7.0, 5: 5.5}
         field_df["run_style_score"] = field_df["run_style"].map(style_map).fillna(6.5)
 
-    train_df   = all_df[~all_df["year"].isin(HOLDOUT_YEARS)].copy()
+    train_df = all_df[~all_df["year"].isin(HOLDOUT_YEARS)].copy()
     holdout_df = all_df[all_df["year"].isin(HOLDOUT_YEARS)].copy()
     print(f"Training on {len(train_df)} rows ({train_df['year'].nunique()} years), "
           f"holdout: {len(holdout_df)} rows ({HOLDOUT_YEARS})")
