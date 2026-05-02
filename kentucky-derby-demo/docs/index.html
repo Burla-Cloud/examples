@@ -185,6 +185,13 @@ section { padding: 48px 32px; max-width: var(--max); margin: 0 auto; }
 .horse-table .col-faded { color: var(--ink-2); }
 .horse-table thead .col-faded { color: var(--ink-3); }
 
+.horse-table-wrap { position: relative; }
+.horse-table-wrap__hint {
+  display: none;
+  font-size: 12px; color: var(--ink-3);
+  margin: 0 0 8px; letter-spacing: .02em;
+}
+
 .prob-bar-wrap { display: flex; align-items: center; gap: 10px; }
 .prob-bar-track {
   flex: 1; height: 6px; border-radius: 99px;
@@ -672,6 +679,28 @@ footer a:hover { color: var(--accent); }
   .hero h1 { font-size: 36px; }
   .hero .lede { font-size: 17px; }
   .horse-table { font-size: 13px; }
+  .horse-table thead th,
+  .horse-table tbody td { padding: 9px 8px; }
+  .horse-table thead .mob-hide,
+  .horse-table tbody .mob-hide { display: none; }
+  .horse-table th[style*="min-width:200px"] { min-width: 0 !important; }
+  .horse-table .prob-bar-track { min-width: 36px; }
+  .horse-table .prob-bar-wrap { gap: 6px; }
+  .horse-table .prob-val { min-width: 32px; font-size: 12px; }
+  .horse-table .horse-name { font-size: 13px; line-height: 1.3; }
+  .horse-table .value-tag { display: block; margin: 4px 0 0; font-size: 9px; }
+  .horse-table-wrap__hint { display: block; }
+  .refresh-table { min-width: 0 !important; font-size: 13px; }
+  .refresh-table th, .refresh-table td { padding: 9px 10px; }
+  .factor-weights-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .audit-list ul { padding-left: 18px; }
+  .reason-box { flex-direction: column !important; gap: 6px !important; padding: 10px 12px !important; font-size: 13px !important; }
+  .reason-tag { align-self: flex-start; }
+  .reason-text { font-size: 13px !important; line-height: 1.5 !important; }
+  .reason-row td { padding: 0 8px 14px 8px !important; }
+  .legend__row { font-size: 13px; line-height: 1.5; }
+  .diff-table { font-size: 12.5px !important; }
+  .pick-stats { gap: 12px !important; }
 }
 </style>
 </head>
@@ -995,24 +1024,27 @@ footer a:hover { color: var(--accent); }
     </div>
   </div>
 
-  <div style="overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); background:var(--bg);">
+  <div class="horse-table-wrap">
+  <p class="horse-table-wrap__hint">Swipe the table to see Beyer, run style, and place / show probabilities.</p>
+  <div style="overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); background:var(--bg); -webkit-overflow-scrolling:touch;">
   <table class="horse-table">
     <thead>
       <tr>
         <th>Post</th>
         <th>Horse</th>
         <th>Odds</th>
-        <th>Beyer</th>
-        <th>Style</th>
+        <th class="mob-hide">Beyer</th>
+        <th class="mob-hide">Style</th>
         <th style="min-width:200px;">Model Win%</th>
-        <th class="col-divider">Market Win%</th>
-        <th class="col-faded">Place%</th>
-        <th class="col-faded">Show%</th>
+        <th class="col-divider mob-hide">Market Win%</th>
+        <th class="col-faded mob-hide">Place%</th>
+        <th class="col-faded mob-hide">Show%</th>
         <th>Value</th>
       </tr>
     </thead>
     <tbody id="horse-rows"></tbody>
   </table>
+  </div>
   </div>
 
   <div class="legend">
@@ -1404,7 +1436,7 @@ total = np.sum([r[<span class="s">"counts"</span>] <span class="k">for</span> r 
 
   <div style="margin-top:36px; padding:24px 28px; border:1px solid var(--accent); border-radius:var(--radius); background:var(--accent-soft);">
     <strong style="font-size:15px; color:var(--accent-dark);">Empirically-validated factor weights (best of 5,000 combinations, backtest score 126/160 pts on 2010&ndash;2025):</strong>
-    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:16px;">
+    <div class="factor-weights-grid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:16px;">
       <div><div style="font-size:22px;font-weight:700;color:var(--accent-dark);">19.2%</div><div style="font-size:12px;color:var(--ink-2);">Stamina test</div></div>
       <div><div style="font-size:22px;font-weight:700;color:var(--ink);">16.1%</div><div style="font-size:12px;color:var(--ink-2);">Beyer (year-level)</div></div>
       <div><div style="font-size:22px;font-weight:700;color:var(--ink);">15.9%</div><div style="font-size:12px;color:var(--ink-2);">Dosage score</div></div>
@@ -1565,8 +1597,8 @@ function buildRows() {
       <td class="horse-post">${h.post}</td>
       <td class="horse-name">${h.name}${valueTag}</td>
       <td><span class="odds-badge">${h.odds}</span></td>
-      <td>${h.beyer}</td>
-      <td>${h.style}</td>
+      <td class="mob-hide">${h.beyer}</td>
+      <td class="mob-hide">${h.style}</td>
       <td>
         <div class="prob-bar-wrap">
           <div class="prob-bar-track">
@@ -1575,12 +1607,12 @@ function buildRows() {
           <span class="prob-val">${h.win.toFixed(1)}%</span>
         </div>
       </td>
-      <td class="col-divider mkt-cell">
+      <td class="col-divider mkt-cell mob-hide">
         <span class="mkt-pct">${h.implied.toFixed(1)}%</span>
         <span class="mkt-rank">market #${mktRank}</span>
       </td>
-      <td class="col-faded">${h.place.toFixed(1)}%</td>
-      <td class="col-faded">${h.show.toFixed(1)}%</td>
+      <td class="col-faded mob-hide">${h.place.toFixed(1)}%</td>
+      <td class="col-faded mob-hide">${h.show.toFixed(1)}%</td>
       <td><span class="val-badge ${valClass(h)}">${h.val}</span></td>
     `;
     tbody.appendChild(tr);
