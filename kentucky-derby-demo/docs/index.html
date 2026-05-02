@@ -701,6 +701,33 @@ footer a:hover { color: var(--accent); }
   .legend__row { font-size: 13px; line-height: 1.5; }
   .diff-table { font-size: 12.5px !important; }
   .pick-stats { gap: 12px !important; }
+
+  /* Code card: scroll the tab strip as a whole; shrink code padding so more code fits per line. */
+  .code-card__head {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .code-card__head::-webkit-scrollbar { height: 0; }
+  .code-card__dots { display: none; }
+  .code-tabs { margin-left: 0; flex-wrap: nowrap; }
+  .code-tab { padding: 12px 10px 10px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+  pre.code-block { padding: 14px 12px; font-size: 12px; line-height: 1.6; }
+
+  /* "What's the point?" stacks to one column on phones. */
+  .why-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .timing-table { font-size: 13px; }
+  .timing-table th, .timing-table td { padding: 9px 10px; }
+
+  /* Method/code grid stacks at 1100px already, but tighten padding here. */
+  .method-section { padding: 48px 16px !important; }
+  .method { gap: 24px !important; }
+  .method__copy h2 { font-size: 28px !important; }
+  .peak-callout { gap: 12px !important; padding: 16px !important; }
+  .peak-num { font-size: 30px !important; }
+  .peak-text { font-size: 13px !important; }
 }
 </style>
 </head>
@@ -1377,7 +1404,7 @@ total = np.sum([r[<span class="s">"counts"</span>] <span class="k">for</span> r 
     </div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;">
+  <div class="why-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;">
     <div>
       <p style="font-size:16px; color:var(--ink-2); line-height:1.7; margin:0 0 16px;">
         If you ran all three compute steps locally, sequentially, with Python&rsquo;s GIL limiting 
@@ -1399,7 +1426,7 @@ total = np.sum([r[<span class="s">"counts"</span>] <span class="k">for</span> r 
         rows.
       </p>
     </div>
-    <div style="border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;">
+    <div class="timing-table-wrap" style="border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;">
       <table class="timing-table">
         <thead>
           <tr>
