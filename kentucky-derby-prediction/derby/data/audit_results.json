@@ -1,0 +1,39 @@
+{
+  "generated_at_unix": 1777680395,
+  "pipeline_audit_text": "See website 'Methodology audit' section for the qualitative findings: synthetic Beyer/dosage for non-winners, hardcoded backtest fields, data-leaking implied_prob feature, near-uniform ML output, etc.",
+  "null_model_baselines": {
+    "favorite_lowest_odds": 6,
+    "highest_beyer": 10,
+    "random_mean": 15.32342,
+    "random_theoretical": 15.3
+  },
+  "permutation_null": {
+    "observed_score": 22,
+    "n_permutations": 2000,
+    "n_dirichlet": 5000,
+    "null_mean": 28.2175,
+    "null_median": 30,
+    "null_std": 6.270262653988269,
+    "null_max": 40,
+    "null_p25": 24,
+    "null_p75": 32,
+    "null_p95": 40,
+    "p_value_ge": 0.874,
+    "p_value_gt": 0.807,
+    "pct_null_at_or_above": {
+      "22": 0.874,
+      "23": 0.807,
+      "24": 0.7765,
+      "25": 0.7375,
+      "27": 0.575,
+      "30": 0.502,
+      "32": 0.328,
+      "35": 0.1875,
+      "40": 0.08
+    }
+  },
+  "interpretation": {
+    "headline": "Best-of-5,000 search hits >= 22/40 in 87.4% of permuted-label runs.",
+    "reading": "If P(null >= 22) is ~5% or higher, '22/40 best of 5,000' is consistent with random search noise on permuted labels \u2014 i.e. the headline number is largely produced by the search procedure, not by genuine signal in the weights."
+  }
+}
