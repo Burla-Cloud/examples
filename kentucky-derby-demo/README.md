@@ -8,19 +8,23 @@ This is a real handicapping pipeline, not a marketing simulation. Every input is
 
 ## What the model picks
 
-After four scratches (Silent Tactic, Fulleffort, Right To Party, The Puma), the final 19-horse field runs Saturday May 2 at Churchill Downs. The model finds **five value bets**, all longshots:
+After four scratches (Silent Tactic, Fulleffort, Right To Party, The Puma), the final 19-horse field runs Saturday May 2 at Churchill Downs. Posts below are the official program posts as published by Churchill Downs, with gaps where horses scratched and the three also-eligibles drawn into deep-outside posts (21, 22, 23).
+
+The model finds **five value bets**, headlined by the chalky horse:
 
 | Horse | Post | ML Odds | Model Win % | Market Implied % | Multiplier |
 |---|---|---|---|---|---|
-| Robusta | 19 | 50-1 | 5.82% | 2.00% | **2.91x** |
-| Ocelli | 18 | 50-1 | 4.27% | 2.00% | **2.13x** |
-| Litmus Test | 4 | 30-1 | 6.29% | 3.20% | **1.96x** |
-| Intrepido | 3 | 50-1 | 3.83% | 2.00% | **1.92x** |
-| Pavlovian | 13 | 30-1 | 5.67% | 3.20% | **1.77x** |
+| Further Ado | 18 | 6-1 | 27.9% | 14.3% | **1.95x** |
+| Litmus Test | 4 | 30-1 | 6.2% | 3.2% | **1.94x** |
+| Intrepido | 3 | 50-1 | 3.7% | 2.0% | **1.85x** |
+| Robusta | 23 | 50-1 | 3.7% | 2.0% | **1.85x** |
+| Pavlovian | 16 | 30-1 | 5.6% | 3.2% | **1.75x** |
 
-The headline favorite **Renegade** (4-1 ML, post 1) is the model's clearest fade: 4.33% model vs 20.0% implied. Post 1 has not produced a Derby winner in our 2010 to 2025 sample.
+**Further Ado** is the headline play: field-leading 106 Beyer, drew post 18 (the highest historical-win-rate gate in the 2010-2025 sample, where Authentic won in 2020), Cox / Velazquez. The chalky horse at 6-1 is also the value play.
 
-The model's clear top of the board is **Further Ado** at 18.5% win probability (106 Beyer), but at 6-1 morning line he is fairly priced (14.3% implied), so he is a structure piece in exotics rather than a win bet.
+The four longshots behind him are 30-1 and 50-1 saver tickets; multiplier sizes (1.75x to 1.94x) clear Churchill's 17 to 22% takeout but stake sizes have to stay light.
+
+The headline favorite **Renegade** (4-1 ML, post 1) is the model's cleanest fade: 4.2% model vs 20.0% implied (4.7x market over model). Post 1 has not produced a Derby winner in our 2010 to 2025 sample (none since Ferdinand 1986).
 
 ## Pipeline
 
@@ -111,7 +115,7 @@ A **2,000-permutation null test** (run on Burla in `derby_audit.py`) re-ran the 
 The site has a full audit section at [#audit](https://burla-cloud.github.io/examples/kentucky-derby-demo/#audit). The short version:
 
 1. **Morning line is not the closing tote.** BET / FAIR / FADE compares to the morning line. The closing tote will move; the model's calls reflect the field at posted ML.
-2. **Takeout eats edge.** Churchill keeps ~17% of the win pool, ~22% of exotics. Multipliers under ~1.2x do not clear takeout. The five BET-tagged horses (1.77x to 2.91x) all clear it, but only as small saver-stake longshot tickets.
+2. **Takeout eats edge.** Churchill keeps ~17% of the win pool, ~22% of exotics. Multipliers under ~1.2x do not clear takeout. The five BET-tagged horses (1.75x to 1.95x) all clear it. Further Ado at 6-1 is the only one stake-able at full bankroll; the four longshots (30-1 to 50-1) stay as small saver tickets.
 3. **Per-horse historical Beyers for losing finishers are paywalled** behind DRF. The historical training set therefore carries the same year-level winner Beyer for every horse in a given Derby. Per-horse historical signal comes from post position and connections instead.
 4. **No Ragozin / Thoro-Graph / Brisnet pace sheets.** Sectional times for losers, current jockey-trainer combo win rates, recent workouts, and live odds movement are all outside the model's view.
 5. **Two of the model's top-five weights are placeholder features for the 2026 field.** Dosage score (16% weight) and career win-rate (13% weight) were trained on per-horse historical data, but for the 2026 field every runner currently carries `dosage_score = 7.0` and `win_rate = 0.5`. Those columns earned their weight on 2010 to 2025 winners (where they varied), but they do not differentiate any 2026 horse from any other 2026 horse. The 2026 ranking effectively leans on year-Beyer, the binary stamina test, post-position win %, trainer/jockey Derby scores, and run style.
