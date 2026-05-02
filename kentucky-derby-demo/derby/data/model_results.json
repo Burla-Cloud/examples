@@ -1,0 +1,236 @@
+{
+  "best_config": {
+    "model": "gbm",
+    "n_estimators": 100,
+    "max_depth": 2,
+    "learning_rate": 0.05,
+    "subsample": 0.7
+  },
+  "best_log_loss": 0.37842133570152087,
+  "top5_log_losses": [
+    0.37842133570152087,
+    0.4043902012125305,
+    0.40834245013630466,
+    0.4098551082776467,
+    0.41191019862182054
+  ],
+  "horse_ml_probs": {
+    "Renegade": 0.03607154300237807,
+    "Albus": 0.011517496372929484,
+    "Intrepido": 0.07096647384155597,
+    "Litmus Test": 0.027588231683126737,
+    "Commandment": 0.10229245085968759,
+    "Danon Bourbon": 0.030261914348915283,
+    "So Happy": 0.04422403248883222,
+    "The Puma": 0.013857074036283838,
+    "Wonder Dean": 0.013569886453206404,
+    "Incredibolt": 0.01612502396007158,
+    "Chief Wallabee": 0.016946815625041457,
+    "Potente": 0.05735621293967469,
+    "Emerging Market": 0.04204736197640411,
+    "Pavlovian": 0.034813491323192176,
+    "Six Speed": 0.05920649005815851,
+    "Further Ado": 0.10465237698917258,
+    "Golden Tempo": 0.013018640142591341,
+    "Great White": 0.09860190801748861,
+    "Ocelli": 0.1005233619593406,
+    "Robusta": 0.1063592139219487
+  },
+  "sensitivity": {
+    "n_combos_tested": 5000,
+    "best_score": 22,
+    "best_weights": {
+      "beyer_norm": 0.07747679892190878,
+      "run_style_score": 0.08391722635564236,
+      "trainer_score_norm": 0.04752122725084076,
+      "jockey_score_norm": 0.3246687080428554,
+      "dosage_score": 0.008053484427337524,
+      "pedigree_dist": 0.16623517993782919,
+      "post_wp_norm": 0.09734021643695843,
+      "post_itm_norm": 0.13386998267510258,
+      "win_rate_norm": 0.00596553341127213,
+      "stamina_test": 0.05495164254025287
+    },
+    "best_details": {
+      "2022": {
+        "predicted": "Zandon",
+        "actual": "Rich Strike",
+        "rank_of_actual": 4,
+        "pts": 0
+      },
+      "2023": {
+        "predicted": "Mage",
+        "actual": "Mage",
+        "rank_of_actual": 0,
+        "pts": 10
+      },
+      "2024": {
+        "predicted": "Sierra Leone",
+        "actual": "Mystik Dan",
+        "rank_of_actual": 2,
+        "pts": 2
+      },
+      "2025": {
+        "predicted": "Sovereignty",
+        "actual": "Sovereignty",
+        "rank_of_actual": 0,
+        "pts": 10
+      }
+    },
+    "top10_scores": [
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22
+    ],
+    "score_distribution": {
+      "22": 124,
+      "21": 388,
+      "20": 22,
+      "17": 302,
+      "16": 306,
+      "15": 46,
+      "14": 112,
+      "13": 360,
+      "12": 642,
+      "11": 167,
+      "10": 25,
+      "9": 203,
+      "8": 597,
+      "7": 921,
+      "6": 315,
+      "5": 360,
+      "4": 87,
+      "3": 16,
+      "2": 7
+    }
+  },
+  "final_scores": [
+    {
+      "name": "Further Ado",
+      "final_score": 50.744789861414645,
+      "win_pct_mc": 31.431700000000003,
+      "place_pct_mc": 52.5239
+    },
+    {
+      "name": "Chief Wallabee",
+      "final_score": 49.27901683414827,
+      "win_pct_mc": 26.334699999999998,
+      "place_pct_mc": 46.754200000000004
+    },
+    {
+      "name": "The Puma",
+      "final_score": 42.82508651837681,
+      "win_pct_mc": 11.3225,
+      "place_pct_mc": 24.2007
+    },
+    {
+      "name": "Emerging Market",
+      "final_score": 40.115688852078215,
+      "win_pct_mc": 7.6086,
+      "place_pct_mc": 17.3157
+    },
+    {
+      "name": "Commandment",
+      "final_score": 37.965360635912496,
+      "win_pct_mc": 5.5091,
+      "place_pct_mc": 13.033
+    },
+    {
+      "name": "So Happy",
+      "final_score": 36.81317124609436,
+      "win_pct_mc": 4.6381,
+      "place_pct_mc": 11.2044
+    },
+    {
+      "name": "Six Speed",
+      "final_score": 35.60732526546412,
+      "win_pct_mc": 3.7801,
+      "place_pct_mc": 9.3528
+    },
+    {
+      "name": "Incredibolt",
+      "final_score": 30.72939435292853,
+      "win_pct_mc": 1.6993,
+      "place_pct_mc": 4.4958
+    },
+    {
+      "name": "Robusta",
+      "final_score": 30.135457831931756,
+      "win_pct_mc": 1.5306,
+      "place_pct_mc": 4.0706
+    },
+    {
+      "name": "Albus",
+      "final_score": 28.239844720755933,
+      "win_pct_mc": 1.0921,
+      "place_pct_mc": 2.9675
+    },
+    {
+      "name": "Intrepido",
+      "final_score": 27.521704397381217,
+      "win_pct_mc": 0.9662999999999999,
+      "place_pct_mc": 2.6469
+    },
+    {
+      "name": "Litmus Test",
+      "final_score": 26.85991056389053,
+      "win_pct_mc": 0.8672,
+      "place_pct_mc": 2.3463000000000003
+    },
+    {
+      "name": "Wonder Dean",
+      "final_score": 26.63432547717557,
+      "win_pct_mc": 0.8089999999999999,
+      "place_pct_mc": 2.2554000000000003
+    },
+    {
+      "name": "Renegade",
+      "final_score": 26.250998543367196,
+      "win_pct_mc": 0.7692,
+      "place_pct_mc": 2.1319
+    },
+    {
+      "name": "Pavlovian",
+      "final_score": 23.37138786000449,
+      "win_pct_mc": 0.44780000000000003,
+      "place_pct_mc": 1.2852000000000001
+    },
+    {
+      "name": "Potente",
+      "final_score": 23.21914055375019,
+      "win_pct_mc": 0.43010000000000004,
+      "place_pct_mc": 1.2168
+    },
+    {
+      "name": "Great White",
+      "final_score": 22.216333728754037,
+      "win_pct_mc": 0.36879999999999996,
+      "place_pct_mc": 1.0341
+    },
+    {
+      "name": "Danon Bourbon",
+      "final_score": 20.365088969436332,
+      "win_pct_mc": 0.2546,
+      "place_pct_mc": 0.7368
+    },
+    {
+      "name": "Ocelli",
+      "final_score": 16.153423024174298,
+      "win_pct_mc": 0.10740000000000001,
+      "place_pct_mc": 0.3306
+    },
+    {
+      "name": "Golden Tempo",
+      "final_score": 9.913278707443359,
+      "win_pct_mc": 0.0328,
+      "place_pct_mc": 0.0974
+    }
+  ]
+}
