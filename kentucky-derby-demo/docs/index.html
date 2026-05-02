@@ -1250,14 +1250,13 @@ best = <span class="n">max</span>(results, key=<span class="k">lambda</span> r: 
 <pre class="code-block" data-pane="model"><span class="c"># Train 164 ML configs (GBM, RF, LogReg) in parallel.</span>
 <span class="c"># Validate on 2022-2025 holdout. Pick best by log-loss.</span>
 <span class="k">from</span> <span class="bi">burla</span> <span class="k">import</span> <span class="bi">remote_parallel_map</span>
+<span class="k">from</span> sklearn.ensemble <span class="k">import</span> GradientBoostingClassifier
+<span class="k">from</span> sklearn.pipeline <span class="k">import</span> Pipeline
+<span class="k">from</span> sklearn.preprocessing <span class="k">import</span> StandardScaler
+<span class="k">from</span> sklearn.metrics <span class="k">import</span> log_loss
+<span class="k">import</span> pandas <span class="k">as</span> pd, numpy <span class="k">as</span> np
 
 <span class="k">def</span> <span class="f">train_and_eval</span>(cfg, train_rows, holdout_rows, field_rows):
-    <span class="k">from</span> sklearn.ensemble <span class="k">import</span> GradientBoostingClassifier
-    <span class="k">from</span> sklearn.pipeline <span class="k">import</span> Pipeline
-    <span class="k">from</span> sklearn.preprocessing <span class="k">import</span> StandardScaler
-    <span class="k">from</span> sklearn.metrics <span class="k">import</span> log_loss
-    <span class="k">import</span> pandas <span class="k">as</span> pd, numpy <span class="k">as</span> np
-
     pipe = Pipeline([(<span class="s">"scaler"</span>, StandardScaler()),
                      (<span class="s">"clf"</span>, GradientBoostingClassifier(**cfg))])
     pipe.fit(X_train, y_train)
