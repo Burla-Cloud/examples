@@ -15,25 +15,25 @@
     0.12447546106833242
   ],
   "horse_ml_probs": {
-    "Renegade": 0.00581690424608803,
-    "Albus": 0.0022513806374024658,
-    "Intrepido": 0.002526994395495747,
-    "Litmus Test": 0.020323228899570972,
-    "Right To Party": 0.045909369459127304,
-    "Commandment": 0.013140925678110482,
-    "Danon Bourbon": 0.003866697793067423,
-    "So Happy": 0.008326552767171305,
-    "The Puma": 0.11662370913275899,
-    "Wonder Dean": 0.002319005022702568,
-    "Incredibolt": 0.002319005022702568,
-    "Chief Wallabee": 0.05025636142532224,
-    "Potente": 0.0060049978969885865,
-    "Emerging Market": 0.007976711894146674,
-    "Pavlovian": 0.01215232710155691,
-    "Six Speed": 0.004174024864517435,
-    "Further Ado": 0.6157939223910622,
-    "Golden Tempo": 0.0034125144030137146,
-    "Fulleffort": 0.07680536696919439
+    "Renegade": 0.007478258740873935,
+    "Albus": 0.0028943929998524734,
+    "Intrepido": 0.003248724257230885,
+    "Litmus Test": 0.0261277060325016,
+    "Commandment": 0.016894079420611677,
+    "Danon Bourbon": 0.0049710576873894805,
+    "So Happy": 0.010704683002874471,
+    "Wonder Dean": 0.002981331451831774,
+    "Incredibolt": 0.002981331451831774,
+    "Chief Wallabee": 0.06460998122260445,
+    "Potente": 0.007720073446676588,
+    "Emerging Market": 0.010254924771359683,
+    "Pavlovian": 0.015623129163643081,
+    "Six Speed": 0.005366159834708455,
+    "Further Ado": 0.7916696042908039,
+    "Golden Tempo": 0.004387155879324975,
+    "Great White": 0.00493710436530582,
+    "Ocelli": 0.00493710436530582,
+    "Robusta": 0.01221319761526928
   },
   "sensitivity": {
     "n_combos_tested": 5000,
@@ -223,122 +223,122 @@
   "final_scores": [
     {
       "name": "Further Ado",
-      "final_score": 56.23414565094464,
-      "win_pct_mc": 18.519199999999998,
-      "place_pct_mc": 31.9046
-    },
-    {
-      "name": "Commandment",
-      "final_score": 38.384147772830744,
-      "win_pct_mc": 8.0147,
-      "place_pct_mc": 15.7719
+      "final_score": 67.01915923375972,
+      "win_pct_mc": 27.852500000000003,
+      "place_pct_mc": 44.4377
     },
     {
       "name": "Chief Wallabee",
-      "final_score": 36.746489864974514,
-      "win_pct_mc": 7.42,
-      "place_pct_mc": 14.7126
-    },
-    {
-      "name": "So Happy",
-      "final_score": 35.62372228883574,
-      "win_pct_mc": 7.0171,
-      "place_pct_mc": 13.9933
+      "final_score": 35.85331969990342,
+      "win_pct_mc": 6.717099999999999,
+      "place_pct_mc": 13.849900000000002
     },
     {
       "name": "Litmus Test",
-      "final_score": 33.53457225957271,
-      "win_pct_mc": 6.3264000000000005,
-      "place_pct_mc": 12.7063
+      "final_score": 33.992373450486966,
+      "win_pct_mc": 6.166300000000001,
+      "place_pct_mc": 12.8145
     },
     {
-      "name": "Robusta",
-      "final_score": 32.0472846940434,
-      "win_pct_mc": 5.8175,
-      "place_pct_mc": 11.8131
+      "name": "So Happy",
+      "final_score": 32.726834603291366,
+      "win_pct_mc": 5.7098,
+      "place_pct_mc": 12.021700000000001
     },
     {
       "name": "Pavlovian",
-      "final_score": 31.515830828860036,
-      "win_pct_mc": 5.6484,
-      "place_pct_mc": 11.521099999999999
-    },
-    {
-      "name": "Potente",
-      "final_score": 28.58206808648416,
-      "win_pct_mc": 4.8328999999999995,
-      "place_pct_mc": 10.0148
-    },
-    {
-      "name": "Renegade",
-      "final_score": 26.37320317663164,
-      "win_pct_mc": 4.3338,
-      "place_pct_mc": 9.0738
-    },
-    {
-      "name": "Ocelli",
-      "final_score": 26.137777800228015,
-      "win_pct_mc": 4.2857,
-      "place_pct_mc": 8.9335
+      "final_score": 32.227661460108884,
+      "win_pct_mc": 5.5999,
+      "place_pct_mc": 11.7738
     },
     {
       "name": "Emerging Market",
-      "final_score": 24.863544765837233,
-      "win_pct_mc": 4.0217,
-      "place_pct_mc": 8.4404
+      "final_score": 30.298800839513294,
+      "win_pct_mc": 5.0365,
+      "place_pct_mc": 10.742899999999999
+    },
+    {
+      "name": "Commandment",
+      "final_score": 28.573066594343175,
+      "win_pct_mc": 4.6658,
+      "place_pct_mc": 9.9368
+    },
+    {
+      "name": "Potente",
+      "final_score": 28.255297850406354,
+      "win_pct_mc": 4.5401,
+      "place_pct_mc": 9.7689
+    },
+    {
+      "name": "Renegade",
+      "final_score": 26.575787514435554,
+      "win_pct_mc": 4.1807,
+      "place_pct_mc": 9.031400000000001
     },
     {
       "name": "Intrepido",
-      "final_score": 24.11014812352902,
-      "win_pct_mc": 3.8209,
-      "place_pct_mc": 8.114
+      "final_score": 24.6613115229769,
+      "win_pct_mc": 3.7472,
+      "place_pct_mc": 8.1505
+    },
+    {
+      "name": "Robusta",
+      "final_score": 24.59675325111977,
+      "win_pct_mc": 3.7435000000000005,
+      "place_pct_mc": 8.1684
     },
     {
       "name": "Golden Tempo",
-      "final_score": 24.02946723364108,
-      "win_pct_mc": 3.8222,
-      "place_pct_mc": 8.0617
-    },
-    {
-      "name": "Wonder Dean",
-      "final_score": 20.105443339476967,
-      "win_pct_mc": 3.0771,
-      "place_pct_mc": 6.550400000000001
-    },
-    {
-      "name": "Incredibolt",
-      "final_score": 18.91923220052747,
-      "win_pct_mc": 2.864,
-      "place_pct_mc": 6.216200000000001
-    },
-    {
-      "name": "Great White",
-      "final_score": 17.514782311490574,
-      "win_pct_mc": 2.6479,
-      "place_pct_mc": 5.7458
-    },
-    {
-      "name": "Albus",
-      "final_score": 17.175866120153778,
-      "win_pct_mc": 2.6127000000000002,
-      "place_pct_mc": 5.6395
-    },
-    {
-      "name": "Six Speed",
-      "final_score": 16.923554806736906,
-      "win_pct_mc": 2.5774,
-      "place_pct_mc": 5.6322
+      "final_score": 24.364193883851083,
+      "win_pct_mc": 3.6887999999999996,
+      "place_pct_mc": 8.054
     },
     {
       "name": "Danon Bourbon",
-      "final_score": 15.29519410824918,
-      "win_pct_mc": 2.3404000000000003,
-      "place_pct_mc": 5.1548
+      "final_score": 24.211888813778227,
+      "win_pct_mc": 3.6622000000000003,
+      "place_pct_mc": 7.9773
+    },
+    {
+      "name": "Incredibolt",
+      "final_score": 19.844653946666188,
+      "win_pct_mc": 2.8583999999999996,
+      "place_pct_mc": 6.3933
+    },
+    {
+      "name": "Great White",
+      "final_score": 18.0365217435383,
+      "win_pct_mc": 2.589,
+      "place_pct_mc": 5.8258
+    },
+    {
+      "name": "Albus",
+      "final_score": 17.620656806416783,
+      "win_pct_mc": 2.5387,
+      "place_pct_mc": 5.7742
+    },
+    {
+      "name": "Six Speed",
+      "final_score": 16.562185228145772,
+      "win_pct_mc": 2.4001,
+      "place_pct_mc": 5.4528
+    },
+    {
+      "name": "Wonder Dean",
+      "final_score": 15.42029282448595,
+      "win_pct_mc": 2.2352,
+      "place_pct_mc": 5.1006
+    },
+    {
+      "name": "Ocelli",
+      "final_score": 14.25679106497313,
+      "win_pct_mc": 2.0682,
+      "place_pct_mc": 4.7255
     }
   ],
   "horses_with_final_scores": [
     {
-      "post": 15,
+      "post": 18,
       "name": "Further Ado",
       "odds": "6-1",
       "beyer": 106,
@@ -346,23 +346,11 @@
       "style": "Press",
       "trainerDW": 1,
       "jockeyDW": 3,
-      "score": 56.2,
+      "score": 67.0,
       "impliedPct": 14.3
     },
     {
-      "post": 5,
-      "name": "Commandment",
-      "odds": "6-1",
-      "beyer": 101,
-      "dosage": 2.5,
-      "style": "Stalk",
-      "trainerDW": 1,
-      "jockeyDW": 0,
-      "score": 38.4,
-      "impliedPct": 14.3
-    },
-    {
-      "post": 10,
+      "post": 12,
       "name": "Chief Wallabee",
       "odds": "8-1",
       "beyer": 100,
@@ -370,20 +358,8 @@
       "style": "Stalk",
       "trainerDW": 2,
       "jockeyDW": 1,
-      "score": 36.7,
+      "score": 35.9,
       "impliedPct": 11.1
-    },
-    {
-      "post": 7,
-      "name": "So Happy",
-      "odds": "15-1",
-      "beyer": 100,
-      "dosage": 2.5,
-      "style": "Press",
-      "trainerDW": 0,
-      "jockeyDW": 1,
-      "score": 35.6,
-      "impliedPct": 6.2
     },
     {
       "post": 4,
@@ -394,23 +370,23 @@
       "style": "Pace",
       "trainerDW": 3,
       "jockeyDW": 0,
-      "score": 33.5,
+      "score": 34.0,
       "impliedPct": 3.2
     },
     {
-      "post": 19,
-      "name": "Robusta",
-      "odds": "50-1",
-      "beyer": 89,
+      "post": 8,
+      "name": "So Happy",
+      "odds": "15-1",
+      "beyer": 100,
       "dosage": 2.5,
-      "style": "Pace",
-      "trainerDW": 2,
-      "jockeyDW": 0,
-      "score": 32.0,
-      "impliedPct": 2.0
+      "style": "Press",
+      "trainerDW": 0,
+      "jockeyDW": 1,
+      "score": 32.7,
+      "impliedPct": 6.2
     },
     {
-      "post": 13,
+      "post": 16,
       "name": "Pavlovian",
       "odds": "30-1",
       "beyer": 90,
@@ -418,11 +394,35 @@
       "style": "Press",
       "trainerDW": 2,
       "jockeyDW": 0,
-      "score": 31.5,
+      "score": 32.2,
       "impliedPct": 3.2
     },
     {
-      "post": 11,
+      "post": 15,
+      "name": "Emerging Market",
+      "odds": "15-1",
+      "beyer": 97,
+      "dosage": 2.5,
+      "style": "Press",
+      "trainerDW": 0,
+      "jockeyDW": 1,
+      "score": 30.3,
+      "impliedPct": 6.2
+    },
+    {
+      "post": 6,
+      "name": "Commandment",
+      "odds": "6-1",
+      "beyer": 101,
+      "dosage": 2.5,
+      "style": "Stalk",
+      "trainerDW": 1,
+      "jockeyDW": 0,
+      "score": 28.6,
+      "impliedPct": 14.3
+    },
+    {
+      "post": 14,
       "name": "Potente",
       "odds": "20-1",
       "beyer": 95,
@@ -430,7 +430,7 @@
       "style": "Pace",
       "trainerDW": 3,
       "jockeyDW": 0,
-      "score": 28.6,
+      "score": 28.3,
       "impliedPct": 4.8
     },
     {
@@ -442,32 +442,8 @@
       "style": "Stalk",
       "trainerDW": 2,
       "jockeyDW": 0,
-      "score": 26.4,
+      "score": 26.6,
       "impliedPct": 20.0
-    },
-    {
-      "post": 18,
-      "name": "Ocelli",
-      "odds": "50-1",
-      "beyer": 81,
-      "dosage": 2.5,
-      "style": "Pace",
-      "trainerDW": 0,
-      "jockeyDW": 0,
-      "score": 26.1,
-      "impliedPct": 2.0
-    },
-    {
-      "post": 12,
-      "name": "Emerging Market",
-      "odds": "15-1",
-      "beyer": 97,
-      "dosage": 2.5,
-      "style": "Press",
-      "trainerDW": 0,
-      "jockeyDW": 1,
-      "score": 24.9,
-      "impliedPct": 6.2
     },
     {
       "post": 3,
@@ -478,11 +454,23 @@
       "style": "Pace",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 24.1,
+      "score": 24.7,
       "impliedPct": 2.0
     },
     {
-      "post": 16,
+      "post": 23,
+      "name": "Robusta",
+      "odds": "50-1",
+      "beyer": 89,
+      "dosage": 2.5,
+      "style": "Pace",
+      "trainerDW": 2,
+      "jockeyDW": 0,
+      "score": 24.6,
+      "impliedPct": 2.0
+    },
+    {
+      "post": 19,
       "name": "Golden Tempo",
       "odds": "30-1",
       "beyer": 88,
@@ -490,23 +478,23 @@
       "style": "Press",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 24.0,
+      "score": 24.4,
       "impliedPct": 3.2
     },
     {
-      "post": 8,
-      "name": "Wonder Dean",
-      "odds": "30-1",
+      "post": 7,
+      "name": "Danon Bourbon",
+      "odds": "20-1",
       "beyer": 80,
       "dosage": 2.5,
-      "style": "Pace",
+      "style": "Close",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 20.1,
-      "impliedPct": 3.2
+      "score": 24.2,
+      "impliedPct": 4.8
     },
     {
-      "post": 9,
+      "post": 11,
       "name": "Incredibolt",
       "odds": "20-1",
       "beyer": 88,
@@ -514,11 +502,11 @@
       "style": "Stalk",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 18.9,
+      "score": 19.8,
       "impliedPct": 4.8
     },
     {
-      "post": 17,
+      "post": 21,
       "name": "Great White",
       "odds": "50-1",
       "beyer": 84,
@@ -526,7 +514,7 @@
       "style": "Pace",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 17.5,
+      "score": 18.0,
       "impliedPct": 2.0
     },
     {
@@ -538,11 +526,11 @@
       "style": "Pace",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 17.2,
+      "score": 17.6,
       "impliedPct": 3.2
     },
     {
-      "post": 14,
+      "post": 17,
       "name": "Six Speed",
       "odds": "50-1",
       "beyer": 80,
@@ -550,20 +538,32 @@
       "style": "Pace",
       "trainerDW": 0,
       "jockeyDW": 1,
-      "score": 16.9,
+      "score": 16.6,
       "impliedPct": 2.0
     },
     {
-      "post": 6,
-      "name": "Danon Bourbon",
-      "odds": "20-1",
+      "post": 10,
+      "name": "Wonder Dean",
+      "odds": "30-1",
       "beyer": 80,
       "dosage": 2.5,
-      "style": "Close",
+      "style": "Pace",
       "trainerDW": 0,
       "jockeyDW": 0,
-      "score": 15.3,
-      "impliedPct": 4.8
+      "score": 15.4,
+      "impliedPct": 3.2
+    },
+    {
+      "post": 22,
+      "name": "Ocelli",
+      "odds": "50-1",
+      "beyer": 81,
+      "dosage": 2.5,
+      "style": "Pace",
+      "trainerDW": 0,
+      "jockeyDW": 0,
+      "score": 14.3,
+      "impliedPct": 2.0
     }
   ]
 }
