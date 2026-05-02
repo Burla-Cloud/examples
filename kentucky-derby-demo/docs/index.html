@@ -906,7 +906,7 @@ footer a:hover { color: var(--accent); }
           <span class="l">Beyer</span>
         </div>
       </div>
-      <p class="pick-note">Field-leading Beyer of 106 (5 points clear of the next horse). Brad H. Cox trains; John R. Velazquez up with three career Derby wins. The market opens him as a co-favourite at 7-1, the model has him 1.78&times; that probability. Largest clean overlay on the board after takeout. Kelly says ~11% of bankroll at this price.</p>
+      <p class="pick-note">Field-leading Beyer of 106 (5 points clear of the next horse). Brad H. Cox trains; John R. Velazquez up with three career Derby wins. The market opens him as a co-favorite at 7-1, the model has him 1.78&times; that probability. Largest clean overlay on the board after takeout. Kelly says ~11% of bankroll at this price.</p>
     </div>
     <div class="pick-card">
       <div class="pick-label">Longshot saver</div>
@@ -962,10 +962,10 @@ footer a:hover { color: var(--accent); }
         and the post-3 draw historically wins about 6.7% of Derbies. The catch is that pace style
         (Pace) puts him head-to-head with two other front-runners, so the most likely
         scenario is he burns out on the first turn. Treat him as a tertiary saver, not a main bet.
-        <em>The headline favourite Renegade (5-1 ML) is a fade in this model.</em> The rail draw at
+        <em>The headline favorite Renegade (5-1 ML) is a fade in this model.</em> The rail draw at
         post 1 is historically the worst gate in the Derby (no winner from post 1 in our 16-year
         sample), and the model has him at 4.1% vs 16.7% implied. The market is paying for his
-        morning-line favouritism, not his odds of winning.
+        morning-line favoritism, not his odds of winning.
       </p>
     </div>
     <div class="longshot-stats">
@@ -1084,7 +1084,7 @@ footer a:hover { color: var(--accent); }
     <strong style="font-size:14px;">Toss off the top of your tickets:</strong>
     <span style="font-size:14px; color:var(--ink-2); margin-left:8px;">
       Renegade (Post 1, 5-1 ML, 4.1% model). The public is on him as the
-      morning-line favourite, but he drew the rail and post 1 has not
+      morning-line favorite, but he drew the rail and post 1 has not
       produced a Derby winner in our 16-year sample. Don&rsquo;t key him
       underneath; the gap between the 16.7% market-implied and the 4.1%
       model is the largest on the board.
@@ -1135,7 +1135,7 @@ footer a:hover { color: var(--accent); }
 
   <h3 class="primer-subhead">The back-test clears its own null</h3>
   <p class="primer-subhead-lede">
-    <strong>In plain English:</strong> we tried to fool the model. We re-ran the full 5,000-combo search after secretly scrambling which horse actually won each historical Derby (a "permutation test"). If the model is real, the scrambled runs should score much worse than the truth run. We ran 2,000 scrambles on Burla. Every single one scored lower. The model is finding real signal, not memorising the data.
+    <strong>In plain English:</strong> the back-test score is points the model earns for putting the actual winner near the top of its rankings (10 for 1st, 5 for 2nd, 2 for 3rd, 1 for 4th, 0 after that). Higher is better, 126/160 is what we got. We tried to fool the test: we re-ran the full 5,000-combo search 2,000 times after secretly scrambling which horse actually won each historical Derby, then graded the model against the fake winners. If the model is genuinely picking real winners, the fake-winner versions should score much lower. Every single one of the 2,000 scrambled runs did. The model is finding real signal, not getting lucky on the rankings.
   </p>
   <div class="stats-card" style="margin: 6px 0 14px;">
     <div class="stats">
@@ -1173,7 +1173,7 @@ footer a:hover { color: var(--accent); }
     </li>
     <li>
       <strong>The back-test runs on real fields, not curated rows.</strong>
-      <span>The 5,000-combo search reads <code>historical_results.csv</code>: top-5 favourites by closing odds plus the actual winner, across 16 years. About 80 starters drive the search, no horse is hand-picked.</span>
+      <span>The 5,000-combo search reads <code>historical_results.csv</code>: top-5 favorites by closing odds plus the actual winner, across 16 years. About 80 starters drive the search, no horse is hand-picked.</span>
     </li>
     <li>
       <strong>The ML model does not see the market price.</strong>
@@ -1460,7 +1460,7 @@ const REASONS = {
   "Further Ado":
     "Field-leading Beyer of <strong>106</strong> (5 points clear of the next horse). Brad H. Cox trains, John R. Velazquez up with three career Derby wins. The market opens him at 7-1 (12.5% implied); the model puts him at <strong>22.2%, a 1.78&times; multiplier</strong>. Largest clean overlay on the board after takeout.",
   "The Puma":
-    "Beyer 100 is figure-qualified, and the closer profile fits the 10-furlong shape. But at 7-1 morning line he&rsquo;s priced as a co-favourite, and the model puts him at 6.8%, slightly below the 12.5% implied. Mild fade on win; could still hit the show ticket if the pace duel materialises.",
+    "Beyer 100 is figure-qualified, and the closer profile fits the 10-furlong shape. But at 7-1 morning line he&rsquo;s priced as a co-favorite, and the model puts him at 6.8%, slightly below the 12.5% implied. Mild fade on win; could still hit the show ticket if the pace duel materializes.",
   "Chief Wallabee":
     "William I. Mott trained 2025 winner Sovereignty (two career Derby wins). Beyer 100, stalking style, mid-pack post draw. The model has him at 6.6% vs 7.7% implied. Effectively a fair price; no edge in either direction.",
   "Litmus Test":
@@ -1478,7 +1478,7 @@ const REASONS = {
   "Potente":
     "<strong>Bob Baffert</strong> again (three career Derby wins). 95 Beyer, pace style. At 26-1 (3.7% implied) the model has him at 4.4%; fractional edge but Pace style makes him vulnerable to a contested early lead. Tiny saver if anything.",
   "Renegade":
-    "<strong>Morning-line favourite at 5-1 (16.7% implied)</strong>, drew post 1 (no winner from post 1 in our 2010-2025 sample). Todd A. Pletcher trains; Irad Ortiz Jr. up. The model has him at 4.1%, the market is paying for the headline favourite tag, not the gate draw.",
+    "<strong>Morning-line favorite at 5-1 (16.7% implied)</strong>, drew post 1 (no winner from post 1 in our 2010-2025 sample). Todd A. Pletcher trains; Irad Ortiz Jr. up. The model has him at 4.1%, the market is paying for the headline favorite tag, not the gate draw.",
   "Fulleffort":
     "Brad H. Cox horse, 80 Beyer, post 20 (extreme outside). At 19-1 (5.0% implied) the model has him at 3.9%; close to fair but the 20-hole has historically meant a long, wide first-turn trip.",
   "Intrepido":
