@@ -432,7 +432,8 @@ ol.primer-list li::before {
 .refresh-table .good { color: var(--accent-dark); }
 .refresh-table .row--highlight { background: #FFF7ED; }
 
-.audit-list { font-size: 14px; line-height: 1.7; max-width: 820px; }
+.audit-list { font-size: 14px; line-height: 1.65; max-width: 820px; }
+.audit-list li { margin-bottom: 6px; }
 .audit-list code {
   font-family: var(--mono);
   font-size: 12.5px;
@@ -441,6 +442,42 @@ ol.primer-list li::before {
   border-radius: 4px;
   padding: 1px 5px;
   color: var(--ink);
+}
+
+.audit-verdict {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 820px;
+  margin-top: 8px;
+}
+.audit-verdict__col {
+  border-radius: var(--radius);
+  padding: 18px 20px 16px;
+  border: 1px solid var(--line);
+}
+.audit-verdict__col--good {
+  background: var(--accent-soft);
+  border-color: rgba(34, 138, 87, .25);
+}
+.audit-verdict__col--bad {
+  background: #FAF3F3;
+  border-color: #ECDADA;
+}
+.audit-verdict__label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.audit-verdict__col--good .audit-verdict__label { color: var(--accent-dark); }
+.audit-verdict__col--bad  .audit-verdict__label { color: #B91C1C; }
+.audit-verdict__col p {
+  margin: 0;
+  font-size: 14px; line-height: 1.55;
+  color: var(--ink-2);
+}
+@media (max-width: 760px) {
+  .audit-verdict { grid-template-columns: 1fr; }
 }
 @media (max-width: 960px) {
   .primer-grid { grid-template-columns: 1fr; }
@@ -1075,63 +1112,64 @@ footer a:hover { color: var(--accent); }
 <section class="primer skeptic-section" id="audit">
   <h2>Methodology audit</h2>
   <p class="primer-lede">
-    A skeptical data scientist would tear into this pipeline. Rather than wait, we ran the audit ourselves, including a real permutation test on Burla. Receipts in <code>derby/derby_audit.py</code>.
+    We ran the skeptic&rsquo;s audit ourselves: a permutation test on Burla, plus a code review. Receipts in <code>derby/derby_audit.py</code>.
   </p>
 
-  <h3 class="primer-subhead">The 22/40 backtest doesn&rsquo;t beat its own null</h3>
+  <h3 class="primer-subhead">22/40 doesn&rsquo;t beat its own null</h3>
   <p class="primer-subhead-lede">
-    A permutation test asks: if we shuffle who actually won and re-run the same 5,000-combo weight search, what does the best score look like under random labels? If the model is real, shuffled labels should produce much lower scores. We ran 2,000 permutations on Burla in 13.8 seconds.
+    A permutation test shuffles the actual winners and re-runs the same 5,000-combo weight search. If the model is real, shuffled labels should score much lower. We ran 2,000 permutations on Burla in 13.8 seconds.
   </p>
-  <div class="stats-card" style="margin: 6px 0 18px;">
+  <div class="stats-card" style="margin: 6px 0 14px;">
     <div class="stats">
       <div class="stat">
         <span class="num">22/40</span>
-        <span class="label">Published model</span>
+        <span class="label">Published</span>
       </div>
       <div class="stat">
         <span class="num red">30/40</span>
-        <span class="label">Median score on shuffled labels</span>
+        <span class="label">Null median</span>
       </div>
       <div class="stat">
         <span class="num red">87.4%</span>
-        <span class="label">P( null score &ge; 22 )</span>
+        <span class="label">P( null &ge; 22 )</span>
       </div>
       <div class="stat">
         <span class="num accent">+7</span>
-        <span class="label">Real edge over random pick</span>
+        <span class="label">Edge over random</span>
       </div>
     </div>
   </div>
   <p class="primer-subhead-lede">
-    <strong>Read:</strong> the &ldquo;best of 5,000 random weights&rdquo; search has so much capacity that 22/40 is below the median of what it gets on shuffled labels. The headline is consistent with search noise. There is a real +7-point edge over a random pick, so the framework isn&rsquo;t worthless, but &ldquo;empirically validated&rdquo; is a stretch.
+    The headline is below the null median, so most of it is search noise. The +7-point real-label edge is genuine; &ldquo;empirically validated&rdquo; is a stretch.
   </p>
 
   <h3 class="primer-subhead">Five data issues compute can&rsquo;t fix</h3>
   <ol class="primer-list audit-list">
-    <li><strong>Synthesized Beyers.</strong> <code>derby_scraper.py</code> computes non-winner Beyers as <code>winner_beyer minus 3 times (finish_pos minus 1)</code>. The historical Beyer distribution is invented arithmetic, not measurement. Same goes for dosage.</li>
-    <li><strong>The &ldquo;Burla scrape&rdquo; never wrote anything.</strong> The script calls <code>remote_parallel_map</code>, ignores the result, and saves hard-coded <code>FALLBACK_DATA</code>. The &ldquo;parallel scraping bypassed IP blocks&rdquo; pitch is theatrical.</li>
-    <li><strong>Hand-typed backtest fields.</strong> <code>derby_sensitivity.py</code> defines <code>BACKTEST_FIELDS</code> with literal entries chosen by hand, not derived from the same feature pipeline. The backtest also covers only 4 to 5 horses per year, not the 20-horse field.</li>
-    <li><strong>The ML feature set leaks the answer.</strong> <code>FEATURE_COLS</code> includes <code>implied_prob = 1 / (odds + 1)</code>. Since odds embed the market&rsquo;s prediction, the classifier mostly relearns the market.</li>
-    <li><strong>Hand-coded &ldquo;expert&rdquo; features.</strong> <code>EXPERT_SCORES</code>, <code>PACE_FIT</code>, and <code>POST_DRAW_ADJUSTMENTS</code> are Python dicts dressed as features, with no aggregation code or sources.</li>
+    <li><strong>Synthesized Beyers.</strong> Non-winner Beyers are computed as <code>winner minus 3 times (finish minus 1)</code>. Invented arithmetic, not measurement. Dosage is the same.</li>
+    <li><strong>The Burla scrape never wrote anything.</strong> The script calls <code>remote_parallel_map</code>, ignores the result, and saves hard-coded <code>FALLBACK_DATA</code>.</li>
+    <li><strong>Hand-typed backtest fields.</strong> The 5,000-combo search runs against <code>BACKTEST_FIELDS</code> dicts chosen by hand, on 4 to 5 horses per year, not the 20-horse field.</li>
+    <li><strong>The ML leaks the answer.</strong> <code>FEATURE_COLS</code> includes <code>implied_prob = 1 / (odds + 1)</code>. The classifier mostly relearns the market.</li>
+    <li><strong>Hand-coded &ldquo;expert&rdquo; features.</strong> <code>EXPERT_SCORES</code>, <code>PACE_FIT</code>, and <code>POST_DRAW_ADJUSTMENTS</code> are dicts with no sources or aggregation code.</li>
   </ol>
 
   <h3 class="primer-subhead" style="margin-top:24px;">Three more reasons not to bet face value</h3>
-  <p class="primer-subhead-lede">
-    Even if every input were clean and the methodology were calibrated, three things still sit between you and a printable ticket.
-  </p>
   <ol class="primer-list audit-list">
-    <li><strong>Morning line is not the closing market.</strong> The morning line is the track oddsmaker&rsquo;s guess at where the public will bet, not where money actually closes. By post, Renegade (4-1 ML) will likely be 7-2 or shorter; Further Ado will move too. We&rsquo;re comparing the model to a prediction of the market, not the actual tote at the bell.</li>
-    <li><strong>Takeout eats real edge.</strong> Churchill removes ~17% from the win pool and ~22% from exotics before payouts. To break even, the model needs to be roughly +20% above market, not +15%. After takeout, only Further Ado (+15.3 net) and Chief Wallabee (+13.0 net) clear cleanly. The Puma and Emerging Market are washes, Six Speed is a sprinkle.</li>
-    <li><strong>The model can&rsquo;t see a lot.</strong> Pace figures (early fractions), trip notes, Ragozin / Thoro-Graph sheets, recent workouts, layoff days, current jockey-trainer combo win rate, weather and track condition, and live-odds movement in the last 10 minutes. Beyer plus run style plus breeding is a starting point, not a full picture.</li>
+    <li><strong>Morning line is not the closing market.</strong> By post, Renegade (4-1 ML) is likely 7-2 or shorter and Further Ado will move too. We&rsquo;re comparing the model to a guess at the market, not the actual tote at the bell.</li>
+    <li><strong>Takeout eats real edge.</strong> Churchill keeps ~17% of the win pool. Real break-even sits closer to +20%, not +15%. Only Further Ado and Chief Wallabee clear cleanly.</li>
+    <li><strong>The model can&rsquo;t see a lot.</strong> Pace figures, trip notes, Ragozin / Thoro-Graph sheets, recent workouts, layoff days, jockey-trainer combo, weather, and live-odds movement.</li>
   </ol>
 
   <h3 class="primer-subhead" style="margin-top:24px;">What this site is and isn&rsquo;t</h3>
-  <p class="primer-subhead-lede">
-    <strong>Trust:</strong> the 2026 horse stats are face-valid (Beyer, run style, jockey/trainer Derby wins, sire pedigree). The relative ranking (Further Ado, Chief Wallabee, The Puma, then everyone else) tracks how a thoughtful handicapper would order these horses. As a ranking, it&rsquo;s a defensible first pass.
-  </p>
-  <p class="primer-subhead-lede">
-    <strong>Don&rsquo;t trust:</strong> the specific probabilities to four decimals, the BET / FAIR / FADE classifications as if they were calibrated, or the implication that more compute equals more truth. This is a ranked handicapper&rsquo;s sheet with a Burla flex on top, not a calibrated probability model.
-  </p>
+  <div class="audit-verdict">
+    <div class="audit-verdict__col audit-verdict__col--good">
+      <div class="audit-verdict__label">Trust</div>
+      <p>The 2026 stats are face-valid. The relative ranking (Further Ado, Chief Wallabee, The Puma, then the field) is a defensible first pass.</p>
+    </div>
+    <div class="audit-verdict__col audit-verdict__col--bad">
+      <div class="audit-verdict__label">Don&rsquo;t trust</div>
+      <p>Specific probabilities to four decimals, BET / FAIR / FADE as if calibrated, or the implication that more compute means more truth. Ranked handicapper&rsquo;s sheet with a Burla flex on top, not a calibrated probability model.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ── How It Ran ── -->
