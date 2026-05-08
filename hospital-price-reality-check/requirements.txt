@@ -1,0 +1,5 @@
+burla>=2.0
+requests>=2.28
+pandas>=2.0
+openpyxl>=3.1
+ijson>=3.2

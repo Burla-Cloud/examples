@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-feature-settings: "ss01", "cv11";
+  background: #fafaf7;
+  color: #0a0f1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(229, 87, 63, 0.18);
+  color: #0a0f1a;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d8d3c4;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #b9b29c;
+}
+
+@layer components {
+  /* Surfaces */
+  .surface-card {
+    @apply rounded-2xl border border-line bg-surface;
+  }
+  .surface-card-hover {
+    @apply transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-cardHover;
+  }
+  .surface-quiet {
+    @apply rounded-2xl border border-line bg-section;
+  }
+  .surface-edge {
+    @apply rounded-2xl border border-line/80 bg-surface;
+  }
+
+  /* Pills (minimal, single style) */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-[11px] font-medium text-inkMuted tracking-eyebrowTight uppercase;
+  }
+  .pill-accent {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-ink text-bg px-3 py-1 text-[11px] font-semibold tracking-eyebrowTight uppercase;
+  }
+  .pill-soft {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-section px-3 py-1 text-[11px] font-medium text-inkMuted tracking-eyebrowTight uppercase;
+  }
+
+  /* Typography */
+  .display-1 {
+    @apply font-display font-medium tracking-[-0.02em] text-ink;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.98;
+  }
+  .display-2 {
+    @apply font-display font-medium tracking-[-0.02em] text-ink;
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    line-height: 1.05;
+  }
+  .display-3 {
+    @apply font-display font-semibold tracking-[-0.01em] text-ink;
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    line-height: 1.2;
+  }
+  .body-lead {
+    @apply text-inkMuted leading-relaxed;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  }
+  .body-base {
+    @apply text-base text-inkMuted leading-relaxed;
+  }
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-eyebrow text-inkSubtle;
+  }
+  .stat-num {
+    @apply font-display font-medium tracking-[-0.02em] text-ink;
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    line-height: 1;
+  }
+  .stat-label {
+    @apply eyebrow;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-bg shadow-card transition-all duration-200 hover:bg-primaryDark hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-ink/15;
+  }
+  .btn-accent {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-white shadow-card transition-all duration-200 hover:bg-accentDeep hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-accent/25;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink transition-all duration-200 hover:border-ink hover:bg-section;
+  }
+  .btn-link {
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-ink underline-offset-4 hover:underline;
+  }
+
+  /* Inputs */
+  .input-clean {
+    @apply w-full rounded-2xl border border-line bg-surface px-5 py-3 text-sm outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/10 placeholder:text-inkSubtle;
+  }
+  .input-search {
+    @apply w-full rounded-full border border-line bg-surface px-6 py-4 text-base outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/10 placeholder:text-inkSubtle;
+  }
+  .select-clean {
+    @apply rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/10;
+  }
+
+  /* Layout helpers */
+  .container-7 {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+  }
+  .container-6 {
+    @apply mx-auto w-full max-w-6xl px-5 md:px-8;
+  }
+  .container-5 {
+    @apply mx-auto w-full max-w-5xl px-5 md:px-8;
+  }
+
+  /* Hairline divider */
+  .hairline {
+    @apply border-t border-line;
+  }
+
+  /* Price grid (procedure detail) */
+  .price-grid {
+    @apply grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4;
+  }
+  .price-cell {
+    @apply rounded-2xl border border-line bg-surface px-5 py-5;
+  }
+  .price-cell-key {
+    @apply text-[11px] uppercase tracking-eyebrow text-inkSubtle font-medium;
+  }
+  .price-cell-num {
+    @apply mt-2 font-display text-2xl font-semibold tracking-[-0.01em] text-ink md:text-[28px];
+  }
+  .price-cell-sub {
+    @apply mt-1 text-xs text-inkMuted;
+  }
+
+  /* Editorial table */
+  .editorial-table {
+    @apply w-full text-sm;
+  }
+  .editorial-table thead th {
+    @apply text-left text-[11px] font-medium uppercase tracking-eyebrow text-inkSubtle pb-4 border-b border-line;
+  }
+  .editorial-table tbody td {
+    @apply py-5 border-b border-lineSoft text-ink;
+  }
+  .editorial-table tbody tr:hover td {
+    @apply bg-section/50;
+  }
+  .editorial-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .grid-rows-auto {
+    grid-template-rows: auto;
+  }
+}

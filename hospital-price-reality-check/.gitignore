@@ -1,0 +1,14 @@
+scratch/
+fixtures/probe_downloads/
+__pycache__/
+*.pyc
+.env
+.venv/
+frontend/node_modules/
+frontend/dist/
+frontend/tsconfig.tsbuildinfo
+.DS_Store
+logs/
+samples/
+data/hospital_index.json
+data_sources/
