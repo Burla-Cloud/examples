@@ -6,8 +6,8 @@ turning the project into a distributed-systems rewrite.
 
 <table>
   <tr>
-    <td align="center"><strong>20 example folders</strong><br>from one-file fan-out to full pipelines</td>
-    <td align="center"><strong>8 live demos</strong><br>with published findings and artifacts</td>
+    <td align="center"><strong>21 example folders</strong><br>from one-file fan-out to full pipelines</td>
+    <td align="center"><strong>9 live demos</strong><br>with published findings and artifacts</td>
     <td align="center"><strong>CPU, GPU, Docker</strong><br>changed per function call</td>
     <td align="center"><strong>One Python API</strong><br><code>remote_parallel_map</code></td>
   </tr>
@@ -27,7 +27,7 @@ turning the project into a distributed-systems rewrite.
 
 | Collection | Start here if you want to see... | Examples |
 | --- | --- | --- |
-| [Data stories with live sites](#data-stories-with-live-sites) | finished, explorable outputs built from large public datasets | Airbnb, Kentucky Derby, Amazon Reviews, NYC Taxi, arXiv, The Met, World Photo Index, GitHub READMEs |
+| [Data stories with live sites](#data-stories-with-live-sites) | finished, explorable outputs built from large public datasets | Airbnb, Kentucky Derby, Amazon Reviews, NYC Taxi, arXiv, The Met, World Photo Index, GitHub READMEs, Hospital Prices |
 | [ML, embeddings, and vision](#ml-embeddings-and-vision) | model-heavy jobs where runtime and hardware choice matter | A100 embeddings, batch inference |
 | [Production data jobs](#production-data-jobs) | the scripts data teams actually need to make fast and reliable | image resize, Parquet, pandas, ETL, APIs, scraping |
 | [Native tools and simulations](#native-tools-and-simulations) | binaries, geospatial dependencies, and massive independent compute | BWA-MEM, GDAL, Monte Carlo |
@@ -99,8 +99,18 @@ open before reading a single line of code.
       <h3><a href="https://burla-cloud.github.io/examples/github-repo-summarizer/">One Million GitHub READMEs</a></h3>
       <p><strong>1.2M READMEs, 2.3B upstream file rows.</strong></p>
       <p>Shard deterministic summarizers, write per-shard JSON to shared storage, and reduce category stats without calling an LLM.</p>
-      <p><a href="https://burla-cloud.github.io/examples/github-repo-summarizer/">Live demo</a> &middot; <a href="github-repo-summarizer/">Source</a></p>
+      <p>      <a href="https://burla-cloud.github.io/examples/github-repo-summarizer/">Live demo</a> &middot; <a href="github-repo-summarizer/">Source</a></p>
     </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://burla-cloud.github.io/hospital-price-reality-check/"><img src="assets/readme/hospital-price-reality-check.png" alt="Hospital Price Reality Check" width="100%"></a>
+      <h3><a href="https://burla-cloud.github.io/hospital-price-reality-check/">Hospital Price Reality Check</a></h3>
+      <p><strong>5,162 US hospital MRFs, 1.3M priced line items, 1,040 parallel CPUs in ~19 minutes.</strong></p>
+      <p>Pull every hospital's machine-readable file, parse 5 different formats (CMS v3 JSON, tall CSV, wide CSV, XLSX, ZIP), and build a chargemaster comparison site for 361 standard codes.</p>
+      <p><a href="https://burla-cloud.github.io/hospital-price-reality-check/">Live demo</a> &middot; <a href="hospital-price-reality-check/">Source</a></p>
+    </td>
+    <td width="50%" valign="top"></td>
   </tr>
 </table>
 
