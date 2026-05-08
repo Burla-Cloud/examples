@@ -82,6 +82,8 @@ def main() -> None:
         "parsers_inline.py",
         "codes.py",
         "hospital_index.py",
+        "description_filter.py",
+        "dosage_extractor.py",
     ]
     for d in ("parsers",):
         for fp in (REPO_ROOT / d).glob("*.py"):
@@ -129,8 +131,8 @@ def main() -> None:
         remote_parallel_map(
             reduce_and_analyze,
             [payload],
-            func_cpu=8,
-            func_ram=64,
+            func_cpu=2,
+            func_ram=7,
             max_parallelism=1,
             spinner=True,
         )

@@ -9,6 +9,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from pipeline import shared_hpt_root
+from dosage_extractor import extract_dose_from_description
 
 REPO_ROOT = Path(__file__).resolve().parent
 SAMPLES = REPO_ROOT / "samples"
@@ -86,28 +87,53 @@ def _parse_drug_unit(drug_unit: str | None) -> tuple[float, str] | None:
     return _normalize_unit_label(float(qty_str), unit_str)
 
 
-def normalize_to_hcpcs_unit(
-    price: float, drug_unit: str | None, display_name: str
-) -> float | None:
-    """Scale `price` so it represents one HCPCS unit (e.g., per 10mg).
+def _resolve_dose(
+    drug_unit: str | None, description: str | None
+) -> tuple[float, str] | None:
+    """Pick the most reliable dose signal for a row.
 
-    - When the code has no parseable HCPCS unit (display name doesn't say
-      "per Xmg/per Y unit"), pass the price through unchanged.
-    - When the row has no drug_unit captured (CSV/XLSX MRFs, older parser
-      output), pass the price through unchanged so we don't throw away the
-      majority of our data.
-    - When the row has a drug_unit and it parses to the same unit family as
-      the HCPCS expectation (mg vs mg, unit vs unit), scale accordingly.
-    - When the row has a drug_unit but it doesn't parse, OR it parses to a
-      different unit family (per-vial/per-mL when HCPCS expects per-mg), the
-      comparison is apples-to-oranges and we drop the row by returning None.
+    1. The structured ``drug_unit`` field (CMS v3 JSON ``drug_information``).
+    2. The text dose extracted from the line item description, e.g.
+       "DOXORUBICIN 50 MG INJ" -> ``(50.0, "mg")``. Most CSV/XLSX MRFs
+       publish the dose only in the description, so this fallback is what
+       lets us actually normalize chargemaster rows.
+    """
+    parsed = _parse_drug_unit(drug_unit)
+    if parsed is not None:
+        return parsed
+    return extract_dose_from_description(description)
+
+
+def normalize_to_hcpcs_unit(
+    price: float,
+    drug_unit: str | None,
+    display_name: str,
+    description: str | None = None,
+) -> float | None:
+    """Scale ``price`` so it represents one HCPCS unit (e.g., per 10 mg).
+
+    Returns ``None`` to signal the row should be dropped from the
+    comparison. The dosage filter is intentionally strict for codes that
+    bill per-X-unit because mixing un-scaled vial prices with per-mg
+    prices destroys any honest cheapest/priciest comparison.
+
+    Cases:
+
+    * Code's display name has no parseable HCPCS unit (e.g. CPT 27447
+      knee replacement) -> return ``price`` unchanged.
+    * Code has a per-X HCPCS unit AND a dose can be resolved (from
+      ``drug_unit`` or by parsing the description) AND the unit family
+      matches -> scale: ``price * (hcpcs_qty / dose_qty)``.
+    * Code has a per-X HCPCS unit but no dose can be resolved at all
+      (description is just the bare drug name like "DOXORUBICIN HCL") ->
+      return ``None`` so the row is dropped.
+    * Code has a per-X HCPCS unit and the dose parses to a different
+      unit family (per-mL when HCPCS expects per-mg) -> ``None``.
     """
     hcpcs = _parse_hcpcs_unit(display_name)
     if hcpcs is None:
         return price
-    if not drug_unit:
-        return price
-    parsed = _parse_drug_unit(drug_unit)
+    parsed = _resolve_dose(drug_unit, description)
     if parsed is None:
         return None
     if parsed[1] != hcpcs[1]:
@@ -216,13 +242,16 @@ def effective_price(
         ceiling = min(ceiling, CATEGORY_CEILING[category])
     code_str = (row.get("code") or "").strip()
     drug_unit = row.get("drug_unit")
+    description = row.get("description")
     candidates = []
     for k in ("gross_charge", "discounted_cash"):
         v = row.get(k)
         if v is None or not isinstance(v, (int, float)):
             continue
         if display_name:
-            scaled = normalize_to_hcpcs_unit(float(v), drug_unit, display_name)
+            scaled = normalize_to_hcpcs_unit(
+                float(v), drug_unit, display_name, description
+            )
             if scaled is None:
                 continue
             v = scaled
@@ -359,6 +388,19 @@ def main() -> None:
                 by_code_state[key][st].append(price)
                 by_code_state_hospital[key][st][hid].append(price)
 
+            display_name = code_display_name.get(key) or ""
+            hcpcs = _parse_hcpcs_unit(display_name)
+            dose = _resolve_dose(row.get("drug_unit"), row.get("description"))
+            scaled_gross = None
+            scaled_cash = None
+            if hcpcs is not None and dose is not None and dose[0] > 0 and dose[1] == hcpcs[1]:
+                ratio = hcpcs[0] / dose[0]
+                gv = row.get("gross_charge")
+                if isinstance(gv, (int, float)):
+                    scaled_gross = float(gv) * ratio
+                cv = row.get("discounted_cash")
+                if isinstance(cv, (int, float)):
+                    scaled_cash = float(cv) * ratio
             obs_by_hospital_code[(hid, key)].append(
                 {
                     "price": price,
@@ -366,6 +408,12 @@ def main() -> None:
                     "drug_unit": row.get("drug_unit"),
                     "gross_charge": row.get("gross_charge"),
                     "discounted_cash": row.get("discounted_cash"),
+                    "gross_charge_per_unit": scaled_gross,
+                    "discounted_cash_per_unit": scaled_cash,
+                    "dose_qty": dose[0] if dose else None,
+                    "dose_unit": dose[1] if dose else None,
+                    "hcpcs_qty": hcpcs[0] if hcpcs else None,
+                    "hcpcs_unit": hcpcs[1] if hcpcs else None,
                     "setting": row.get("setting") or None,
                 }
             )
@@ -432,13 +480,39 @@ def main() -> None:
         """Return the captured observation closest to `target_price` for this
         (hospital, code). Used to surface the actual MRF line item description
         and unit on the cheapest/priciest podium so readers can verify the
-        comparison is apples-to-apples (same drug, same dosage)."""
+        comparison is apples-to-apples (same drug, same dosage).
+
+        For drug codes with a per-X HCPCS unit, the representative also
+        carries:
+
+        * ``dose_qty`` / ``dose_unit`` -- the dose extracted from the line
+          item description (e.g. 50 mg vial)
+        * ``hcpcs_qty`` / ``hcpcs_unit`` -- the HCPCS billing unit pulled
+          from the code's display name (e.g. 10 mg)
+        * ``gross_charge_per_unit`` / ``discounted_cash_per_unit`` --
+          the raw chargemaster numbers scaled to that HCPCS billing unit
+          so cards can show "Gross $1,106 per 10 mg" instead of the raw
+          per-vial number, which is what was confusing readers.
+        """
         obs = obs_by_hospital_code.get((hid, key)) or []
         if not obs:
             return None
         chosen = min(obs, key=lambda o: abs(float(o.get("price") or 0) - float(target_price)))
         out: dict = {}
-        for k in ("description", "drug_unit", "gross_charge", "discounted_cash", "setting"):
+        scalar_fields = (
+            "description",
+            "drug_unit",
+            "gross_charge",
+            "discounted_cash",
+            "gross_charge_per_unit",
+            "discounted_cash_per_unit",
+            "dose_qty",
+            "dose_unit",
+            "hcpcs_qty",
+            "hcpcs_unit",
+            "setting",
+        )
+        for k in scalar_fields:
             v = chosen.get(k)
             if v is None or (isinstance(v, str) and not v.strip()):
                 continue

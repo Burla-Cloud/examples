@@ -3,6 +3,10 @@ export type LineItem = {
   unit?: string | null;
   gross_charge?: number | null;
   discounted_cash?: number | null;
+  gross_charge_per_unit?: number | null;
+  discounted_cash_per_unit?: number | null;
+  dose?: string | null;
+  hcpcs_billing_unit?: string | null;
   setting?: string | null;
 };
 

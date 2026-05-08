@@ -153,14 +153,37 @@ function LineItemBlock({
 }: {
   item: NonNullable<RankedHospital["line_item"]>;
 }) {
+  const billingUnit = item.hcpcs_billing_unit || item.unit || null;
+  const dose = item.dose || null;
   const meta = [
-    item.unit ? `Billed per ${item.unit}` : null,
+    dose ? `Vial / dose ${dose}` : null,
+    billingUnit ? `billed per ${billingUnit}` : null,
     item.setting || null,
   ].filter(Boolean);
-  const dollars = [
-    item.gross_charge != null ? `Gross charge ${fmtMoney(item.gross_charge)}` : null,
+
+  // Per-HCPCS-unit numbers are what we ranked the hospitals by, so they go
+  // first. The raw chargemaster numbers go beneath as "What the MRF says"
+  // so a reader can verify the math against the source file.
+  const perUnit = [
+    item.gross_charge_per_unit != null
+      ? `Gross ${fmtMoney(item.gross_charge_per_unit)}`
+      : null,
+    item.discounted_cash_per_unit != null
+      ? `Cash ${fmtMoney(item.discounted_cash_per_unit)}`
+      : null,
+  ].filter(Boolean);
+
+  const raw = [
+    item.gross_charge != null ? `Gross ${fmtMoney(item.gross_charge)}` : null,
     item.discounted_cash != null ? `Cash ${fmtMoney(item.discounted_cash)}` : null,
   ].filter(Boolean);
+
+  // If the hospital's row was already in per-HCPCS-unit form (no
+  // normalization needed), perUnit and raw match; collapse to one line.
+  const perUnitMatchesRaw =
+    item.gross_charge_per_unit === item.gross_charge &&
+    item.discounted_cash_per_unit === item.discounted_cash;
+
   return (
     <div className="mt-3 rounded-md border border-line bg-section/40 px-3 py-2">
       <p className="text-[10px] uppercase tracking-[0.18em] text-inkMuted">
@@ -174,9 +197,17 @@ function LineItemBlock({
           {meta.join(" \u00b7 ")}
         </p>
       ) : null}
-      {dollars.length > 0 ? (
+      {perUnit.length > 0 && billingUnit ? (
+        <p className="text-[11px] text-ink mt-1 leading-snug">
+          <span className="font-medium">Per {billingUnit}:</span>{" "}
+          {perUnit.join(" \u00b7 ")}
+        </p>
+      ) : null}
+      {raw.length > 0 && (perUnit.length === 0 || !perUnitMatchesRaw) ? (
         <p className="text-[11px] text-inkSubtle mt-1 leading-snug">
-          {dollars.join(" \u00b7 ")}
+          <span className="font-medium">MRF lists:</span>{" "}
+          {raw.join(" \u00b7 ")}
+          {dose ? ` (full ${dose})` : ""}
         </p>
       ) : null}
     </div>

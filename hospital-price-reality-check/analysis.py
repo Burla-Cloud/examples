@@ -77,6 +77,48 @@ def _clean_city(city: str | None) -> str | None:
     return s
 
 
+def _format_dose(qty: float | int | None, unit: str | None) -> str | None:
+    """Render a dose in chargemaster-style ("50 mg", "100 mcg", "0.25 mg")."""
+    if qty is None or unit is None:
+        return None
+    try:
+        q = float(qty)
+    except (TypeError, ValueError):
+        return None
+    if q <= 0:
+        return None
+    if q == int(q):
+        qstr = str(int(q))
+    else:
+        qstr = f"{q:.3f}".rstrip("0").rstrip(".") or "0"
+    return f"{qstr} {unit}"
+
+
+def _build_line_item(rep: dict) -> dict:
+    """Render a per-hospital representative line item card.
+
+    The frontend uses this to show readers exactly which row from the
+    hospital's MRF was compared. We surface both the raw chargemaster
+    numbers (`gross_charge`, `discounted_cash`) and the same numbers
+    scaled to the HCPCS billing unit (`gross_charge_per_unit`,
+    `discounted_cash_per_unit`) so a 50 mg vial doesn't look more
+    expensive than a 10 mg vial just because it ships in bigger
+    increments.
+    """
+    line: dict = {
+        "description": rep.get("description") or None,
+        "unit": rep.get("drug_unit"),
+        "gross_charge": _round_money(rep.get("gross_charge")),
+        "discounted_cash": _round_money(rep.get("discounted_cash")),
+        "gross_charge_per_unit": _round_money(rep.get("gross_charge_per_unit")),
+        "discounted_cash_per_unit": _round_money(rep.get("discounted_cash_per_unit")),
+        "dose": _format_dose(rep.get("dose_qty"), rep.get("dose_unit")),
+        "hcpcs_billing_unit": _format_dose(rep.get("hcpcs_qty"), rep.get("hcpcs_unit")),
+        "setting": rep.get("setting"),
+    }
+    return line
+
+
 # Per-category ratio bounds: a hospital's median must lie within
 # [low_ratio * national_median, high_ratio * national_median] to be eligible.
 # These catch unit-encoding glitches (per-mg vs per-vial, per-dose vs per-cycle)
@@ -412,13 +454,7 @@ def main() -> None:
                 }
                 rep = h.get("representative") or {}
                 if rep:
-                    card["line_item"] = {
-                        "description": rep.get("description") or None,
-                        "unit": rep.get("drug_unit"),
-                        "gross_charge": _round_money(rep.get("gross_charge")),
-                        "discounted_cash": _round_money(rep.get("discounted_cash")),
-                        "setting": rep.get("setting"),
-                    }
+                    card["line_item"] = _build_line_item(rep)
                 return card
 
             cheapest_in_state[st] = _state_card(cheapest)
@@ -437,13 +473,7 @@ def main() -> None:
             }
             rep = h.get("representative") or {}
             if rep:
-                card["line_item"] = {
-                    "description": (rep.get("description") or None),
-                    "unit": rep.get("drug_unit"),
-                    "gross_charge": _round_money(rep.get("gross_charge")),
-                    "discounted_cash": _round_money(rep.get("discounted_cash")),
-                    "setting": rep.get("setting"),
-                }
+                card["line_item"] = _build_line_item(rep)
             return card
 
         # Dedupe priciest from cheapest so the same hospital never appears in
