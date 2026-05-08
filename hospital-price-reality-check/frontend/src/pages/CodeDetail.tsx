@@ -155,10 +155,14 @@ function LineItemBlock({
 }) {
   const billingUnit = item.hcpcs_billing_unit || item.unit || null;
   const dose = item.dose || null;
+  // Setting is intentionally not surfaced on cards. The MRF "setting"
+  // field is the hospital's billing classification (inpatient PPS vs
+  // outpatient PPS) and most readers misread "outpatient" on a $80k
+  // surgery as "same-day discharge", which it isn't. Drop it from the
+  // card and explain inside the procedure copy if needed.
   const meta = [
     dose ? `Vial / dose ${dose}` : null,
     billingUnit ? `billed per ${billingUnit}` : null,
-    item.setting || null,
   ].filter(Boolean);
 
   // Per-HCPCS-unit numbers are what we ranked the hospitals by, so they go

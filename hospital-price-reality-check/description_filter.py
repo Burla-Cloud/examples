@@ -74,6 +74,33 @@ _SURGICAL_CATEGORIES = frozenset({
     "cancer_treatment",
 })
 
+# Phrases that, when present, force a description to be rejected for the
+# given code even if it matches a positive keyword. Mostly used to exclude
+# the bilateral / revision / partial variant of a procedure that has its
+# own CPT code, so we don't compare a 2-knee bilateral case against
+# unilateral knees.
+_NEGATIVE_OVERRIDES: dict[str, list[str]] = {
+    # CPT 27447 is unilateral total knee. Bilateral knee is billed as two
+    # 27447s (or 27447-50) and the chargemaster value for the bilateral
+    # row is the doubled price. Revision knee is CPT 27487. Partial knee
+    # is CPT 27446. Each of those is a different procedure with its own
+    # price and shouldn't sit on the same podium.
+    "CPT:27447": ["bilateral", "revision", "partial knee", "unicompart",
+                  "unicondyl", "uni-compart", "uni-condyl", "uka"],
+    # CPT 27130 is unilateral total hip; mirror the carve-outs.
+    "CPT:27130": ["bilateral", "revision", "partial hip", "hemi-arthr",
+                  "hemiarthr"],
+    # CPT 47562 (lap chole) excludes open and converted-to-open which is
+    # 47600/47605/47610.
+    "CPT:47562": ["open chole", "converted to open"],
+    # CPT 45378 (diagnostic colonoscopy) is the bare exam. Therapeutic
+    # variants (45380 biopsy, 45385 polypectomy, 45388 ablation,
+    # 45390 EMR) are different codes -- exclude their giveaway phrasing.
+    "CPT:45378": ["with biopsy", "with polyp", "with snare",
+                  "with submucosal", "with ablation", "with hot",
+                  "with cold snare", "with EMR", "with band ligation"],
+}
+
 # Hand-tuned positive keywords for codes where the auto-derived list either
 # misses common chargemaster shorthand or matches too loosely. Format is
 # "<SYS>:<CODE>" -> list of substrings (lowercase). Description matches if
@@ -363,6 +390,15 @@ def description_matches_code(meta: dict, description: str | None) -> bool:
     )
     if category not in _SURGICAL_CATEGORIES and not is_generic_bucket:
         if _has_hardware_lead(description):
+            return False
+
+    # Per-code carve-outs for variants that share a code but bill a
+    # different procedure (bilateral, revision, partial, ...). If the
+    # description contains any of these phrases, this row is comparing
+    # apples to a different fruit -- drop it.
+    negatives = _NEGATIVE_OVERRIDES.get(code_key) or []
+    for neg in negatives:
+        if neg.lower() in desc:
             return False
 
     keywords = _auto_keywords(code_key, display_name)
