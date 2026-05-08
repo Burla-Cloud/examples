@@ -104,11 +104,11 @@ open before reading a single line of code.
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <a href="https://burla-cloud.github.io/hospital-price-reality-check/"><img src="assets/readme/hospital-price-reality-check.png" alt="Hospital Price Reality Check" width="100%"></a>
-      <h3><a href="https://burla-cloud.github.io/hospital-price-reality-check/">Hospital Price Reality Check</a></h3>
+      <a href="https://burla-cloud.github.io/examples/hospital-price-reality-check/"><img src="assets/readme/hospital-price-reality-check.png" alt="Hospital Price Reality Check" width="100%"></a>
+      <h3><a href="https://burla-cloud.github.io/examples/hospital-price-reality-check/">Hospital Price Reality Check</a></h3>
       <p><strong>5,162 US hospital MRFs, 1.3M priced line items, 1,040 parallel CPUs in ~19 minutes.</strong></p>
       <p>Pull every hospital's machine-readable file, parse 5 different formats (CMS v3 JSON, tall CSV, wide CSV, XLSX, ZIP), and build a chargemaster comparison site for 361 standard codes.</p>
-      <p><a href="https://burla-cloud.github.io/hospital-price-reality-check/">Live demo</a> &middot; <a href="hospital-price-reality-check/">Source</a></p>
+      <p><a href="https://burla-cloud.github.io/examples/hospital-price-reality-check/">Live demo</a> &middot; <a href="hospital-price-reality-check/">Source</a></p>
     </td>
     <td width="50%" valign="top"></td>
   </tr>

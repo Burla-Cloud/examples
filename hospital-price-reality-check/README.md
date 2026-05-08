@@ -1,6 +1,6 @@
 # Hospital Price Reality Check. a Burla demo
 
-**Live site: <https://burla-cloud.github.io/hospital-price-reality-check/>**
+**Live site: <https://burla-cloud.github.io/examples/hospital-price-reality-check/>**
 
 We pulled and parsed **5,162 hospital price transparency files** across **52 states** through a Burla cluster of **1,040 parallel CPUs** in about **19 minutes**, then built a static site that compares what 3,400 US hospitals charge for the same procedure or drug, line by line.
 
