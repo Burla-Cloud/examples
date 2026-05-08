@@ -49,6 +49,8 @@ jobs:
           cp -R world-photo-index/. public/world-photo-index/
           mkdir -p public/github-repo-summarizer
           cp -R github-repo-summarizer/. public/github-repo-summarizer/
+          mkdir -p public/hospital-price-reality-check
+          cp -R hospital-price-reality-check/site/. public/hospital-price-reality-check/
 
           find public -name .gitignore -delete
 
