@@ -220,7 +220,7 @@ export function Home() {
             value={summary.elapsedMin != null ? `${summary.elapsedMin} min` : "Open"}
             hint={
               summary.elapsedMin != null
-                ? "End to end, on Burla"
+                ? "End to end, fetch through analysis"
                 : "Source. Fork it. Ship it."
             }
             tone="accent"
@@ -334,8 +334,7 @@ export function Home() {
               </h3>
               <p className="text-bg/85 text-lg leading-relaxed max-w-xl">
                 The whole pipeline is open source. Point it at a different
-                hospital list and rerun it. Each refresh takes minutes on a
-                Burla cluster.
+                hospital list and rerun it. Each refresh takes minutes.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -345,23 +344,6 @@ export function Home() {
               >
                 How we did this
               </Link>
-              <a
-                href="https://burla.dev"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-bg/30 bg-transparent px-6 py-3 text-sm font-medium text-bg transition-all hover:bg-bg/10 hover:-translate-y-0.5"
-              >
-                burla.dev
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
-                  <path
-                    d="M7 17L17 7M17 7H8m9 0v9"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
             </div>
           </div>
         </div>

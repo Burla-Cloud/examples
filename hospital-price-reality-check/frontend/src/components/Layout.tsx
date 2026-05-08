@@ -96,19 +96,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 Built on the federal Hospital Price Transparency rule,{" "}
                 <span className="text-ink font-medium">45 CFR Part 180</span>.
               </li>
+              <li>Open source. Always real prices, no synthetic fill.</li>
               <li>
-                Parsed in parallel on{" "}
-                <a
-                  href="https://burla.dev"
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  to="/how-we-did-this"
                   className="text-ink underline-offset-4 hover:underline"
                 >
-                  burla.dev
-                </a>
-                .
+                  How we did this
+                </Link>{" "}
+                covers the sources, the parsers, and the stack.
               </li>
-              <li>Open source. Always real prices, no synthetic fill.</li>
             </ul>
           </div>
         </div>
