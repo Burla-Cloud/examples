@@ -501,9 +501,22 @@ def main() -> None:
                 "p90": _round_money(st_stats["p90"]),
             }
 
+        # Pull the HCPCS billing unit out of the code display name so the
+        # frontend can stamp every price (headline grid, cheapest/priciest
+        # cards, percentile chart) with the unit those numbers were
+        # standardized to. We only set it when the display name actually
+        # encodes a "per X" expression -- regular CPT/MS-DRG codes don't
+        # carry a per-unit semantic.
+        from reduce import _parse_hcpcs_unit
+        hcpcs = _parse_hcpcs_unit(meta.get("display_name") or "")
+        billing_unit = (
+            _format_dose(hcpcs[0], hcpcs[1]) if hcpcs is not None else None
+        )
+
         code_summary.append(
             {
                 **meta,
+                "billing_unit": billing_unit,
                 "stats": stats,
                 "cheapest_in_state": cheapest_in_state,
                 "priciest_in_state": priciest_in_state,

@@ -222,10 +222,12 @@ function RankedHospitalList({
   title,
   tone,
   hospitals,
+  billingUnit,
 }: {
   title: string;
   tone: "mint" | "rose";
   hospitals: RankedHospital[];
+  billingUnit?: string | null;
 }) {
   const dotClass = tone === "mint" ? "bg-mint" : "bg-rose";
   const eyebrowClass = tone === "mint" ? "text-mint" : "text-rose";
@@ -280,9 +282,16 @@ function RankedHospitalList({
                 </a>
               ) : null}
             </div>
-            <span className="font-display text-2xl font-medium text-ink whitespace-nowrap tracking-[-0.02em]">
-              {fmtMoney(h.median)}
-            </span>
+            <div className="flex flex-col items-end whitespace-nowrap">
+              <span className="font-display text-2xl font-medium text-ink tracking-[-0.02em]">
+                {fmtMoney(h.median)}
+              </span>
+              {billingUnit ? (
+                <span className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle mt-1">
+                  per {billingUnit}
+                </span>
+              ) : null}
+            </div>
           </li>
         ))}
       </ol>
@@ -508,39 +517,85 @@ export function CodeDetail() {
           <span className="font-medium normal-case tracking-normal text-inkMuted">
             gross charge or cash-pay rate the hospital publishes, before any insurance
           </span>
+          {entry.billing_unit ? (
+            <>
+              {" "}
+              <span className="text-inkSubtle/70">·</span>{" "}
+              <span className="font-medium normal-case tracking-normal text-ink">
+                every number on this page is per {entry.billing_unit}
+              </span>
+            </>
+          ) : null}
         </p>
         <div className="price-grid">
           <div className="price-cell">
             <p className="price-cell-key">
               <span className="text-mint">●</span> Lowest hospital
             </p>
-            <p className="price-cell-num">{fmtMoney(headline?.lo)}</p>
+            <p className="price-cell-num">
+              {fmtMoney(headline?.lo)}
+              {entry.billing_unit ? (
+                <span className="ml-1 text-base font-medium text-inkMuted">
+                  / {entry.billing_unit}
+                </span>
+              ) : null}
+            </p>
             <p className="price-cell-sub">cheapest list price we found</p>
           </div>
           <div className="price-cell bg-section/40 border-ink/15">
             <p className="price-cell-key">Typical (median)</p>
-            <p className="price-cell-num">{fmtMoney(cur.median)}</p>
+            <p className="price-cell-num">
+              {fmtMoney(cur.median)}
+              {entry.billing_unit ? (
+                <span className="ml-1 text-base font-medium text-inkMuted">
+                  / {entry.billing_unit}
+                </span>
+              ) : null}
+            </p>
             <p className="price-cell-sub">half of hospitals list less, half list more</p>
           </div>
           <div className="price-cell">
             <p className="price-cell-key">Average (mean)</p>
-            <p className="price-cell-num">{fmtMoney(cur.mean)}</p>
+            <p className="price-cell-num">
+              {fmtMoney(cur.mean)}
+              {entry.billing_unit ? (
+                <span className="ml-1 text-base font-medium text-inkMuted">
+                  / {entry.billing_unit}
+                </span>
+              ) : null}
+            </p>
             <p className="price-cell-sub">arithmetic average of hospital list prices</p>
           </div>
           <div className="price-cell">
             <p className="price-cell-key">
               <span className="text-rose">●</span> Highest hospital
             </p>
-            <p className="price-cell-num">{fmtMoney(headline?.hi)}</p>
+            <p className="price-cell-num">
+              {fmtMoney(headline?.hi)}
+              {entry.billing_unit ? (
+                <span className="ml-1 text-base font-medium text-inkMuted">
+                  / {entry.billing_unit}
+                </span>
+              ) : null}
+            </p>
             <p className="price-cell-sub">priciest list price we found</p>
           </div>
         </div>
 
         <div className="mt-3 text-xs text-inkSubtle">
           One row per hospital, one number per row (each hospital's own median
-          for this code). We drop hospitals whose published list price is
-          obviously a chargemaster placeholder (a $5 ACL repair, a $0.17 drug)
-          before counting, ranking, or charting. Below: the same {cur.count.toLocaleString()} hospitals as a percentile curve.
+          for this code).
+          {entry.billing_unit ? (
+            <>
+              {" "}
+              All hospital prices are normalized to <span className="font-semibold text-ink">per {entry.billing_unit}</span>:
+              a 100 mg vial published at $10,000 reads as $100 / 1 mg, exactly
+              like the HCPCS code is billed.
+            </>
+          ) : null}{" "}
+          We drop hospitals whose published list price is obviously a
+          chargemaster placeholder (a $5 ACL repair, a $0.17 drug) before
+          counting, ranking, or charting. Below: the same {cur.count.toLocaleString()} hospitals as a percentile curve.
         </div>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2 text-sm">
@@ -631,6 +686,16 @@ export function CodeDetail() {
                 Top three hospitals in the country by their median price for
                 this code, with the three priciest for contrast. Pulled from
                 the same MRFs.
+                {entry.billing_unit ? (
+                  <>
+                    {" "}
+                    Every price is normalized to{" "}
+                    <span className="font-semibold text-ink">
+                      per {entry.billing_unit}
+                    </span>{" "}
+                    so a 100 mg vial and a 1 mg vial sit on the same scale.
+                  </>
+                ) : null}
               </p>
             </div>
           </div>
@@ -644,6 +709,7 @@ export function CodeDetail() {
                 title="Cheapest 3 in the country"
                 tone="mint"
                 hospitals={topCheapest}
+                billingUnit={entry.billing_unit}
               />
             )}
             {topPriciest.length > 0 && (
@@ -651,6 +717,7 @@ export function CodeDetail() {
                 title="Priciest 3 in the country"
                 tone="rose"
                 hospitals={topPriciest}
+                billingUnit={entry.billing_unit}
               />
             )}
           </div>
@@ -677,12 +744,19 @@ export function CodeDetail() {
         <section>
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="eyebrow">Price shape</p>
+              <p className="eyebrow">
+                Price shape
+                {entry.billing_unit ? ` · per ${entry.billing_unit}` : null}
+              </p>
               <h2 className="display-2 mt-3">From cheapest to most expensive</h2>
               <p className="text-sm text-inkMuted mt-2 max-w-2xl">
                 Each point is a percentile of all the prices we found in{" "}
-                {cur.scope}. Toggle the full range to include the absolute lowest
-                and highest hospitals.
+                {cur.scope}.
+                {entry.billing_unit
+                  ? ` All prices are per ${entry.billing_unit}.`
+                  : ""}{" "}
+                Toggle the full range to include the absolute lowest and
+                highest hospitals.
               </p>
             </div>
             <div className="flex items-center rounded-full border border-line bg-surface p-1 text-xs font-medium">

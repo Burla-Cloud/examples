@@ -35,6 +35,7 @@ export type CodeEntry = {
   code_system: string;
   code: string;
   display_name: string;
+  billing_unit?: string | null;
   what_it_is: string;
   when_youd_need_it: string;
   setting: string;
