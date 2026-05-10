@@ -724,7 +724,17 @@ def main() -> None:
     for h in hospitals_full:
         hid = h["hospital_id"]
         reduced_h = hosp_in.get(hid, {})
-        codes_covered = len((reduced_h.get("per_code") or {}))
+        # Two possible counts here. The raw count from the reduce step
+        # (``per_code`` dict) is "every code this hospital priced",
+        # including rows that get dropped later by the description
+        # filter or chargemaster placeholder rejection. The per-hospital
+        # detail file we ship to the frontend only contains
+        # post-filter rows. Show the post-filter count on the index so
+        # the number on the list matches the number on the profile
+        # (otherwise you get an off-by-N where a hospital says "296
+        # codes priced" on the list but only 295 rows render on the
+        # profile).
+        codes_covered = len(hospital_codes.get(hid) or [])
         if codes_covered <= 0:
             continue
         hospital_index.append(
