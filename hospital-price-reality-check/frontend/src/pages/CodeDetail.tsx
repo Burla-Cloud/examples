@@ -308,6 +308,7 @@ export function CodeDetail() {
   const [statePrices, setStatePrices] = useState<
     Record<string, StateCodeStat>
   >({});
+  const [totalHospitals, setTotalHospitals] = useState<number | null>(null);
   const [stateAbbr, setStateAbbr] = useState<string>(initialState);
   const [showRange, setShowRange] = useState<"core" | "full">("full");
   const [err, setErr] = useState<string | null>(null);
@@ -323,6 +324,7 @@ export function CodeDetail() {
           if (v?.codes?.[key]) sp[st] = v.codes[key];
         }
         setStatePrices(sp);
+        setTotalHospitals(d.meta?.hospitals_with_data ?? null);
       })
       .catch((e) => setErr(String(e)));
   }, [system, code]);
@@ -448,6 +450,17 @@ export function CodeDetail() {
   const dollarSpread =
     headline?.lo && headline?.hi ? headline.hi - headline.lo : null;
 
+  // Coverage caveat: <200 hospitals publishing a code means the
+  // cheapest/priciest podium is more reflective of "who chose to
+  // publish" than "who is actually cheapest in America". Surface this
+  // honestly so a reader doesn't over-index on a thin sample.
+  const nationalCount = entry.stats?.count || 0;
+  const coveragePct =
+    totalHospitals && totalHospitals > 0
+      ? (nationalCount / totalHospitals) * 100
+      : null;
+  const limitedCoverage = nationalCount > 0 && nationalCount < 200;
+
   return (
     <div className="space-y-16 animate-floatIn">
       {/* HEADER */}
@@ -500,6 +513,9 @@ export function CodeDetail() {
             <p className="text-sm text-inkMuted mt-1">
               Across {cur.count.toLocaleString()} hospital
               {cur.count === 1 ? "" : "s"} that publish this code
+              {totalHospitals && coveragePct != null
+                ? ` (${coveragePct.toFixed(coveragePct < 1 ? 1 : 0)}% of the ${totalHospitals.toLocaleString()} we have data for)`
+                : ""}
             </p>
           </div>
           {states.length > 0 && (
@@ -511,6 +527,38 @@ export function CodeDetail() {
             />
           )}
         </div>
+
+        {/* Coverage caveat: thin samples produce noisy podiums. */}
+        {limitedCoverage && (
+          <div className="mb-6 rounded-md border border-line bg-section/40 px-4 py-3 text-xs text-inkMuted leading-relaxed">
+            <span className="font-semibold text-ink">Limited coverage.</span>{" "}
+            Only {nationalCount.toLocaleString()} of {totalHospitals?.toLocaleString() ?? "the"} hospitals
+            in this dataset publish a price for this code. The cheapest /
+            priciest podiums below reflect who chose to publish, not
+            necessarily who is cheapest or priciest in the country. Read
+            this code's numbers as a starting point, not a verdict.
+          </div>
+        )}
+
+        {/* CMS Medicare reference -- the apples-to-apples external anchor. */}
+        {entry.cms_reference?.per_billing_unit != null && (
+          <div className="mb-6 rounded-md border border-line bg-bg/60 px-4 py-3 text-xs text-inkMuted leading-relaxed">
+            <span className="font-semibold text-ink">Medicare benchmark.</span>{" "}
+            CMS pays {fmtMoney(entry.cms_reference.per_billing_unit)}
+            {entry.billing_unit ? ` per ${entry.billing_unit}` : ""} for this
+            code under the Part B ASP fee schedule (April 2026 file). Hospital
+            list prices are typically a multiple of that allowance --
+            {entry.cms_reference.chargemaster_to_cms_ratio != null && (
+              <>
+                {" "}the median hospital here lists{" "}
+                <span className="font-semibold text-ink">
+                  {entry.cms_reference.chargemaster_to_cms_ratio}x
+                </span>
+                {" "}what Medicare pays.
+              </>
+            )}
+          </div>
+        )}
 
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-eyebrowTight text-inkSubtle">
           Pre-insurance list price <span className="text-inkSubtle/70">·</span>{" "}

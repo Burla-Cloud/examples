@@ -165,7 +165,106 @@ results = remote_parallel_map(
         </ul>
       </Section>
 
-      <Section title="A few honest caveats" n="06">
+      <Section title="Comparing the same thing across hospitals" n="06">
+        <p>
+          Two hospitals can file a row under the same CPT code and mean
+          completely different things. CPT 27447 is unilateral total knee
+          replacement, but a chargemaster will sometimes list bilateral knee
+          (which is two procedures) under the same code. We catch these
+          before the cheapest / priciest podiums are computed:
+        </p>
+        <ul className="space-y-3 list-disc pl-6">
+          <li>
+            A hardware blocklist (plate, screw, suture anchor, drape, tubing,
+            extender) prevents surgical supplies from sitting on a vaccine or
+            ER visit page.
+          </li>
+          <li>
+            Per-code positive keywords. The line item description must match
+            the procedure or drug the code is for. We auto-derive these from
+            each code's clinical name and hand-tune the ones where
+            chargemaster shorthand disagrees with the official wording.
+          </li>
+          <li>
+            Per-code negative keywords. CPT 27447 (total knee) excludes
+            "bilateral", "revision", "partial knee", "unicompart". CPT 47562
+            (lap chole) excludes "open" and "converted to open". CPT 45378
+            (diagnostic colonoscopy) excludes biopsy, polypectomy, ablation,
+            EMR. CPT 70450 (CT head without contrast) excludes "with contrast"
+            and "without and with contrast" rows.
+          </li>
+        </ul>
+      </Section>
+
+      <Section title="Standardizing drug doses" n="07">
+        <p>
+          Hospitals publish drug prices at the vial level (one row for
+          a 100 mg vial, another for a 1 mg vial), but the HCPCS code
+          they're billed against is per-unit (per 1 mg, per 10 mg, per 25
+          mcg, ...). If we just grabbed the vial price, a hospital with a
+          big vial would look more expensive than a hospital with a small
+          one even when their per-mg pricing is identical.
+        </p>
+        <p>
+          We extract the dose from the chargemaster description (regex over
+          common formats: "DOXORUBICIN 50 MG", "Keytruda 100mg/4ml",
+          "PALONOSETRON 0.05 MG/ML 5 ML VIAL"), divide the published price
+          by the dose, and multiply by the HCPCS billing unit. Every drug
+          page on this site is per HCPCS billing unit. The card under each
+          hospital shows both the raw vial price the hospital published AND
+          the per-unit standardized price you see in the rankings.
+        </p>
+        <p>
+          We anchor the standardized prices against the CMS Medicare Part B
+          ASP (Average Sales Price) payment limit file, published quarterly.
+          For a drug whose ASP is $60 per mg, a hospital chargemaster of $10
+          per mg would be suspicious -- we flag it. For 33 of the 37 drug
+          codes we have an ASP record for, our median chargemaster falls in
+          the expected 2x-50x ASP range. The remaining 4 are off-patent
+          generics (paclitaxel, oxaliplatin, granisetron, palonosetron)
+          where ASP is fractions of a cent and the ratio loses signal --
+          chargemasters notoriously lag generic erosion by years.
+        </p>
+      </Section>
+
+      <Section title="LLM second opinion" n="08">
+        <p>
+          Regex and keyword filters can only do so much. We ran two
+          independent passes with Claude (Sonnet 4.5, temperature 0):
+        </p>
+        <ul className="space-y-3 list-disc pl-6">
+          <li>
+            <span className="text-ink font-medium">218 drug podium cards</span>{" "}
+            across all 39 HCPCS J-codes that bill per a unit dose. For each
+            card the model independently extracted the dose from the
+            description, checked it matched the HCPCS code, and verified the
+            per-unit math. Result: 215 of 218 passed; 3 surfaced real bugs
+            in our regex (a HCPCS-unit reminder being parsed as the dose,
+            and a "concentration without volume" string being parsed as a
+            total dose). Both have been fixed in the open-source
+            <Code>dosage_extractor.py</Code>.
+          </li>
+          <li>
+            <span className="text-ink font-medium">300 procedure podium
+            cards</span> across the 50 most-trafficked non-drug codes (ER
+            visits, imaging, colonoscopy, knee replacement, etc). The model
+            checked whether the line item description matches the procedure
+            code, whether it represents a clinical variant (bilateral,
+            revision, with-contrast vs without-contrast), and whether the
+            price is in a believable range. Real findings drove the negative
+            keywords for CT contrast variants (CPT 70450, 71250, 74176) and
+            an ultrasound exclusion for CPT 77063 (breast tomosynthesis).
+          </li>
+        </ul>
+        <p className="text-sm">
+          The audit report files (<Code>samples/dosage_audit_all_drugs.json</Code>{" "}
+          and <Code>samples/procedure_audit.json</Code>) ship in the
+          repository so anyone can inspect every flagged card and the
+          model's reasoning.
+        </p>
+      </Section>
+
+      <Section title="A few honest caveats" n="09">
         <p>
           Not every hospital publishes a file we can read. Some files are
           corrupt, some require login, some use bespoke formats we have not
@@ -179,14 +278,30 @@ results = remote_parallel_map(
           available.
         </p>
         <p>
-          Finally, the same procedure code can mean slightly different things
-          at different hospitals depending on what is bundled with it. We
-          average across the noise, but the spread you see is partly real
-          price variation and partly bundling differences.
+          Hospital-system clustering is not collapsed. When five HCA sister
+          hospitals copy-paste the same chargemaster, those are five data
+          points in our podium even though the underlying decision was made
+          once at the corporate level. We disclose this so a podium with
+          three HCA siblings doesn't read as three independent
+          observations.
+        </p>
+        <p>
+          Coverage varies by code. A common test (CBC, CMP, basic chest
+          x-ray) is published by 3,000+ hospitals. A niche surgical code
+          may only have 80. Each code page now shows the count and the
+          percent of total hospitals that publish that code. If the count
+          is below 200 we display a "limited coverage" note above the
+          podiums so a thin sample doesn't read as a national verdict.
+        </p>
+        <p>
+          The same procedure code can still mean slightly different things
+          at different hospitals depending on bundling. We average across
+          the noise, but the spread you see is partly real price variation
+          and partly bundling differences.
         </p>
       </Section>
 
-      <Section title="Run it yourself" n="07">
+      <Section title="Run it yourself" n="10">
         <p>
           The pipeline is open source. Clone the repo, point the loader at any
           list of hospital MRF URLs, and rerun the scale step. The reduce,

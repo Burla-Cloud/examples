@@ -318,12 +318,62 @@ def _filter_eligible(
     return out
 
 
+def _load_cms_asp() -> dict[str, dict]:
+    """Load the CMS Part B ASP payment limit table if it's been
+    downloaded into ``data/cms_asp/``. Returns ``{HCPCS code: {limit,
+    dose_qty, dose_unit, dose_text}}`` or an empty dict if the file is
+    missing. Pre-existing scripts already produce ``samples/cms_asp_check.json``
+    -- we re-parse the source CSV here to keep ``analysis.py`` self
+    contained and to avoid a stale samples file silently disagreeing
+    with the published CMS file.
+    """
+    import csv as _csv
+    import re as _re
+
+    csv_path = REPO_ROOT / "data" / "cms_asp" / (
+        "section 5208 version of April 2026 Medicare Part B Payment Limit "
+        "File 033026.csv"
+    )
+    if not csv_path.exists():
+        return {}
+    text = csv_path.read_text(encoding="latin-1")
+    out: dict[str, dict] = {}
+    in_data = False
+    for row in _csv.reader(text.splitlines()):
+        if not row:
+            continue
+        if not in_data:
+            if row and row[0].strip() == "HCPCS Code":
+                in_data = True
+            continue
+        if len(row) < 4 or not row[0].strip():
+            continue
+        code = row[0].strip()
+        try:
+            limit = float(row[3].strip())
+        except ValueError:
+            continue
+        dose_text = row[2].strip()
+        m = _re.match(r"\s*([0-9]*\.?[0-9]+)\s*([A-Za-z]+)", dose_text)
+        dose_qty = float(m.group(1)) if m else None
+        dose_unit = m.group(2).lower() if m else None
+        out[code] = {
+            "payment_limit": limit,
+            "dose_qty": dose_qty,
+            "dose_unit": dose_unit,
+            "dose_text": dose_text,
+            "short_description": row[1].strip(),
+        }
+    return out
+
+
 def main() -> None:
     reduced_path = SAMPLES / "hpt_reduced.json"
     if not reduced_path.is_file():
         print("Run reduce.py first")
         return
     reduced = json.loads(reduced_path.read_text(encoding="utf-8"))
+    cms_asp = _load_cms_asp()
 
     # Load hospital index up front so we can attach the source MRF URL and
     # cleaner city/state values to every hospital card we render. This is the
@@ -350,6 +400,14 @@ def main() -> None:
 
     code_summary = []
     eligible_state_stats: dict[str, dict[str, dict]] = {}
+    # Per-hospital detail rollup: { hospital_id -> [ { code_system, code,
+    # display_name, category, billing_unit, median, line_item } ] }.
+    # We build this in the same loop where we iterate codes so we don't
+    # have to walk the reduced file twice. The output is written as one
+    # JSON file per hospital under frontend/public/data/hospitals/ so
+    # the React app can fetch a single hospital's full coverage on
+    # demand without loading every hospital at once.
+    hospital_codes: dict[str, list[dict]] = {}
     for meta in CODES:
         key = f"{meta['code_system']}:{meta['code']}"
         raw_stats = reduced["codes"].get(key, {}) or {}
@@ -513,10 +571,43 @@ def main() -> None:
             _format_dose(hcpcs[0], hcpcs[1]) if hcpcs is not None else None
         )
 
+        # Cross-reference against the CMS Part B ASP payment limit so the
+        # frontend can show readers "Medicare pays $X per unit, this
+        # hospital lists $Y" side by side. Only meaningful for HCPCS
+        # codes that have an ASP entry (drug J-codes do, surgical CPT
+        # codes don't).
+        cms_ref = None
+        if billing_unit and meta.get("code_system") == "HCPCS":
+            cms_entry = cms_asp.get(meta.get("code") or "")
+            if cms_entry and hcpcs is not None:
+                our_qty, our_unit = hcpcs
+                cms_qty = cms_entry.get("dose_qty")
+                cms_unit = cms_entry.get("dose_unit")
+                cms_limit = cms_entry.get("payment_limit") or 0.0
+                cms_per_our_unit = None
+                if cms_qty and cms_unit == our_unit:
+                    cms_per_our_unit = cms_limit * (our_qty / cms_qty)
+                elif cms_qty and {cms_unit, our_unit} == {"mg", "mcg"}:
+                    factor = 1000.0 if cms_unit == "mg" else 1 / 1000.0
+                    cms_per_our_unit = cms_limit * (our_qty / cms_qty) * factor
+                if cms_per_our_unit is not None:
+                    cms_ref = {
+                        "source": "CMS Medicare Part B ASP, April 2026",
+                        "payment_limit": _round_money(cms_limit),
+                        "dose_text": cms_entry.get("dose_text"),
+                        "per_billing_unit": _round_money(cms_per_our_unit),
+                    }
+                    median_val = stats.get("median") if stats else None
+                    if median_val and cms_per_our_unit > 0:
+                        cms_ref["chargemaster_to_cms_ratio"] = round(
+                            float(median_val) / cms_per_our_unit, 2
+                        )
+
         code_summary.append(
             {
                 **meta,
                 "billing_unit": billing_unit,
+                "cms_reference": cms_ref,
                 "stats": stats,
                 "cheapest_in_state": cheapest_in_state,
                 "priciest_in_state": priciest_in_state,
@@ -525,6 +616,39 @@ def main() -> None:
                 "ranking_eligible_count": len(eligible),
             }
         )
+
+        # Per-hospital rollup: every hospital that priced this code gets
+        # an entry pointing back at it. We use the same per-state lists
+        # the cheapest/priciest podiums were drawn from so the prices a
+        # reader sees on the per-hospital profile match exactly what
+        # they'd see on the per-code page (same eligibility filter,
+        # same "drop placeholders" rules, same per-unit normalization).
+        for st, hosps in (reduced.get("hospitals_by_code_by_state") or {}).get(key, {}).items():
+            for h in (hosps or []):
+                hid = h.get("hospital_id")
+                if not hid:
+                    continue
+                rep = h.get("representative") or {}
+                # We deliberately do NOT include cms_reference here --
+                # it's identical across hospitals for the same code and
+                # already lives on code_summary.json, so the frontend
+                # joins on (code_system, code) at render time. Keeping
+                # the per-hospital file slim matters: 3.3K hospitals x
+                # ~50KB each is the difference between a 60MB and 250MB
+                # static site.
+                hospital_codes.setdefault(hid, []).append(
+                    {
+                        "code_system": meta["code_system"],
+                        "code": meta["code"],
+                        "display_name": meta["display_name"],
+                        "category": meta["category"],
+                        "setting": meta.get("setting"),
+                        "billing_unit": billing_unit,
+                        "median": _round_money(h.get("median")),
+                        "count": h.get("count"),
+                        "line_item": _build_line_item(rep) if rep else None,
+                    }
+                )
 
     # Spread leaderboard. We use P10..P90 for the "real" spread (rejects rogue
     # chargemaster placeholders and per-mg vs per-vial pharma encoding bugs that
@@ -668,9 +792,65 @@ def main() -> None:
         (FRONT_DATA / fname).write_text(json.dumps(payload, indent=2), encoding="utf-8")
         (SAMPLES / fname).write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
+    # Per-hospital detail files. One JSON per hospital, written under
+    # frontend/public/data/hospitals/{hospital_id}.json. The hospital
+    # profile page fetches a single file at click time instead of
+    # loading every hospital's data into the index. Hospitals with no
+    # priced codes are skipped (matches the codes_covered>0 filter on
+    # the index).
+    hospitals_dir = FRONT_DATA / "hospitals"
+    hospitals_dir.mkdir(parents=True, exist_ok=True)
+    # Wipe stale files from prior runs so a hospital that disappears
+    # from the dataset doesn't keep serving an old detail file.
+    for stale in hospitals_dir.glob("*.json"):
+        stale.unlink()
+
+    hospital_meta_by_id: dict[str, dict] = {h.get("hospital_id"): h for h in hospital_index}
+    written = 0
+    for hid, codes in hospital_codes.items():
+        if not codes:
+            continue
+        meta = hospital_meta_by_id.get(hid) or {}
+        # Sort each hospital's codes by category, then display name, so
+        # the profile page can group them naturally.
+        codes_sorted = sorted(
+            codes,
+            key=lambda c: (
+                c.get("category") or "zzz",
+                (c.get("display_name") or "").lower(),
+            ),
+        )
+        # Per-category coverage tally for the hospital header.
+        cat_counts: dict[str, int] = {}
+        for c in codes_sorted:
+            cat = c.get("category") or "other"
+            cat_counts[cat] = cat_counts.get(cat, 0) + 1
+
+        detail = {
+            "hospital_id": hid,
+            "name": _clean_hospital_name(meta.get("name")),
+            "system": meta.get("system"),
+            "city": _clean_city(meta.get("city")),
+            "state": meta.get("state"),
+            "ccn": meta.get("ccn"),
+            "mrf_url": meta.get("mrf_url"),
+            "codes_covered": len(codes_sorted),
+            "category_counts": cat_counts,
+            "honesty_score": meta.get("honesty_score"),
+            "codes": codes_sorted,
+        }
+        # Compact JSON (no indent) -- the per-hospital files are not
+        # meant to be read by humans, only by the frontend, and the
+        # 50%+ size reduction matters for shipping ~3.3K of them.
+        (hospitals_dir / f"{hid}.json").write_text(
+            json.dumps(detail, separators=(",", ":")), encoding="utf-8"
+        )
+        written += 1
+
     print(
         f"wrote frontend/public/data/*.json and samples/*.json "
-        f"({len(code_summary)} codes, {len(hospital_index)} hospitals)"
+        f"({len(code_summary)} codes, {len(hospital_index)} hospitals, "
+        f"{written} per-hospital detail files)"
     )
 
 

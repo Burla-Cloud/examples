@@ -99,6 +99,23 @@ _NEGATIVE_OVERRIDES: dict[str, list[str]] = {
     "CPT:45378": ["with biopsy", "with polyp", "with snare",
                   "with submucosal", "with ablation", "with hot",
                   "with cold snare", "with EMR", "with band ligation"],
+    # CPT 77063 is screening breast tomosynthesis (3D mammogram add-on).
+    # Some chargemasters file ultrasound breast screening (CPT 76641 /
+    # 76642) under 77063. Reject ultrasound rows -- they're a different
+    # imaging modality entirely.
+    "CPT:77063": ["ultrasound", "u/s breast", "us breast", "sonogr"],
+    # CPT 70450 is CT head WITHOUT contrast. Some chargemasters put
+    # "without and with contrast" rows here, which is CPT 70470. The
+    # "with-and-without" pricing is roughly 1.5-2x the without-only
+    # price and skews the spread.
+    "CPT:70450": ["with contrast", "with and without", "without and with",
+                  "wow contrast", "wo&w", "w/o&w/", "w&wo"],
+    # CPT 71250 is CT chest WITHOUT contrast. Mirror 70450 carve-outs.
+    "CPT:71250": ["with contrast", "with and without", "without and with",
+                  "wow contrast", "wo&w", "w/o&w/", "w&wo"],
+    # CPT 74176 is CT abdomen-pelvis WITHOUT contrast. Same.
+    "CPT:74176": ["with contrast", "with and without", "without and with",
+                  "wow contrast", "wo&w", "w/o&w/", "w&wo"],
 }
 
 # Hand-tuned positive keywords for codes where the auto-derived list either

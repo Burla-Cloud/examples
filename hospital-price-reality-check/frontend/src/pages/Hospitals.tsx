@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { loadAll } from "../api";
 import { fmtNum, stateName } from "../format";
 import { StateFilter } from "../components/StateFilter";
@@ -215,61 +216,107 @@ export function Hospitals() {
               </tr>
             </thead>
             <tbody>
-              {filtered.slice(0, 500).map((h) => (
-                <tr key={h.hospital_id}>
-                  <td className="px-7">
-                    <p className="font-medium text-ink">{h.name}</p>
-                    {(h.system || h.city) && (
-                      <p className="text-xs text-inkSubtle mt-0.5">
-                        {h.system}
-                        {h.city ? ` · ${h.city}` : ""}
-                      </p>
-                    )}
-                  </td>
-                  <td className="px-7">
-                    {h.state ? (
-                      <span className="text-inkMuted">{stateName(h.state)}</span>
-                    ) : (
-                      <span className="text-inkSubtle">n/a</span>
-                    )}
-                  </td>
-                  <td className="px-7 text-right">
-                    <span className="font-display text-lg font-medium text-ink tracking-[-0.01em]">
-                      {h.codes_covered ?? 0}
-                    </span>
-                    <span className="text-xs font-normal text-inkSubtle">
-                      {" "}/ {totalCodes}
-                    </span>
-                  </td>
-                  <td className="px-7 text-right">
-                    {h.mrf_url ? (
-                      <a
-                        href={h.mrf_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-medium text-ink underline-offset-4 hover:underline"
-                      >
-                        Open MRF
-                        <svg
-                          viewBox="0 0 24 24"
-                          className="h-3 w-3"
-                          fill="none"
+              {filtered.slice(0, 500).map((h) => {
+                const codesCovered = h.codes_covered ?? 0;
+                const hasProfile = codesCovered > 0;
+                return (
+                  <tr key={h.hospital_id} className="group">
+                    <td className="px-7">
+                      {hasProfile ? (
+                        <Link
+                          to={`/hospitals/${h.hospital_id}`}
+                          className="block"
                         >
-                          <path
-                            d="M7 17L17 7M17 7H8m9 0v9"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </a>
-                    ) : (
-                      <span className="text-xs text-inkSubtle">n/a</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                          <p className="font-medium text-ink group-hover:underline underline-offset-4">
+                            {h.name}
+                          </p>
+                          {(h.system || h.city) && (
+                            <p className="text-xs text-inkSubtle mt-0.5">
+                              {h.system}
+                              {h.city ? ` · ${h.city}` : ""}
+                            </p>
+                          )}
+                        </Link>
+                      ) : (
+                        <>
+                          <p className="font-medium text-ink">{h.name}</p>
+                          {(h.system || h.city) && (
+                            <p className="text-xs text-inkSubtle mt-0.5">
+                              {h.system}
+                              {h.city ? ` · ${h.city}` : ""}
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </td>
+                    <td className="px-7">
+                      {h.state ? (
+                        <span className="text-inkMuted">{stateName(h.state)}</span>
+                      ) : (
+                        <span className="text-inkSubtle">n/a</span>
+                      )}
+                    </td>
+                    <td className="px-7 text-right">
+                      <span className="font-display text-lg font-medium text-ink tracking-[-0.01em]">
+                        {codesCovered}
+                      </span>
+                      <span className="text-xs font-normal text-inkSubtle">
+                        {" "}/ {totalCodes}
+                      </span>
+                    </td>
+                    <td className="px-7 text-right">
+                      <div className="flex items-center justify-end gap-4">
+                        {hasProfile ? (
+                          <Link
+                            to={`/hospitals/${h.hospital_id}`}
+                            className="inline-flex items-center gap-1 text-xs font-medium text-ink underline-offset-4 hover:underline"
+                          >
+                            View profile
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="h-3 w-3"
+                              fill="none"
+                            >
+                              <path
+                                d="M5 12h14m0 0l-6-6m6 6l-6 6"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </Link>
+                        ) : null}
+                        {h.mrf_url ? (
+                          <a
+                            href={h.mrf_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-xs font-medium text-inkMuted underline-offset-4 hover:text-ink hover:underline"
+                          >
+                            MRF
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="h-3 w-3"
+                              fill="none"
+                            >
+                              <path
+                                d="M7 17L17 7M17 7H8m9 0v9"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </a>
+                        ) : (
+                          <span className="text-xs text-inkSubtle">n/a</span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

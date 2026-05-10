@@ -37,13 +37,15 @@ REPO_ROOT = Path(__file__).resolve().parent
 SAMPLES = REPO_ROOT / "samples"
 DEFAULT_REPORT = SAMPLES / "dosage_audit.json"
 
-DRUG_CODES = [
-    ("HCPCS", "J9000"),  # doxorubicin per 10 mg
-    ("HCPCS", "J9305"),  # pemetrexed per 10 mg
-    ("HCPCS", "J9271"),  # pembrolizumab per 1 mg
-    ("HCPCS", "J2469"),  # palonosetron per 25 mcg
-    ("HCPCS", "J1626"),  # granisetron per 100 mcg
-    ("HCPCS", "J1745"),  # infliximab per 10 mg
+# Default fallback if --all isn't passed and we can't infer from the
+# code summary. Keeps backwards compatibility with earlier runs.
+DEFAULT_DRUG_CODES = [
+    ("HCPCS", "J9000"),
+    ("HCPCS", "J9305"),
+    ("HCPCS", "J9271"),
+    ("HCPCS", "J2469"),
+    ("HCPCS", "J1626"),
+    ("HCPCS", "J1745"),
 ]
 
 PROMPT_TEMPLATE = """You are auditing a medical chargemaster line item.
@@ -85,12 +87,29 @@ def _load_code_summary() -> list[dict]:
     return json.loads(p.read_text())
 
 
-def _drug_entries(only_code: str | None) -> Iterable[dict]:
+def _drug_entries(
+    only_code: str | None, scope: str = "default"
+) -> Iterable[dict]:
+    """Yield code summary entries to audit.
+
+    ``scope`` controls which codes are included:
+      - ``default``: the hard-coded short list of marquee drug codes.
+      - ``all-drugs``: every code in the summary that has a ``billing_unit``
+        set (i.e., every drug code we normalized to per-HCPCS-unit).
+    """
     summary = _load_code_summary()
+    if scope == "all-drugs":
+        targets = {
+            (e.get("code_system"), e.get("code"))
+            for e in summary
+            if e.get("billing_unit")
+        }
+    else:
+        targets = set(DEFAULT_DRUG_CODES)
     for entry in summary:
         cs = entry.get("code_system")
         code = entry.get("code")
-        if (cs, code) not in DRUG_CODES:
+        if (cs, code) not in targets:
             continue
         if only_code and code != only_code:
             continue
@@ -195,6 +214,12 @@ def main() -> None:
     ap.add_argument("--code", default=None, help="Audit only this HCPCS code")
     ap.add_argument("--top-n", type=int, default=3, help="Cards per direction")
     ap.add_argument("--output", default=str(DEFAULT_REPORT))
+    ap.add_argument(
+        "--scope",
+        choices=("default", "all-drugs"),
+        default="default",
+        help="Which codes to audit. all-drugs = every code with a billing_unit.",
+    )
     args = ap.parse_args()
 
     provider = args.provider
@@ -216,7 +241,7 @@ def main() -> None:
         ask = lambda p: _ask_anthropic(p, args.anthropic_model)  # noqa: E731
 
     report: list[dict] = []
-    for entry in _drug_entries(args.code):
+    for entry in _drug_entries(args.code, args.scope):
         code_label = f"{entry['code_system']}:{entry['code']}"
         print(f"== {code_label} {entry['display_name']} ==")
         for label, key in (("cheapest", "top_cheapest"), ("priciest", "top_priciest")):

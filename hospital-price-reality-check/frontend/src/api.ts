@@ -1,5 +1,6 @@
 import type {
   CodeEntry,
+  HospitalDetail,
   HospitalIndexRow,
   RunMeta,
   SpreadRow,
@@ -50,4 +51,15 @@ export async function loadAll() {
   ]);
   cache = { codes, spread, meta, stateSummary, hospitalIndex };
   return cache;
+}
+
+const hospitalDetailCache = new Map<string, Promise<HospitalDetail>>();
+
+export function loadHospitalDetail(hospitalId: string): Promise<HospitalDetail> {
+  let pending = hospitalDetailCache.get(hospitalId);
+  if (!pending) {
+    pending = loadJson<HospitalDetail>(`hospitals/${hospitalId}.json`);
+    hospitalDetailCache.set(hospitalId, pending);
+  }
+  return pending;
 }

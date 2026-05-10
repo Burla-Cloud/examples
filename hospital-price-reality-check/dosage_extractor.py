@@ -78,16 +78,25 @@ _CONC_G_PER_ML_THEN_VOL = re.compile(
 
 # Plain-number-with-unit fallback. Negative lookahead rejects the
 # concentration-only form (no volume to multiply by).
+#
+# The ``(?!\s+ML\b)`` guard is what makes us reject "25 MG mL" (a
+# concentration-without-volume pattern that survives ``_tokenize`` --
+# it splits "mgmL" into "mg mL"). The earlier ``_CONC_*`` patterns
+# match concentration WITH a follow-on volume token; if neither fires,
+# we want to refuse to fall back to the plain match instead of
+# silently treating concentration as total dose. Without this guard
+# the LLM audit caught J9301 obinutuzumab rows like "obinutuzumab
+# 25 mgmL Sol" where we returned 25 mg as the dose -- it isn't.
 _PLAIN_MG = re.compile(
-    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*MG(?!\s*/)" + _UNIT_END,
+    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*MG(?!\s*/)(?!\s+ML\b)" + _UNIT_END,
     re.IGNORECASE,
 )
 _PLAIN_MCG = re.compile(
-    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*(?:MCG|UG)(?!\s*/)" + _UNIT_END,
+    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*(?:MCG|UG)(?!\s*/)(?!\s+ML\b)" + _UNIT_END,
     re.IGNORECASE,
 )
 _PLAIN_G = re.compile(
-    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*(?:GM|G)(?!\s*/)" + _UNIT_END,
+    _NUM_LEFT + r"(" + _NUM_BODY + r")\s*(?:GM|G)(?!\s*/)(?!\s+ML\b)" + _UNIT_END,
     re.IGNORECASE,
 )
 _PLAIN_UNITS = re.compile(
@@ -188,28 +197,41 @@ def extract_dose_from_description(description: str | None) -> tuple[float, str] 
     if m:
         return _maybe(float(m.group(1)) * float(m.group(2)) * 1000.0, "mg")
 
-    # 7. plain forms. Order matters: try MCG before MG so "0.05 MG" doesn't
-    # eat "50 MCG" through some weird tokenization. In practice they don't
-    # co-occur in the same description, but the order is cheap insurance.
-    m = _PLAIN_MCG.search(s)
-    if m:
-        return _maybe(float(m.group(1)), "mcg")
+    # 7. plain forms. Take the MAXIMUM matched value -- chargemaster
+    # descriptions routinely repeat the HCPCS billing unit before the
+    # actual vial size, e.g.::
+    #
+    #     "CARFILZOMIB/1MG 30MG PWIJ"
+    #
+    # which after tokenization is ``CARFILZOMIB / 1 MG 30 MG PWIJ``.
+    # The first MG is the per-1mg HCPCS reminder, the second is the
+    # 30 mg vial. ``re.search`` returns the first match (1 mg) and we'd
+    # fail to scale the price down. Taking ``max`` over ``findall``
+    # picks 30 mg, which is what the LLM audit said the dose actually
+    # is. The vial-form and concentration-form patterns above always
+    # win first for descriptions that contain a vial volume, so this
+    # max-of-plain heuristic only kicks in for "just a number with a
+    # unit" descriptions where the largest number is overwhelmingly
+    # the right answer.
+    matches = _PLAIN_MCG.findall(s)
+    if matches:
+        return _maybe(max(float(x) for x in matches), "mcg")
 
-    m = _PLAIN_MG.search(s)
-    if m:
-        return _maybe(float(m.group(1)), "mg")
+    matches = _PLAIN_MG.findall(s)
+    if matches:
+        return _maybe(max(float(x) for x in matches), "mg")
 
-    m = _PLAIN_G.search(s)
-    if m:
-        return _maybe(float(m.group(1)) * 1000.0, "mg")
+    matches = _PLAIN_G.findall(s)
+    if matches:
+        return _maybe(max(float(x) for x in matches) * 1000.0, "mg")
 
-    m = _PLAIN_UNITS.search(s)
-    if m:
-        return _maybe(float(m.group(1)), "unit")
+    matches = _PLAIN_UNITS.findall(s)
+    if matches:
+        return _maybe(max(float(x) for x in matches), "unit")
 
-    m = _PLAIN_ML.search(s)
-    if m:
-        return _maybe(float(m.group(1)), "ml")
+    matches = _PLAIN_ML.findall(s)
+    if matches:
+        return _maybe(max(float(x) for x in matches), "ml")
 
     return None
 

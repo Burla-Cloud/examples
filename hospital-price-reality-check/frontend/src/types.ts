@@ -30,12 +30,21 @@ export type RankedHospital = {
   line_item?: LineItem | null;
 };
 
+export type CmsReference = {
+  source: string;
+  payment_limit?: number | null;
+  dose_text?: string | null;
+  per_billing_unit?: number | null;
+  chargemaster_to_cms_ratio?: number | null;
+};
+
 export type CodeEntry = {
   category: string;
   code_system: string;
   code: string;
   display_name: string;
   billing_unit?: string | null;
+  cms_reference?: CmsReference | null;
   what_it_is: string;
   when_youd_need_it: string;
   setting: string;
@@ -58,6 +67,32 @@ export type CodeEntry = {
   top_cheapest?: RankedHospital[];
   top_priciest?: RankedHospital[];
   ranking_eligible_count?: number;
+};
+
+export type HospitalCodeRow = {
+  code_system: string;
+  code: string;
+  display_name: string;
+  category?: string | null;
+  setting?: string | null;
+  billing_unit?: string | null;
+  median?: number | null;
+  count?: number | null;
+  line_item?: LineItem | null;
+};
+
+export type HospitalDetail = {
+  hospital_id: string;
+  name?: string | null;
+  system?: string | null;
+  city?: string | null;
+  state?: string | null;
+  ccn?: string | null;
+  mrf_url?: string | null;
+  codes_covered: number;
+  category_counts?: Record<string, number>;
+  honesty_score?: number | null;
+  codes: HospitalCodeRow[];
 };
 
 export type SpreadRow = {
