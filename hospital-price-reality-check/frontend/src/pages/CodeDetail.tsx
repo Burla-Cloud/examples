@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
   Area,
@@ -224,83 +224,89 @@ function LineItemBlock({
   );
 }
 
-function RankedHospitalList({
+function PodiumHeaderCell({
   title,
   tone,
-  hospitals,
-  billingUnit,
 }: {
   title: string;
   tone: "mint" | "rose";
-  hospitals: RankedHospital[];
-  billingUnit?: string | null;
 }) {
   const dotClass = tone === "mint" ? "bg-mint" : "bg-rose";
   const eyebrowClass = tone === "mint" ? "text-mint" : "text-rose";
   return (
-    <div className="bg-surface p-7 md:p-8">
-      <div className="flex items-center gap-2.5 mb-6">
+    <div className="bg-surface px-7 py-6 md:px-8">
+      <div className="flex items-center gap-2.5">
         <span className={`h-2 w-2 rounded-full ${dotClass}`} aria-hidden />
         <p className={`eyebrow ${eyebrowClass}`}>{title}</p>
       </div>
-      <ol className="space-y-px overflow-hidden rounded-xl border border-line bg-line">
-        {hospitals.map((h, i) => (
-          <li
-            key={`${tone}-${h.hospital_id || i}`}
-            className="bg-surface p-5 flex items-start gap-4"
+    </div>
+  );
+}
+
+function PodiumCell({
+  hospital,
+  index,
+  billingUnit,
+}: {
+  hospital: RankedHospital | undefined;
+  index: number;
+  billingUnit?: string | null;
+}) {
+  if (!hospital) {
+    return <div className="bg-surface" aria-hidden />;
+  }
+  const h = hospital;
+  return (
+    <div className="bg-surface p-5 md:px-7 flex items-start gap-4">
+      <span className="font-display text-2xl font-medium text-inkSubtle leading-none mt-1 tabular-nums">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div className="flex-1 min-w-0">
+        <p className="font-display text-lg font-semibold text-ink leading-snug">
+          {h.name || h.hospital_id}
+        </p>
+        <p className="text-xs text-inkMuted mt-1">
+          {[h.city, h.state ? stateName(h.state) : null]
+            .filter(Boolean)
+            .join(", ") || "Location unknown"}
+          {h.count
+            ? ` \u00b7 ${h.count} list price${h.count === 1 ? "" : "s"}`
+            : ""}
+        </p>
+        {h.line_item ? <LineItemBlock item={h.line_item} count={h.count} /> : null}
+        {h.mrf_url ? (
+          <a
+            href={h.mrf_url}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-inkMuted underline-offset-4 hover:text-ink hover:underline"
+            aria-label={`Open the source machine-readable file for ${
+              h.name || h.hospital_id
+            }`}
           >
-            <span className="font-display text-2xl font-medium text-inkSubtle leading-none mt-1 tabular-nums">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div className="flex-1 min-w-0">
-              <p className="font-display text-lg font-semibold text-ink leading-snug">
-                {h.name || h.hospital_id}
-              </p>
-              <p className="text-xs text-inkMuted mt-1">
-                {[h.city, h.state ? stateName(h.state) : null]
-                  .filter(Boolean)
-                  .join(", ") || "Location unknown"}
-                {h.count
-                  ? ` \u00b7 ${h.count} list price${h.count === 1 ? "" : "s"}`
-                  : ""}
-              </p>
-              {h.line_item ? <LineItemBlock item={h.line_item} count={h.count} /> : null}
-              {h.mrf_url ? (
-                <a
-                  href={h.mrf_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-inkMuted underline-offset-4 hover:text-ink hover:underline"
-                  aria-label={`Open the source machine-readable file for ${
-                    h.name || h.hospital_id
-                  }`}
-                >
-                  View source MRF
-                  <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none">
-                    <path
-                      d="M14 4h6m0 0v6m0-6L10 14M5 9v11h11"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              ) : null}
-            </div>
-            <div className="flex flex-col items-end whitespace-nowrap">
-              <span className="font-display text-2xl font-medium text-ink tracking-[-0.02em]">
-                {fmtMoney(h.median)}
-              </span>
-              {billingUnit ? (
-                <span className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle mt-1">
-                  per {billingUnit}
-                </span>
-              ) : null}
-            </div>
-          </li>
-        ))}
-      </ol>
+            View source MRF
+            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none">
+              <path
+                d="M14 4h6m0 0v6m0-6L10 14M5 9v11h11"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        ) : null}
+      </div>
+      <div className="flex flex-col items-end whitespace-nowrap">
+        <span className="font-display text-2xl font-medium text-ink tracking-[-0.02em]">
+          {fmtMoney(h.median)}
+        </span>
+        {billingUnit ? (
+          <span className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle mt-1">
+            per {billingUnit}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -753,28 +759,48 @@ export function CodeDetail() {
               </p>
             </div>
           </div>
-          <div
-            className={`grid gap-px overflow-hidden rounded-2xl border border-line bg-line ${
-              topPriciest.length === 0 ? "md:grid-cols-1" : "md:grid-cols-2"
-            }`}
-          >
-            {topCheapest.length > 0 && (
-              <RankedHospitalList
-                title="Cheapest 3 in the country"
-                tone="mint"
-                hospitals={topCheapest}
-                billingUnit={entry.billing_unit}
-              />
-            )}
-            {topPriciest.length > 0 && (
-              <RankedHospitalList
-                title="Priciest 3 in the country"
-                tone="rose"
-                hospitals={topPriciest}
-                billingUnit={entry.billing_unit}
-              />
-            )}
-          </div>
+          {(() => {
+            const twoCols = topCheapest.length > 0 && topPriciest.length > 0;
+            const rowCount = Math.max(topCheapest.length, topPriciest.length);
+            return (
+              <div
+                className={`grid gap-px overflow-hidden rounded-2xl border border-line bg-line ${
+                  twoCols ? "md:grid-cols-2" : "md:grid-cols-1"
+                }`}
+              >
+                {topCheapest.length > 0 && (
+                  <PodiumHeaderCell
+                    title="Cheapest 3 in the country"
+                    tone="mint"
+                  />
+                )}
+                {topPriciest.length > 0 && (
+                  <PodiumHeaderCell
+                    title="Priciest 3 in the country"
+                    tone="rose"
+                  />
+                )}
+                {Array.from({ length: rowCount }).map((_, i) => (
+                  <Fragment key={`podium-row-${i}`}>
+                    {topCheapest.length > 0 && (
+                      <PodiumCell
+                        hospital={topCheapest[i]}
+                        index={i}
+                        billingUnit={entry.billing_unit}
+                      />
+                    )}
+                    {topPriciest.length > 0 && (
+                      <PodiumCell
+                        hospital={topPriciest[i]}
+                        index={i}
+                        billingUnit={entry.billing_unit}
+                      />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            );
+          })()}
           <p className="mt-4 text-xs text-inkSubtle max-w-3xl">
             We rank by each hospital's own median price for this code so a
             single $5 chargemaster placeholder doesn't take the podium.
