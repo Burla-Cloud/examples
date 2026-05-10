@@ -497,7 +497,21 @@ def main() -> None:
         obs = obs_by_hospital_code.get((hid, key)) or []
         if not obs:
             return None
-        chosen = min(obs, key=lambda o: abs(float(o.get("price") or 0) - float(target_price)))
+        # Pick the observation whose effective price is closest to the
+        # hospital's median for this code. For an even number of rows the
+        # median is the average of the two middle values, so two
+        # observations bracket the median equidistantly. We tiebreak by
+        # preferring the LOWER-priced row: it's the more patient-friendly
+        # number, and it keeps the rep's price <= median, which avoids
+        # the "the displayed price is less than this row's cash discount"
+        # confusion when the rep's gross/cash sits above the median.
+        chosen = min(
+            obs,
+            key=lambda o: (
+                abs(float(o.get("price") or 0) - float(target_price)),
+                float(o.get("price") or 0),
+            ),
+        )
         out: dict = {}
         scalar_fields = (
             "description",

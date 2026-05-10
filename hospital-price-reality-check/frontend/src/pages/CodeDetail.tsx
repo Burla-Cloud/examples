@@ -150,8 +150,10 @@ function SpreadExplainer({ entry }: { entry: CodeEntry }) {
 
 function LineItemBlock({
   item,
+  count,
 }: {
   item: NonNullable<RankedHospital["line_item"]>;
+  count?: number | null;
 }) {
   const billingUnit = item.hcpcs_billing_unit || item.unit || null;
   const dose = item.dose || null;
@@ -188,10 +190,14 @@ function LineItemBlock({
     item.gross_charge_per_unit === item.gross_charge &&
     item.discounted_cash_per_unit === item.discounted_cash;
 
+  const hasMultiple = count != null && count > 1;
+
   return (
     <div className="mt-3 rounded-md border border-line bg-section/40 px-3 py-2">
       <p className="text-[10px] uppercase tracking-[0.18em] text-inkMuted">
-        Exact line in this hospital's file
+        {hasMultiple
+          ? `Sample row (this hospital lists ${count} for this code)`
+          : "Exact line in this hospital's file"}
       </p>
       {item.description ? (
         <p className="text-xs text-ink mt-1 leading-snug">{item.description}</p>
@@ -258,7 +264,7 @@ function RankedHospitalList({
                   ? ` \u00b7 ${h.count} list price${h.count === 1 ? "" : "s"}`
                   : ""}
               </p>
-              {h.line_item ? <LineItemBlock item={h.line_item} /> : null}
+              {h.line_item ? <LineItemBlock item={h.line_item} count={h.count} /> : null}
               {h.mrf_url ? (
                 <a
                   href={h.mrf_url}

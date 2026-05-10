@@ -290,9 +290,11 @@ export function HospitalDetail() {
             <caption className="bg-section/40 px-7 py-3 text-left text-[10px] font-semibold uppercase tracking-eyebrowTight text-inkSubtle">
               Pre-insurance list prices this hospital publishes. Drug rows are
               normalized to the HCPCS billing unit (per 1 mg, per 10 mg, etc.)
-              so a 100 mg vial sits on the same scale as a 1 mg vial. The
-              hospital's exact line item description is shown beneath each
-              row so you can verify against their MRF.
+              so a 100 mg vial sits on the same scale as a 1 mg vial. When a
+              hospital lists the same code multiple times (different settings,
+              bundles, or revisions) the displayed price is the median across
+              those rows, and we surface one sample MRF row beneath it so you
+              can verify against the source file.
             </caption>
             <thead>
               <tr>
@@ -371,11 +373,17 @@ export function HospitalDetail() {
                           </span>
                         ) : null}
                       </p>
+                      {row.count != null && row.count > 1 ? (
+                        <p className="text-[11px] text-inkSubtle mt-1 whitespace-nowrap leading-snug">
+                          median across {row.count} rows
+                        </p>
+                      ) : null}
                       {row.line_item?.gross_charge != null &&
                       row.line_item?.gross_charge !==
                         row.line_item?.gross_charge_per_unit ? (
                         <p className="text-[11px] text-inkSubtle mt-1 whitespace-nowrap leading-snug">
-                          Raw: {fmtMoney(row.line_item.gross_charge)} gross
+                          {row.count != null && row.count > 1 ? "Sample row" : "Raw"}:{" "}
+                          {fmtMoney(row.line_item.gross_charge)} gross
                           {row.line_item.discounted_cash != null
                             ? ` · ${fmtMoney(row.line_item.discounted_cash)} cash`
                             : ""}
