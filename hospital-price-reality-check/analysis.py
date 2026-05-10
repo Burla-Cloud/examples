@@ -655,8 +655,36 @@ def main() -> None:
     # otherwise dominate the top of the list with $5 minimums or $0.17 NDC
     # outliers). Fall back to min/max only for codes where percentiles aren't
     # reported. Skip codes with too few price points to be meaningful.
+    # Categories where the same code can still map to materially different
+    # products at different hospitals (different vial/dosage forms despite
+    # our HCPCS normalization, different drug manufacturers, different
+    # vaccine adjuvants, etc.). We leave these out of the headline
+    # "biggest gaps" leaderboard so the most-clicked-through page only
+    # surfaces codes where the cross-hospital comparison is unambiguous.
+    # The codes still appear on the per-code Explore pages -- the
+    # filter is only about which codes deserve the top-of-funnel
+    # storyline.
+    LEADERBOARD_EXCLUDED_CATEGORIES = {
+        "infused_drug",
+        "vaccine",
+    }
+    # Specific HCPCS / supply codes that look comparable on the surface
+    # but are not: each hospital fills the same catch-all bucket with a
+    # different real product, so a "big gap" on these codes is a
+    # measurement artifact, not a price story.
+    LEADERBOARD_EXCLUDED_KEYS = {
+        "HCPCS:J3490",  # Unclassified drugs / catch-all "misc drug" line
+        "HCPCS:J9999",  # Antineoplastic drug NOS
+        "CPT:99070",    # "Special supplies may be reported" -- a catch-all
+                        # supply code each hospital fills with different items
+    }
     spread = []
     for c in code_summary:
+        if c.get("category") in LEADERBOARD_EXCLUDED_CATEGORIES:
+            continue
+        key = f"{c.get('code_system')}:{c.get('code')}"
+        if key in LEADERBOARD_EXCLUDED_KEYS:
+            continue
         st = c.get("stats") or {}
         if not st or st.get("median") in (None, 0):
             continue

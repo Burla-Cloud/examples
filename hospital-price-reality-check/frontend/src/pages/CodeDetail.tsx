@@ -13,9 +13,7 @@ import {
 } from "recharts";
 import { loadAll } from "../api";
 import type { CodeEntry, RankedHospital, StateCodeStat } from "../types";
-import { CaveatBanner } from "../components/CaveatBanner";
 import { StateFilter } from "../components/StateFilter";
-import { RateBadge } from "../components/RateBadge";
 import { categoryLabel, fmtMoney, stateName } from "../format";
 
 // Compact dollar formatter for chart tick labels and dot annotations.
@@ -137,13 +135,6 @@ function SpreadExplainer({ entry }: { entry: CodeEntry }) {
           </li>
         ))}
       </ul>
-      <p className="mt-5 text-xs text-inkSubtle max-w-3xl">
-        Bottom line: the line on the chargemaster is what the hospital says it
-        charges. What you actually pay depends on insurance, network, plan
-        deductible, and any cash-pay discount the hospital offers. Always ask
-        for a written estimate that lists facility, physician, drugs, and
-        supplies separately before a non-emergency visit.
-      </p>
     </section>
   );
 }
@@ -514,79 +505,65 @@ export function CodeDetail() {
 
       {/* SCOPE & PRICE GRID */}
       <div>
-        <RateBadge variant="banner" className="mb-8" />
-
-        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Showing pre-insurance list prices in</p>
-            <p className="font-display text-3xl font-medium text-ink mt-2 tracking-[-0.01em]">
-              {cur.scope}
-            </p>
-            <p className="text-sm text-inkMuted mt-1">
-              Across {cur.count.toLocaleString()} hospital
-              {cur.count === 1 ? "" : "s"} that publish this code
-              {totalHospitals && coveragePct != null
-                ? ` (${coveragePct.toFixed(coveragePct < 1 ? 1 : 0)}% of the ${totalHospitals.toLocaleString()} we have data for)`
-                : ""}
-            </p>
-          </div>
-          {states.length > 0 && (
-            <StateFilter
-              states={states}
-              value={stateAbbr}
-              onChange={onStateChange}
-              label="Filter"
-            />
-          )}
-        </div>
-
-        {/* Coverage caveat: thin samples produce noisy podiums. */}
-        {limitedCoverage && (
-          <div className="mb-6 rounded-md border border-line bg-section/40 px-4 py-3 text-xs text-inkMuted leading-relaxed">
-            <span className="font-semibold text-ink">Limited coverage.</span>{" "}
-            Only {nationalCount.toLocaleString()} of {totalHospitals?.toLocaleString() ?? "the"} hospitals
-            in this dataset publish a price for this code. The cheapest /
-            priciest podiums below reflect who chose to publish, not
-            necessarily who is cheapest or priciest in the country. Read
-            this code's numbers as a starting point, not a verdict.
-          </div>
-        )}
-
-        {/* CMS Medicare reference -- the apples-to-apples external anchor. */}
-        {entry.cms_reference?.per_billing_unit != null && (
-          <div className="mb-6 rounded-md border border-line bg-bg/60 px-4 py-3 text-xs text-inkMuted leading-relaxed">
-            <span className="font-semibold text-ink">Medicare benchmark.</span>{" "}
-            CMS pays {fmtMoney(entry.cms_reference.per_billing_unit)}
-            {entry.billing_unit ? ` per ${entry.billing_unit}` : ""} for this
-            code under the Part B ASP fee schedule (April 2026 file). Hospital
-            list prices are typically a multiple of that allowance --
-            {entry.cms_reference.chargemaster_to_cms_ratio != null && (
-              <>
-                {" "}the median hospital here lists{" "}
-                <span className="font-semibold text-ink">
-                  {entry.cms_reference.chargemaster_to_cms_ratio}x
-                </span>
-                {" "}what Medicare pays.
-              </>
+        {/* Compact context bar: scope, count, units, Medicare anchor.
+            Everything a reader needs to know about WHAT they're looking
+            at, in one block, without the prior wall of paragraphs. */}
+        <div className="border-y border-line py-7 mb-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Pre-insurance list prices</p>
+              <p className="font-display text-3xl font-medium text-ink mt-2 tracking-[-0.01em]">
+                {cur.scope}
+              </p>
+              <p className="text-sm text-inkMuted mt-1.5 max-w-2xl">
+                Across {cur.count.toLocaleString()} hospital
+                {cur.count === 1 ? "" : "s"}
+                {totalHospitals && coveragePct != null
+                  ? ` (${coveragePct.toFixed(coveragePct < 1 ? 1 : 0)}% of the ${totalHospitals.toLocaleString()} in this dataset)`
+                  : ""}
+                {entry.billing_unit
+                  ? `. Every price is normalized to per ${entry.billing_unit}.`
+                  : "."}
+              </p>
+              {entry.cms_reference?.per_billing_unit != null && (
+                <p className="text-sm text-inkMuted mt-2 max-w-2xl">
+                  <span className="font-medium text-ink">
+                    Medicare pays {fmtMoney(entry.cms_reference.per_billing_unit)}
+                    {entry.billing_unit ? ` per ${entry.billing_unit}` : ""}
+                  </span>
+                  {entry.cms_reference.chargemaster_to_cms_ratio != null && (
+                    <>
+                      {" "}for this code. The median hospital here lists{" "}
+                      <span className="font-medium text-ink">
+                        {entry.cms_reference.chargemaster_to_cms_ratio}×
+                      </span>
+                      {" "}that.
+                    </>
+                  )}
+                </p>
+              )}
+              {limitedCoverage && (
+                <p className="text-sm text-inkMuted mt-2 max-w-2xl">
+                  <span className="font-medium text-ink">Limited coverage.</span>{" "}
+                  Only {nationalCount.toLocaleString()} of{" "}
+                  {totalHospitals?.toLocaleString() ?? "the"} hospitals in this
+                  dataset publish a price for this code, so the podiums below
+                  reflect who chose to publish, not necessarily who is
+                  cheapest or priciest in the country.
+                </p>
+              )}
+            </div>
+            {states.length > 0 && (
+              <StateFilter
+                states={states}
+                value={stateAbbr}
+                onChange={onStateChange}
+                label="Filter"
+              />
             )}
           </div>
-        )}
+        </div>
 
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-eyebrowTight text-inkSubtle">
-          Pre-insurance list price <span className="text-inkSubtle/70">·</span>{" "}
-          <span className="font-medium normal-case tracking-normal text-inkMuted">
-            gross charge or cash-pay rate the hospital publishes, before any insurance
-          </span>
-          {entry.billing_unit ? (
-            <>
-              {" "}
-              <span className="text-inkSubtle/70">·</span>{" "}
-              <span className="font-medium normal-case tracking-normal text-ink">
-                every number on this page is per {entry.billing_unit}
-              </span>
-            </>
-          ) : null}
-        </p>
         <div className="price-grid">
           <div className="price-cell">
             <p className="price-cell-key">
@@ -642,23 +619,7 @@ export function CodeDetail() {
           </div>
         </div>
 
-        <div className="mt-3 text-xs text-inkSubtle">
-          One row per hospital, one number per row (each hospital's own median
-          for this code).
-          {entry.billing_unit ? (
-            <>
-              {" "}
-              All hospital prices are normalized to <span className="font-semibold text-ink">per {entry.billing_unit}</span>:
-              a 100 mg vial published at $10,000 reads as $100 / 1 mg, exactly
-              like the HCPCS code is billed.
-            </>
-          ) : null}{" "}
-          We drop hospitals whose published list price is obviously a
-          chargemaster placeholder (a $5 ACL repair, a $0.17 drug) before
-          counting, ranking, or charting. Below: the same {cur.count.toLocaleString()} hospitals as a percentile curve.
-        </div>
-
-        <div className="mt-5 grid gap-3 md:grid-cols-2 text-sm">
+        <div className="mt-6 grid gap-3 md:grid-cols-2 text-sm">
           <div className="surface-quiet px-6 py-5">
             <p className="eyebrow">Highest vs lowest</p>
             <p className="font-display text-3xl font-medium text-ink mt-2 tracking-[-0.01em]">
@@ -802,12 +763,9 @@ export function CodeDetail() {
             );
           })()}
           <p className="mt-4 text-xs text-inkSubtle max-w-3xl">
-            We rank by each hospital's own median price for this code so a
-            single $5 chargemaster placeholder doesn't take the podium.
-            Hospitals appearing here published this code in their own
-            machine-readable file. Click "View source MRF" on any card to open
-            the original file straight from the hospital's website and verify
-            the price.
+            Each card shows the hospital's median price for this code. Click
+            "View source MRF" to open the original file on the hospital's
+            website and verify.
           </p>
         </section>
       )}
@@ -816,8 +774,6 @@ export function CodeDetail() {
       {(topCheapest.length > 0 || topPriciest.length > 0) && (
         <SpreadExplainer entry={entry} />
       )}
-
-      <CaveatBanner />
 
       {/* PRICE SHAPE CHART */}
       {chartData.length > 0 && (

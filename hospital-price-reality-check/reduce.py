@@ -587,6 +587,65 @@ def main() -> None:
     out.write_text(json.dumps(reduced, indent=2), encoding="utf-8")
     print(f"wrote {out} ({len(reduced['codes'])} code keys)")
 
+    # Per-hospital observations: every parsed MRF row for every
+    # (hospital, code) pair, capped at MAX_OBS_PER_PAIR to keep the
+    # output manageable while still giving the hospital profile page
+    # honest chargemaster transparency. Hospitals that publish a code
+    # ten different ways will see all ten rows; the rare hospital with
+    # hundreds of duplicates is truncated with a count so the reader
+    # knows there are more.
+    MAX_OBS_PER_PAIR = 20
+    per_hospital_obs: dict[str, dict[str, dict]] = defaultdict(dict)
+    for (hid, key), rows in obs_by_hospital_code.items():
+        if not rows:
+            continue
+        # Sort by effective price ascending so the displayed list is
+        # cheapest -> priciest in a stable way.
+        sorted_rows = sorted(
+            rows, key=lambda r: float(r.get("price") or 0)
+        )
+        truncated = len(sorted_rows) > MAX_OBS_PER_PAIR
+        kept = sorted_rows[:MAX_OBS_PER_PAIR]
+        observations = []
+        for r in kept:
+            obs: dict = {}
+            for k in (
+                "description",
+                "drug_unit",
+                "gross_charge",
+                "discounted_cash",
+                "gross_charge_per_unit",
+                "discounted_cash_per_unit",
+                "dose_qty",
+                "dose_unit",
+                "hcpcs_qty",
+                "hcpcs_unit",
+                "setting",
+            ):
+                v = r.get(k)
+                if v is None:
+                    continue
+                if isinstance(v, str) and not v.strip():
+                    continue
+                obs[k] = v
+            obs["price"] = r.get("price")
+            observations.append(obs)
+        per_hospital_obs[hid][key] = {
+            "observations": observations,
+            "total": len(sorted_rows),
+            "truncated": truncated,
+        }
+    obs_out = SAMPLES / "hpt_per_hospital_observations.json"
+    obs_out.write_text(
+        json.dumps(per_hospital_obs, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    print(
+        f"wrote {obs_out} "
+        f"({len(per_hospital_obs)} hospitals, "
+        f"{sum(len(v) for v in per_hospital_obs.values())} (hospital,code) pairs)"
+    )
+
 
 if __name__ == "__main__":
     main()
