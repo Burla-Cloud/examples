@@ -31,13 +31,11 @@ export function Home() {
       meta.observation_files ??
       (scale.hospitals_succeeded as number | undefined) ??
       0;
-    const elapsed = (scale.elapsed_seconds as number | undefined) ?? 0;
     const codesWithData = data.codes.filter((c) => (c.stats?.count ?? 0) > 0).length;
     const topRow = data.spread[0] ?? null;
     return {
       hospitalsWithData,
       observations: obs,
-      elapsedMin: elapsed ? Math.round(elapsed / 60) : null,
       codesWithData,
       topSpread: topRow?.spread_ratio ?? null,
       topRow,
@@ -199,7 +197,7 @@ export function Home() {
 
       {/* STATS — clean editorial row, not boxy cards */}
       <section className="container-7 px-0">
-        <div className="grid gap-12 md:grid-cols-4 md:gap-8 border-t border-b border-line py-12">
+        <div className="grid gap-12 md:grid-cols-3 md:gap-10 border-t border-b border-line py-12">
           <Stat
             label="Hospitals with data"
             value={fmtNum(summary.hospitalsWithData)}
@@ -214,16 +212,6 @@ export function Home() {
             label="Real price points"
             value={fmtNum(summary.observations)}
             hint="Pre-insurance list prices, not estimates"
-          />
-          <Stat
-            label="Latest run"
-            value={summary.elapsedMin != null ? `${summary.elapsedMin} min` : "Open"}
-            hint={
-              summary.elapsedMin != null
-                ? "End to end, fetch through analysis"
-                : "Source. Fork it. Ship it."
-            }
-            tone="accent"
           />
         </div>
       </section>
