@@ -342,33 +342,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="container-7 px-0">
-        <div className="relative overflow-hidden rounded-2xl border border-ink/10 bg-ink text-bg px-7 py-14 md:px-14 md:py-20">
-          <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/35 blur-3xl" />
-          <div className="absolute -left-12 -bottom-16 h-72 w-72 rounded-full bg-mint/20 blur-3xl" />
-          <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl space-y-5">
-              <p className="eyebrow text-bg/60">Want the source</p>
-              <h3 className="font-display text-3xl font-medium tracking-[-0.02em] md:text-[44px] leading-[1.05] text-balance">
-                Run this on any hospital list you want.
-              </h3>
-              <p className="text-bg/85 text-lg leading-relaxed max-w-xl">
-                The whole pipeline is open source. Point it at a different
-                hospital list and rerun it. Each refresh takes minutes.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                to="/how-we-did-this"
-                className="inline-flex items-center gap-2 rounded-full bg-bg px-6 py-3 text-sm font-medium text-ink transition-all hover:bg-section hover:-translate-y-0.5"
-              >
-                How we did this
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
