@@ -299,8 +299,12 @@ export function Home() {
         <div className="mb-12 max-w-3xl">
           <p className="eyebrow">How it works</p>
           <h2 className="display-2 mt-3 text-balance">
-            Three steps from raw federal files to plain English.
+            One searchable database, built from raw federal files.
           </h2>
+          <p className="mt-5 max-w-2xl text-base text-inkMuted leading-relaxed">
+            The goal is simple: type in a procedure, drug, or lab and get
+            real prices from real hospitals back, in plain English.
+          </p>
         </div>
         <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
           <Step
@@ -310,14 +314,31 @@ export function Home() {
           />
           <Step
             n={2}
-            title={`We pull out ${data.codes.length} things people need`}
-            body="MRI of the brain. C-section. Chemotherapy. Keytruda. Colonoscopy. Insulin. We translate the medical billing codes into the words you'd actually use."
+            title="We clean them up"
+            body={`Raw chargemasters are messy: thousands of line items per hospital, every layout different, every description abbreviated. We translate the billing codes into plain English and normalize drug doses so a 100 mg vial and a 1 mg vial sit on the same scale.`}
           />
           <Step
             n={3}
-            title="We show you the spread"
-            body="For every procedure, you see the lowest, the typical price, and the highest. Plus which hospital is which, by state."
+            title="We put it all in one searchable place"
+            body={`Every hospital, every procedure, drug, and lab in one site. Search by name, filter by state, click into any code to see exactly which hospital published it and what they charge.`}
           />
+        </div>
+        <div className="mt-10 rounded-2xl border border-line bg-section/40 px-7 py-7 md:px-9 md:py-8 max-w-4xl">
+          <p className="eyebrow text-accent">Bonus</p>
+          <p className="mt-3 font-display text-xl font-medium text-ink leading-snug text-balance">
+            We also analyze the spread.
+          </p>
+          <p className="mt-3 text-sm text-inkMuted leading-relaxed max-w-3xl">
+            Because the data is all in one place, we can show you where the
+            same item costs many times more at one hospital than at another.{" "}
+            <Link
+              to="/leaderboard"
+              className="font-medium text-ink underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+            >
+              The biggest gaps
+            </Link>{" "}
+            is the ranked list of those.
+          </p>
         </div>
       </section>
 
