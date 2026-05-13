@@ -375,6 +375,25 @@ def main() -> None:
     reduced = json.loads(reduced_path.read_text(encoding="utf-8"))
     cms_asp = _load_cms_asp()
 
+    # Optional: full per-hospital observations (all rows, not just rep).
+    # Lets us emit a `line_items` array per (hospital, code) for the
+    # hospital profile page's chargemaster transparency view. Reduce.py
+    # only writes this file on full Burla runs; local subset runs may
+    # not produce it, so we tolerate its absence.
+    per_hospital_obs: dict[str, dict[str, dict]] = {}
+    obs_path = SAMPLES / "hpt_per_hospital_observations.json"
+    if obs_path.is_file():
+        try:
+            per_hospital_obs = json.loads(obs_path.read_text(encoding="utf-8"))
+            n_pairs = sum(len(v) for v in per_hospital_obs.values())
+            print(
+                f"loaded {obs_path.name}: "
+                f"{len(per_hospital_obs)} hospitals, {n_pairs} (hospital,code) pairs"
+            )
+        except Exception as e:
+            print(f"WARN: failed to parse {obs_path.name}: {e}; skipping line_items")
+            per_hospital_obs = {}
+
     # Load hospital index up front so we can attach the source MRF URL and
     # cleaner city/state values to every hospital card we render. This is the
     # "show me where this came from" link on the website.
@@ -636,19 +655,39 @@ def main() -> None:
                 # the per-hospital file slim matters: 3.3K hospitals x
                 # ~50KB each is the difference between a 60MB and 250MB
                 # static site.
-                hospital_codes.setdefault(hid, []).append(
-                    {
-                        "code_system": meta["code_system"],
-                        "code": meta["code"],
-                        "display_name": meta["display_name"],
-                        "category": meta["category"],
-                        "setting": meta.get("setting"),
-                        "billing_unit": billing_unit,
-                        "median": _round_money(h.get("median")),
-                        "count": h.get("count"),
-                        "line_item": _build_line_item(rep) if rep else None,
-                    }
-                )
+                code_key = f"{meta['code_system']}:{meta['code']}"
+                obs_entry = (per_hospital_obs.get(hid) or {}).get(code_key) or {}
+                obs_rows = obs_entry.get("observations") or []
+                # Only emit the full line_items array when the hospital
+                # actually publishes more than one row for this code -- in
+                # the single-row case `line_item` already carries the data
+                # and shipping a 1-element line_items adds ~2x bloat across
+                # 3.3K per-hospital JSON files.
+                total_rows = obs_entry.get("total") or len(obs_rows)
+                entry: dict = {
+                    "code_system": meta["code_system"],
+                    "code": meta["code"],
+                    "display_name": meta["display_name"],
+                    "category": meta["category"],
+                    "setting": meta.get("setting"),
+                    "billing_unit": billing_unit,
+                    "median": _round_money(h.get("median")),
+                    "count": h.get("count"),
+                    "line_item": _build_line_item(rep) if rep else None,
+                }
+                if total_rows > 1 and obs_rows:
+                    line_items: list[dict] = []
+                    for o in obs_rows:
+                        li = _build_line_item(o)
+                        p = o.get("price")
+                        if p is not None:
+                            li["price"] = _round_money(p)
+                        line_items.append(li)
+                    entry["line_items"] = line_items
+                    entry["line_items_total"] = total_rows
+                    if obs_entry.get("truncated"):
+                        entry["line_items_truncated"] = True
+                hospital_codes.setdefault(hid, []).append(entry)
 
     # Spread leaderboard. We use P10..P90 for the "real" spread (rejects rogue
     # chargemaster placeholders and per-mg vs per-vial pharma encoding bugs that

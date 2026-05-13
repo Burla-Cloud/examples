@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { loadAll, loadHospitalDetail } from "../api";
 import { fmtMoney, fmtNum, stateName } from "../format";
@@ -42,6 +42,16 @@ export function HospitalDetail() {
   const [activeCat, setActiveCat] = useState<string>("all");
   const [sortKey, setSortKey] = useState<SortKey>("category");
   const [asc, setAsc] = useState(true);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (key: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -332,8 +342,14 @@ export function HospitalDetail() {
             <tbody>
               {visible.slice(0, 800).map((row) => {
                 const cms = cmsByKey.get(`${row.code_system}:${row.code}`);
+                const rowKey = `${row.code_system}:${row.code}`;
+                const items = row.line_items || [];
+                const totalLineItems = row.line_items_total ?? items.length;
+                const hasMultiple = totalLineItems > 1 && items.length > 0;
+                const isOpen = expanded.has(rowKey);
                 return (
-                  <tr key={`${row.code_system}:${row.code}`}>
+                  <Fragment key={rowKey}>
+                  <tr>
                     <td className="px-7 py-5 align-top">
                       <p className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle">
                         {row.code_system} {row.code}
@@ -362,6 +378,20 @@ export function HospitalDetail() {
                           Medicare allowance: {fmtMoney(cms.per_billing_unit)}
                           {row.billing_unit ? ` / ${row.billing_unit}` : ""}
                         </p>
+                      ) : null}
+                      {hasMultiple ? (
+                        <button
+                          type="button"
+                          onClick={() => toggleExpanded(rowKey)}
+                          className="text-[11px] mt-2 text-ink underline underline-offset-2 decoration-ink/40 hover:decoration-ink"
+                        >
+                          {isOpen ? "Hide" : "Show"} all {totalLineItems}
+                          {row.line_items_truncated && totalLineItems > items.length
+                            ? "+"
+                            : ""}
+                          {" "}
+                          line items from this hospital's MRF
+                        </button>
                       ) : null}
                     </td>
                     <td className="px-7 py-5 text-right align-top">
@@ -412,6 +442,95 @@ export function HospitalDetail() {
                       </Link>
                     </td>
                   </tr>
+                  {isOpen && hasMultiple ? (
+                    <tr className="bg-section/30">
+                      <td colSpan={3} className="px-7 py-5 align-top border-t border-line/50">
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle mb-3">
+                          All {totalLineItems}
+                          {row.line_items_truncated && totalLineItems > items.length
+                            ? "+"
+                            : ""}{" "}
+                          line items this hospital publishes for {row.code_system} {row.code}
+                          {row.line_items_truncated && totalLineItems > items.length ? (
+                            <span className="normal-case tracking-normal text-inkSubtle">
+                              {" "}
+                              (showing first {items.length}, sorted cheapest first)
+                            </span>
+                          ) : (
+                            <span className="normal-case tracking-normal text-inkSubtle">
+                              {" "}
+                              (sorted cheapest first)
+                            </span>
+                          )}
+                        </p>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-xs">
+                            <thead className="text-[10px] uppercase tracking-[0.14em] text-inkSubtle">
+                              <tr>
+                                <th className="text-left pb-2 pr-4 font-medium">Description</th>
+                                <th className="text-left pb-2 pr-4 font-medium">Dose</th>
+                                <th className="text-left pb-2 pr-4 font-medium">Setting</th>
+                                <th className="text-right pb-2 pr-4 font-medium">Gross</th>
+                                <th className="text-right pb-2 pr-4 font-medium">Cash</th>
+                                <th className="text-right pb-2 font-medium">
+                                  Per {row.billing_unit || "unit"}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {items.map((li, i) => (
+                                <tr
+                                  key={i}
+                                  className="border-t border-line/40 align-top"
+                                >
+                                  <td className="py-2 pr-4 text-inkMuted">
+                                    {li.description || (
+                                      <span className="text-inkSubtle">(no description)</span>
+                                    )}
+                                  </td>
+                                  <td className="py-2 pr-4 text-inkMuted whitespace-nowrap">
+                                    {li.dose || (
+                                      <span className="text-inkSubtle">—</span>
+                                    )}
+                                  </td>
+                                  <td className="py-2 pr-4 text-inkMuted whitespace-nowrap">
+                                    {li.setting || (
+                                      <span className="text-inkSubtle">—</span>
+                                    )}
+                                  </td>
+                                  <td className="py-2 pr-4 text-right text-inkMuted whitespace-nowrap">
+                                    {li.gross_charge != null
+                                      ? fmtMoney(li.gross_charge)
+                                      : <span className="text-inkSubtle">—</span>}
+                                  </td>
+                                  <td className="py-2 pr-4 text-right text-inkMuted whitespace-nowrap">
+                                    {li.discounted_cash != null
+                                      ? fmtMoney(li.discounted_cash)
+                                      : <span className="text-inkSubtle">—</span>}
+                                  </td>
+                                  <td className="py-2 text-right whitespace-nowrap font-medium text-ink">
+                                    {li.price != null
+                                      ? fmtMoney(li.price)
+                                      : li.gross_charge_per_unit != null
+                                      ? fmtMoney(li.gross_charge_per_unit)
+                                      : <span className="text-inkSubtle">—</span>}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <p className="text-[11px] text-inkSubtle mt-3 leading-snug">
+                          Cheapest and most expensive rows above are real
+                          chargemaster entries the hospital published. The
+                          per-{row.billing_unit || "unit"} column normalizes
+                          vial size differences so a 100 mg row sits on the
+                          same scale as a 10 mg row.
+                        </p>
+                      </td>
+                    </tr>
+                  ) : null}
+                  </Fragment>
                 );
               })}
             </tbody>

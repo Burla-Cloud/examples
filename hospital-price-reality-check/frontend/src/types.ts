@@ -8,6 +8,7 @@ export type LineItem = {
   dose?: string | null;
   hcpcs_billing_unit?: string | null;
   setting?: string | null;
+  price?: number | null;
 };
 
 export type StateBest = {
@@ -79,6 +80,9 @@ export type HospitalCodeRow = {
   median?: number | null;
   count?: number | null;
   line_item?: LineItem | null;
+  line_items?: LineItem[] | null;
+  line_items_total?: number | null;
+  line_items_truncated?: boolean | null;
 };
 
 export type HospitalDetail = {
