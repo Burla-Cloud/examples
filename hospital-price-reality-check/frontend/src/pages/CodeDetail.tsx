@@ -11,8 +11,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { loadAll } from "../api";
-import type { CodeEntry, RankedHospital, StateCodeStat } from "../types";
+import { loadAll, loadHospitalDetail } from "../api";
+import type {
+  CodeEntry,
+  HospitalCodeRow,
+  LineItem,
+  RankedHospital,
+  StateCodeStat,
+} from "../types";
 import { StateFilter } from "../components/StateFilter";
 import { categoryLabel, fmtMoney, stateName } from "../format";
 
@@ -215,6 +221,83 @@ function LineItemBlock({
   );
 }
 
+function LineItemsTable({
+  items,
+  total,
+  truncated,
+  billingUnit,
+}: {
+  items: LineItem[];
+  total: number;
+  truncated: boolean;
+  billingUnit?: string | null;
+}) {
+  const unitLabel = billingUnit ? `per ${billingUnit}` : "per unit";
+  return (
+    <div>
+      <p className="text-[10px] uppercase tracking-[0.16em] text-inkSubtle mb-2">
+        All {total}
+        {truncated && total > items.length ? "+" : ""} list prices
+        {truncated && total > items.length
+          ? ` (showing first ${items.length}, cheapest first)`
+          : " (cheapest first)"}
+      </p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-[11px]">
+          <thead className="text-[10px] uppercase tracking-[0.14em] text-inkSubtle">
+            <tr>
+              <th className="text-left pb-2 pr-3 font-medium">Description</th>
+              <th className="text-left pb-2 pr-3 font-medium">Dose</th>
+              <th className="text-right pb-2 pr-3 font-medium">Gross</th>
+              <th className="text-right pb-2 pr-3 font-medium">Cash</th>
+              <th className="text-right pb-2 font-medium">{unitLabel}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((li, i) => (
+              <tr key={i} className="border-t border-line/40 align-top">
+                <td className="py-1.5 pr-3 text-inkMuted">
+                  {li.description || <span className="text-inkSubtle">—</span>}
+                </td>
+                <td className="py-1.5 pr-3 text-inkMuted whitespace-nowrap">
+                  {li.dose || <span className="text-inkSubtle">—</span>}
+                </td>
+                <td className="py-1.5 pr-3 text-right text-inkMuted whitespace-nowrap">
+                  {li.gross_charge != null ? (
+                    fmtMoney(li.gross_charge)
+                  ) : (
+                    <span className="text-inkSubtle">—</span>
+                  )}
+                </td>
+                <td className="py-1.5 pr-3 text-right text-inkMuted whitespace-nowrap">
+                  {li.discounted_cash != null ? (
+                    fmtMoney(li.discounted_cash)
+                  ) : (
+                    <span className="text-inkSubtle">—</span>
+                  )}
+                </td>
+                <td className="py-1.5 text-right font-medium text-ink whitespace-nowrap">
+                  {li.price != null ? (
+                    fmtMoney(li.price)
+                  ) : li.gross_charge_per_unit != null ? (
+                    fmtMoney(li.gross_charge_per_unit)
+                  ) : (
+                    <span className="text-inkSubtle">—</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-[10px] text-inkSubtle mt-2 leading-snug">
+        Same hospital, same code, different rows in the chargemaster — likely
+        a different vial size, setting, or bundle.
+      </p>
+    </div>
+  );
+}
+
 function PodiumHeaderCell({
   title,
   tone,
@@ -238,15 +321,59 @@ function PodiumCell({
   hospital,
   index,
   billingUnit,
+  codeSystem,
+  code,
 }: {
   hospital: RankedHospital | undefined;
   index: number;
   billingUnit?: string | null;
+  codeSystem: string;
+  code: string;
 }) {
   if (!hospital) {
     return <div className="bg-surface" aria-hidden />;
   }
   const h = hospital;
+  const hasMultiple = (h.count ?? 0) > 1 && !!h.hospital_id;
+  const [open, setOpen] = useState(false);
+  const [details, setDetails] = useState<{
+    items: LineItem[];
+    total: number;
+    truncated: boolean;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  const handleToggle = async () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    setOpen(true);
+    if (details || loading || !h.hospital_id) return;
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const detail = await loadHospitalDetail(h.hospital_id);
+      const match = detail.codes.find(
+        (c: HospitalCodeRow) => c.code_system === codeSystem && c.code === code,
+      );
+      if (match?.line_items && match.line_items.length > 0) {
+        setDetails({
+          items: match.line_items,
+          total: match.line_items_total ?? match.line_items.length,
+          truncated: !!match.line_items_truncated,
+        });
+      } else {
+        setLoadError("No additional rows found in this hospital's file.");
+      }
+    } catch (e) {
+      setLoadError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-surface p-5 md:px-7 flex items-start gap-4">
       <span className="font-display text-2xl font-medium text-inkSubtle leading-none mt-1 tabular-nums">
@@ -265,6 +392,39 @@ function PodiumCell({
             : ""}
         </p>
         {h.line_item ? <LineItemBlock item={h.line_item} count={h.count} /> : null}
+        {hasMultiple ? (
+          <div className="mt-2">
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-ink underline underline-offset-2 decoration-ink/40 hover:decoration-ink"
+              aria-expanded={open}
+            >
+              {open ? "Hide" : "Show"} all {h.count} list price
+              {h.count === 1 ? "" : "s"} this hospital publishes
+            </button>
+            {open ? (
+              <div className="mt-2 rounded-md border border-line bg-section/30 px-3 py-3">
+                {loading ? (
+                  <p className="text-[11px] text-inkSubtle">Loading…</p>
+                ) : loadError ? (
+                  <p className="text-[11px] text-inkSubtle">{loadError}</p>
+                ) : details ? (
+                  <LineItemsTable
+                    items={details.items}
+                    total={details.total}
+                    truncated={details.truncated}
+                    billingUnit={billingUnit}
+                  />
+                ) : (
+                  <p className="text-[11px] text-inkSubtle">
+                    No detail available.
+                  </p>
+                )}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         {h.mrf_url ? (
           <a
             href={h.mrf_url}
@@ -748,6 +908,8 @@ export function CodeDetail() {
                         hospital={topCheapest[i]}
                         index={i}
                         billingUnit={entry.billing_unit}
+                        codeSystem={entry.code_system}
+                        code={entry.code}
                       />
                     )}
                     {topPriciest.length > 0 && (
@@ -755,6 +917,8 @@ export function CodeDetail() {
                         hospital={topPriciest[i]}
                         index={i}
                         billingUnit={entry.billing_unit}
+                        codeSystem={entry.code_system}
+                        code={entry.code}
                       />
                     )}
                   </Fragment>
