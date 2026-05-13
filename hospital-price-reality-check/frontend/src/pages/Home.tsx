@@ -106,10 +106,9 @@ export function Home() {
           </p>
           {summary.topRow && summary.topSpread && summary.topSpread > 1 ? (
             <p className="body-lead mt-6 max-w-2xl text-pretty">
-              We also highlight where prices get ridiculous: procedures,
-              drugs, and labs where one hospital charges many times more
-              than another for the exact same item. Right now the biggest
-              gap is{" "}
+              We also highlight the widest gaps: procedures, drugs, and
+              labs where one hospital charges many times more than another
+              for the exact same item. Right now the biggest gap is{" "}
               <Link
                 to={`/explore/${encodeURIComponent(
                   summary.topRow.key.split(":")[0]
