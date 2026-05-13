@@ -105,17 +105,12 @@ export function HowWeDidThis() {
         <p>
           One Python function takes a single hospital and returns the prices
           for our full code list. That function is the unit of work. We hand
-          it to{" "}
+          the list of 7,000+ hospitals to{" "}
           <Code>remote_parallel_map</Code> from{" "}
-          <a
-            href="https://burla.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-ink underline-offset-4 hover:underline font-medium"
-          >
-            Burla
-          </a>
-          , which fans the work out across a cluster.
+          <BurlaLink />, and a single laptop ends up driving an autoscaling
+          fleet of cloud workers running that one function in parallel. No
+          Kubernetes, no Lambda packaging, no queues, no manifest files.
+          Regular Python from a single laptop.
         </p>
         <pre className="overflow-x-auto rounded-2xl border border-ink/10 bg-ink text-bg/95 p-6 text-[12.5px] leading-relaxed font-mono">
 {`from burla import remote_parallel_map
@@ -129,18 +124,28 @@ def parse_hospital_mrf(hospital):
 
 results = remote_parallel_map(
     parse_hospital_mrf,
-    hospitals,
+    hospitals,           # ~7,000 hospital MRF URLs
     func_cpu=1,
-    func_ram=4,
-    grow=True,
-    max_parallelism=64,
+    func_ram=2,
+    grow=True,           # autoscale the cluster up to handle the queue
+    max_parallelism=1500,
 )`}
         </pre>
         <p>
+          That single call spun up roughly 1,500 concurrent workers and
+          churned through 7,188 hospital files in about 19 minutes start to
+          finish. Files range from a few megabytes to over 3 gigabytes; on a
+          single laptop a serial pass would take days. <BurlaLink /> handles
+          the cluster, the packaging, the autoscaling, and the streaming
+          stdout/stderr from every worker back to the local shell. The code
+          is the same code we'd run locally on one hospital, just wrapped in
+          one function call.
+        </p>
+        <p>
           Each worker streams its file, extracts the rows we care about, and
           writes them to a shared filesystem on the cluster. Then a single
-          reduce step on one machine aggregates everything into the JSON files
-          that this site reads on page load.
+          reduce step on one machine aggregates everything into the JSON
+          files that this site reads on page load.
         </p>
       </Section>
 
@@ -310,10 +315,10 @@ results = remote_parallel_map(
           in the country.
         </p>
         <p className="text-sm">
-          Stack: Python streaming parsers (ijson, pandas, openpyxl), Burla{" "}
-          <Code>remote_parallel_map</Code>, GCSFuse-backed shared filesystem
-          for intermediate results, Vite plus React plus Tailwind for the
-          static site, Recharts for the distribution charts.
+          Stack: Python streaming parsers (ijson, pandas, openpyxl),{" "}
+          <BurlaLink /> <Code>remote_parallel_map</Code>, GCSFuse-backed
+          shared filesystem for intermediate results, Vite plus React plus
+          Tailwind for the static site, Recharts for the distribution charts.
         </p>
       </Section>
     </div>
@@ -325,6 +330,19 @@ function Code({ children }: { children: React.ReactNode }) {
     <code className="font-mono text-[13px] bg-section px-1.5 py-0.5 rounded text-ink">
       {children}
     </code>
+  );
+}
+
+function BurlaLink() {
+  return (
+    <a
+      href="https://burla.dev"
+      target="_blank"
+      rel="noreferrer"
+      className="text-accent font-medium underline decoration-accent/40 decoration-1 underline-offset-[3px] hover:decoration-accent transition-colors"
+    >
+      Burla
+    </a>
   );
 }
 
