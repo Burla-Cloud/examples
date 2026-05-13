@@ -1146,27 +1146,43 @@ export function CodeDetail() {
         </div>
       </section>
 
-      {entry.tips?.length > 0 && (
-        <section>
-          <div className="mb-6">
-            <p className="eyebrow">Before you go</p>
-            <h2 className="display-2 mt-3">Three things to ask.</h2>
-          </div>
-          <ul className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
-            {entry.tips.map((t, i) => (
-              <li
-                key={t}
-                className="bg-surface px-7 py-7 flex flex-col gap-3"
-              >
-                <span className="font-display text-3xl font-medium text-accent tracking-[-0.02em]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="text-base text-ink leading-relaxed">{t}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      {entry.tips?.length > 0 && (() => {
+        const tipCount = entry.tips.length;
+        const countWord =
+          tipCount === 1 ? "One thing" :
+          tipCount === 2 ? "Two things" :
+          tipCount === 3 ? "Three things" :
+          tipCount === 4 ? "Four things" :
+          tipCount === 5 ? "Five things" :
+          `${tipCount} things`;
+        const gridCols =
+          tipCount === 1 ? "md:grid-cols-1" :
+          tipCount === 2 ? "md:grid-cols-2" :
+          "md:grid-cols-3";
+        return (
+          <section>
+            <div className="mb-6">
+              <p className="eyebrow">Before you go</p>
+              <h2 className="display-2 mt-3">
+                {countWord} to ask.
+              </h2>
+            </div>
+            <ul className={`grid gap-px overflow-hidden rounded-2xl border border-line bg-line ${gridCols}`}>
+              {entry.tips.map((t, i) => (
+                <li
+                  key={t}
+                  className="bg-surface px-7 py-7 flex flex-col gap-3"
+                >
+                  <span className="font-display text-3xl font-medium text-accent tracking-[-0.02em]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-base text-ink leading-relaxed">{t}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })()}
 
       {stateRanking.length >= 2 && !stateAbbr && (
         <section>
