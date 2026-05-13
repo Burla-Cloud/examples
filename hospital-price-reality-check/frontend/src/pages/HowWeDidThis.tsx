@@ -235,32 +235,27 @@ results = remote_parallel_map(
 
       <Section title="Standardizing drug doses" n="07">
         <p>
-          Hospitals publish drug prices at the vial level (one row for
-          a 100 mg vial, another for a 1 mg vial), but the HCPCS code
-          they're billed against is per-unit (per 1 mg, per 10 mg, per 25
-          mcg, ...). If we just grabbed the vial price, a hospital with a
-          big vial would look more expensive than a hospital with a small
-          one even when their per-mg pricing is identical.
+          Hospitals publish drug prices at the vial level (e.g. "DOXORUBICIN
+          50 MG VIAL"), but HCPCS codes bill per unit (per 1 mg, per 10 mg,
+          per 25 mcg). Without normalization, a hospital with a bigger vial
+          looks more expensive than a hospital with a smaller one even when
+          the per-mg price is identical.
         </p>
         <p>
-          We extract the dose from the chargemaster description (regex over
-          common formats: "DOXORUBICIN 50 MG", "Keytruda 100mg/4ml",
-          "PALONOSETRON 0.05 MG/ML 5 ML VIAL"), divide the published price
-          by the dose, and multiply by the HCPCS billing unit. Every drug
-          page on this site is per HCPCS billing unit. The card under each
-          hospital shows both the raw vial price the hospital published AND
-          the per-unit standardized price you see in the rankings.
+          We regex the dose out of the description, divide the published
+          price by the dose, and multiply by the HCPCS billing unit. Every
+          drug page is standardized per HCPCS unit; each hospital card
+          shows both the raw vial price and the per-unit number we ranked
+          by.
         </p>
         <p>
-          We anchor the standardized prices against the CMS Medicare Part B
-          ASP (Average Sales Price) payment limit file, published quarterly.
-          For a drug whose ASP is $60 per mg, a hospital chargemaster of $10
-          per mg would be suspicious -- we flag it. For 33 of the 37 drug
-          codes we have an ASP record for, our median chargemaster falls in
-          the expected 2x-50x ASP range. The remaining 4 are off-patent
-          generics (paclitaxel, oxaliplatin, granisetron, palonosetron)
-          where ASP is fractions of a cent and the ratio loses signal --
-          chargemasters notoriously lag generic erosion by years.
+          As a sanity check we cross-reference the CMS Medicare Part B ASP
+          (Average Sales Price) payment limits. Of the 37 drug codes with
+          an ASP record, 33 of our medians land in the expected 2x to 50x
+          ASP range. The 4 misses are off-patent generics (paclitaxel,
+          oxaliplatin, granisetron, palonosetron) where ASP is a fraction
+          of a cent and chargemasters notoriously lag generic erosion by
+          years.
         </p>
       </Section>
 
