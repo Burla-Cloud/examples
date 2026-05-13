@@ -84,20 +84,32 @@ export function Home() {
             <RateBadge plural />
           </div>
           <h1 className="display-1 max-w-4xl text-balance">
-            What real hospitals charge,
+            Search real hospital prices
             <br />
-            <span className="italic text-accent">in plain English.</span>
+            <span className="italic text-accent">across the US.</span>
           </h1>
           <p className="body-lead mt-8 max-w-2xl text-pretty">
-            Hospitals are required by federal law to publish what they charge
-            for every procedure, drug, and lab. We collected those files from
-            real US hospitals, pulled out the {data.codes.length}{" "}
-            procedures, chemo drugs, and labs people actually need, and put
-            them all in one place.
+            A central, searchable database of what hospitals charge for
+            procedures, medicines, and labs before insurance.
+          </p>
+          <p className="body-lead mt-6 max-w-2xl text-pretty">
+            We collected pricing files from{" "}
+            <span className="font-medium text-ink">
+              {fmtNum(summary.hospitalsWithData)}
+            </span>{" "}
+            US hospitals, cleaned the messy data, and made it easy to
+            compare prices in plain English. Right now we cover{" "}
+            <span className="font-medium text-ink">
+              {data.codes.length}
+            </span>{" "}
+            of the procedures, chemo drugs, and labs people actually look up.
           </p>
           {summary.topRow && summary.topSpread && summary.topSpread > 1 ? (
             <p className="body-lead mt-6 max-w-2xl text-pretty">
-              Right now the biggest gap is{" "}
+              We also highlight where prices get ridiculous: procedures,
+              drugs, and labs where one hospital charges many times more
+              than another for the exact same item. Right now the biggest
+              gap is{" "}
               <Link
                 to={`/explore/${encodeURIComponent(
                   summary.topRow.key.split(":")[0]
@@ -115,7 +127,7 @@ export function Home() {
           ) : null}
           <div className="mt-10 flex flex-wrap gap-3">
             <Link to="/explore" className="btn-primary">
-              Look up a price
+              Search prices
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                 <path
                   d="M5 12h14m0 0l-5-5m5 5l-5 5"
