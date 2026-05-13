@@ -158,11 +158,47 @@ results = remote_parallel_map(
 
       <Section title="What we did not measure" n="05">
         <ul className="space-y-3 list-disc pl-6">
-          <li>What you will actually pay. That depends on your insurance, deductible, and copay.</li>
-          <li>Quality of care or hospital outcomes. Cheaper does not mean better.</li>
-          <li>Doctor and anesthesia bills, which are usually billed separately by the providers themselves.</li>
-          <li>Surprise billing, balance billing, or out-of-network charges.</li>
-          <li>Implants and devices, which are often billed as a separate line item.</li>
+          <li>
+            What you will actually pay. That depends on your insurance,
+            deductible, copay, and the network status of the hospital on the
+            day you walk in.
+          </li>
+          <li>
+            Insurance-negotiated rates. The MRFs publish those too, but the
+            site only displays gross charges and cash-pay rates (the two
+            pre-insurance numbers). Negotiated rates vary per payer and per
+            plan, which is a different shape of question than "what does
+            this hospital charge".
+          </li>
+          <li>
+            Quality of care or hospital outcomes. Cheaper does not mean
+            better. Look at CMS Care Compare, Leapfrog, or your state's
+            hospital quality reports for that.
+          </li>
+          <li>
+            Doctor and anesthesia bills, which are usually billed
+            separately by the providers themselves and are not in the
+            hospital's MRF.
+          </li>
+          <li>
+            Surprise billing, balance billing, or out-of-network charges.
+          </li>
+          <li>
+            Implants and devices, which are often billed as a separate line
+            item your specific surgeon or vendor adds at the time of care.
+          </li>
+          <li>
+            Trends over time. This site is a single snapshot of the most
+            recent MRFs we could fetch. Hospitals update on their own
+            cadence (the federal rule requires at least once a year), so a
+            price you see today may be from last month or from last spring.
+          </li>
+          <li>
+            Outpatient retail prescriptions filled at a regular pharmacy.
+            The drug prices here are hospital-administered (chemo
+            infusions, ER vaccines, etc.) billed under HCPCS codes, not
+            retail Rx.
+          </li>
         </ul>
       </Section>
 
