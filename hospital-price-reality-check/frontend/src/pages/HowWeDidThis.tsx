@@ -261,38 +261,32 @@ results = remote_parallel_map(
 
       <Section title="LLM second opinion" n="08">
         <p>
-          Regex and keyword filters can only do so much. We ran two
-          independent passes with Claude (Sonnet 4.5, temperature 0):
+          Regex and keyword filters only catch so much. We ran two
+          independent audit passes with Claude (Sonnet 4.5, temperature 0):
         </p>
         <ul className="space-y-3 list-disc pl-6">
           <li>
             <span className="text-ink font-medium">218 drug podium cards</span>{" "}
-            across all 39 HCPCS J-codes that bill per a unit dose. For each
-            card the model independently extracted the dose from the
-            description, checked it matched the HCPCS code, and verified the
-            per-unit math. Result: 215 of 218 passed; 3 surfaced real bugs
-            in our regex (a HCPCS-unit reminder being parsed as the dose,
-            and a "concentration without volume" string being parsed as a
-            total dose). Both have been fixed in the open-source
-            <Code>dosage_extractor.py</Code>.
+            across all 39 HCPCS J-codes that bill per unit dose. The model
+            re-extracted the dose, matched it to the HCPCS code, and
+            verified the per-unit math. 215 of 218 passed; the 3 misses
+            caught real regex bugs (now fixed in{" "}
+            <Code>dosage_extractor.py</Code>).
           </li>
           <li>
-            <span className="text-ink font-medium">300 procedure podium
-            cards</span> across the 50 most-trafficked non-drug codes (ER
-            visits, imaging, colonoscopy, knee replacement, etc). The model
-            checked whether the line item description matches the procedure
-            code, whether it represents a clinical variant (bilateral,
-            revision, with-contrast vs without-contrast), and whether the
-            price is in a believable range. Real findings drove the negative
-            keywords for CT contrast variants (CPT 70450, 71250, 74176) and
-            an ultrasound exclusion for CPT 77063 (breast tomosynthesis).
+            <span className="text-ink font-medium">300 procedure podium cards</span>{" "}
+            across the 50 most-trafficked non-drug codes. The model
+            checked the description against the code, flagged clinical
+            variants (bilateral, revision, with-contrast), and sanity-checked
+            the price. Real findings drove the CT-contrast negative keywords
+            (CPT 70450, 71250, 74176) and an ultrasound exclusion for CPT
+            77063.
           </li>
         </ul>
         <p className="text-sm">
-          The audit report files (<Code>samples/dosage_audit_all_drugs.json</Code>{" "}
-          and <Code>samples/procedure_audit.json</Code>) ship in the
-          repository so anyone can inspect every flagged card and the
-          model's reasoning.
+          Both audit reports (<Code>samples/dosage_audit_all_drugs.json</Code>
+          {" "}and <Code>samples/procedure_audit.json</Code>) ship in the
+          repo so you can inspect every flagged card.
         </p>
       </Section>
 
