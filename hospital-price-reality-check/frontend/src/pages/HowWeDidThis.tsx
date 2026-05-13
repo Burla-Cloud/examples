@@ -30,10 +30,6 @@ export function HowWeDidThis() {
           ? fmtNum(Number(scale.observation_rows_reported))
           : "...",
     },
-    {
-      label: "Run mode",
-      value: typeof scale.mode === "string" ? scale.mode : "n/a",
-    },
   ];
 
   return (
@@ -54,7 +50,7 @@ export function HowWeDidThis() {
       <CaveatBanner />
 
       {meta && (
-        <div className="grid gap-12 md:grid-cols-4 md:gap-8 border-t border-b border-line py-12">
+        <div className="grid gap-12 md:grid-cols-3 md:gap-10 border-t border-b border-line py-12">
           {stats.map((s) => (
             <div key={s.label}>
               <p className="eyebrow">{s.label}</p>
