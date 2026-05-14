@@ -154,3 +154,43 @@ export type HospitalIndexRow = {
   codes_covered?: number | null;
   honesty_score?: number | null;
 };
+
+/**
+ * Compact per-hospital chargemaster row, emitted by chargemaster_build.py.
+ * Field names are 1-2 letters to minimize wire size; a hospital can publish
+ * tens of thousands of these rows so every byte matters.
+ */
+export type ChargemasterRow = {
+  d?: string; // description
+  cs?: string; // code_system (CPT / HCPCS / MS-DRG / NDC / CDT / RC / ...)
+  c?: string; // code
+  ds?: string; // dose ("10 mg", "100 mL", ...)
+  se?: string; // setting (inpatient / outpatient / both)
+  u?: string; // billing_unit ("10 mg", "each", ...)
+  g?: number; // gross_charge
+  ca?: number; // discounted_cash
+  mn?: number; // min_allowed
+  mx?: number; // max_allowed
+  p?: number; // price_per_unit (normalized to billing unit)
+};
+
+export type ChargemasterDoc = {
+  hospital_id: string;
+  name?: string | null;
+  state?: string | null;
+  mrf_url?: string | null;
+  total: number;
+  truncated: boolean;
+  rows: ChargemasterRow[];
+};
+
+export type ChargemasterIndex = {
+  count: number;
+  total_rows?: number;
+  total_bytes?: number;
+  hospitals: Array<{
+    hospital_id: string;
+    rows: number;
+    kb: number;
+  }>;
+};

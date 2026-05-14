@@ -125,8 +125,8 @@ export function Home() {
             </p>
           ) : null}
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link to="/explore" className="btn-primary">
-              Search prices
+            <Link to="/hospitals" className="btn-primary">
+              Find your hospital
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                 <path
                   d="M5 12h14m0 0l-5-5m5 5l-5 5"
@@ -136,6 +136,9 @@ export function Home() {
                   strokeLinejoin="round"
                 />
               </svg>
+            </Link>
+            <Link to="/explore" className="btn-ghost">
+              Search by procedure
             </Link>
             <Link to="/leaderboard" className="btn-ghost">
               See the biggest gaps

@@ -1,57 +1,78 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { loadAll, loadHospitalDetail } from "../api";
-import { fmtMoney, fmtNum, stateName } from "../format";
+import { FullChargemaster } from "../components/FullChargemaster";
+import { fmtNum, stateName } from "../format";
 import type {
-  CmsReference,
+  ChargemasterRow,
+  CodeEntry,
   HospitalCodeRow,
   HospitalDetail as HospitalDetailType,
+  StateCodeStat,
 } from "../types";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  cancer_screening: "Cancer screening",
-  cancer_treatment: "Cancer treatment",
-  cardiovascular: "Cardiovascular",
-  er: "Emergency",
-  gi_endoscopy: "GI endoscopy",
-  hospital_line_item: "Hospital line items",
-  imaging: "Imaging",
-  infused_drug: "Infused drugs",
-  inpatient_drg: "Inpatient stays",
-  lab: "Labs",
-  maternity: "Maternity",
-  mental_health: "Mental health",
-  pediatric: "Pediatric",
-  surgical: "Surgery",
-  vaccine: "Vaccines",
-};
-
-function categoryLabel(cat: string | null | undefined): string {
-  if (!cat) return "Other";
-  return CATEGORY_LABELS[cat] || cat;
+/**
+ * Flatten the curated hospital JSON into ChargemasterRow shape so the
+ * FullChargemaster panel can render something useful even when the full
+ * chargemaster bundle hasn't been built yet. Expands line_items[] when
+ * available; falls back to the sample line_item; degrades to display_name +
+ * median when neither exists.
+ */
+function hospitalRowsToChargemasterRows(
+  codes: HospitalCodeRow[],
+): ChargemasterRow[] {
+  const out: ChargemasterRow[] = [];
+  for (const c of codes) {
+    if (c.line_items && c.line_items.length > 0) {
+      for (const li of c.line_items) {
+        out.push({
+          d: li.description || c.display_name || undefined,
+          cs: c.code_system,
+          c: c.code,
+          ds: li.dose || undefined,
+          se: li.setting || c.setting || undefined,
+          u: c.billing_unit || undefined,
+          g: li.gross_charge ?? undefined,
+          ca: li.discounted_cash ?? undefined,
+          p:
+            li.price ??
+            li.gross_charge_per_unit ??
+            li.discounted_cash_per_unit ??
+            undefined,
+        });
+      }
+      continue;
+    }
+    const li = c.line_item;
+    out.push({
+      d: li?.description || c.display_name || undefined,
+      cs: c.code_system,
+      c: c.code,
+      ds: li?.dose || undefined,
+      se: li?.setting || c.setting || undefined,
+      u: c.billing_unit || undefined,
+      g: li?.gross_charge ?? undefined,
+      ca: li?.discounted_cash ?? undefined,
+      p:
+        c.median ??
+        li?.gross_charge_per_unit ??
+        li?.discounted_cash_per_unit ??
+        undefined,
+    });
+  }
+  return out;
 }
-
-type SortKey = "name" | "median" | "category";
 
 export function HospitalDetail() {
   const { hospitalId = "" } = useParams<{ hospitalId: string }>();
   const [detail, setDetail] = useState<HospitalDetailType | null>(null);
-  const [cmsByKey, setCmsByKey] = useState<Map<string, CmsReference>>(new Map());
+  const [codesByKey, setCodesByKey] = useState<Map<string, CodeEntry>>(
+    new Map(),
+  );
+  const [stateStatsByKey, setStateStatsByKey] = useState<
+    Map<string, StateCodeStat>
+  >(new Map());
   const [error, setError] = useState<string | null>(null);
-  const [q, setQ] = useState("");
-  const [activeCat, setActiveCat] = useState<string>("all");
-  const [sortKey, setSortKey] = useState<SortKey>("category");
-  const [asc, setAsc] = useState(true);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
-
-  const toggleExpanded = (key: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  };
 
   useEffect(() => {
     let cancelled = false;
@@ -64,22 +85,52 @@ export function HospitalDetail() {
       .catch((e) => {
         if (!cancelled) setError(String(e?.message || e));
       });
+    return () => {
+      cancelled = true;
+    };
+  }, [hospitalId]);
+
+  useEffect(() => {
+    let cancelled = false;
     loadAll()
       .then((all) => {
         if (cancelled) return;
-        const m = new Map<string, CmsReference>();
+        const cmap = new Map<string, CodeEntry>();
         for (const c of all.codes) {
-          if (c.cms_reference) {
-            m.set(`${c.code_system}:${c.code}`, c.cms_reference);
-          }
+          cmap.set(`${c.code_system}:${c.code}`, c);
         }
-        setCmsByKey(m);
+        setCodesByKey(cmap);
+        const stateAbbr = detail?.state || null;
+        if (stateAbbr && all.stateSummary[stateAbbr]) {
+          const smap = new Map<string, StateCodeStat>();
+          const codes = all.stateSummary[stateAbbr].codes || {};
+          for (const [k, v] of Object.entries(codes)) {
+            smap.set(k, v as StateCodeStat);
+          }
+          setStateStatsByKey(smap);
+        } else {
+          setStateStatsByKey(new Map());
+        }
       })
       .catch(() => undefined);
     return () => {
       cancelled = true;
     };
-  }, [hospitalId]);
+  }, [detail?.state]);
+
+  const hospitalCodesByKey = useMemo(() => {
+    if (!detail) return new Map<string, HospitalCodeRow>();
+    const m = new Map<string, HospitalCodeRow>();
+    for (const c of detail.codes) {
+      m.set(`${c.code_system}:${c.code}`, c);
+    }
+    return m;
+  }, [detail]);
+
+  const fallbackRows = useMemo<ChargemasterRow[]>(() => {
+    if (!detail) return [];
+    return hospitalRowsToChargemasterRows(detail.codes);
+  }, [detail]);
 
   const categories = useMemo(() => {
     if (!detail) return [] as string[];
@@ -87,40 +138,6 @@ export function HospitalDetail() {
     for (const c of detail.codes) keys.add(c.category || "other");
     return Array.from(keys).sort();
   }, [detail]);
-
-  const visible = useMemo(() => {
-    if (!detail) return [] as HospitalCodeRow[];
-    const ql = q.trim().toLowerCase();
-    let rows = detail.codes.filter((c) => {
-      if (activeCat !== "all" && (c.category || "other") !== activeCat) return false;
-      if (!ql) return true;
-      return (
-        (c.display_name || "").toLowerCase().includes(ql) ||
-        (c.code || "").toLowerCase().includes(ql) ||
-        (c.line_item?.description || "").toLowerCase().includes(ql)
-      );
-    });
-    rows = rows.slice().sort((a, b) => {
-      let av: string | number | null;
-      let bv: string | number | null;
-      if (sortKey === "median") {
-        av = a.median ?? -1;
-        bv = b.median ?? -1;
-      } else if (sortKey === "category") {
-        av = `${a.category || "zzz"}|${a.display_name || ""}`;
-        bv = `${b.category || "zzz"}|${b.display_name || ""}`;
-      } else {
-        av = a.display_name || "";
-        bv = b.display_name || "";
-      }
-      if (typeof av === "number" && typeof bv === "number")
-        return asc ? av - bv : bv - av;
-      return asc
-        ? String(av).localeCompare(String(bv))
-        : String(bv).localeCompare(String(av));
-    });
-    return rows;
-  }, [detail, q, activeCat, sortKey, asc]);
 
   if (error) {
     return (
@@ -177,12 +194,6 @@ export function HospitalDetail() {
             {header ? <span>{header}</span> : null}
           </p>
         )}
-        <p className="body-lead mt-5 text-pretty">
-          Every priced code this hospital published in its federal price
-          transparency file. Search by procedure or drug, filter by category,
-          or click into a code to see how this price compares to other
-          hospitals nationwide.
-        </p>
         {detail.mrf_url ? (
           <a
             href={detail.mrf_url}
@@ -235,377 +246,16 @@ export function HospitalDetail() {
         </div>
       </div>
 
-      {/* SEARCH + FILTERS */}
-      <div className="space-y-5">
-        <div className="relative">
-          <svg
-            viewBox="0 0 24 24"
-            className="absolute left-7 top-1/2 -translate-y-1/2 h-5 w-5 text-inkSubtle"
-            fill="none"
-          >
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-          <input
-            className="input-search pl-16"
-            placeholder="Search procedures, drugs, codes, or line item text..."
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
-          {q && (
-            <button
-              type="button"
-              onClick={() => setQ("")}
-              aria-label="Clear search"
-              className="absolute right-6 top-1/2 -translate-y-1/2 grid h-7 w-7 place-items-center rounded-full bg-section hover:bg-line text-inkMuted"
-            >
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryPill
-            active={activeCat === "all"}
-            onClick={() => setActiveCat("all")}
-          >
-            All ({fmtNum(detail.codes.length)})
-          </CategoryPill>
-          {categories.map((cat) => {
-            const n = (detail.category_counts || {})[cat] ?? 0;
-            return (
-              <CategoryPill
-                key={cat}
-                active={activeCat === cat}
-                onClick={() => setActiveCat(cat)}
-              >
-                {categoryLabel(cat)} ({fmtNum(n)})
-              </CategoryPill>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* TABLE */}
-      <div className="surface-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="editorial-table">
-            <caption className="bg-section/40 px-7 py-3 text-left text-[10px] font-semibold uppercase tracking-eyebrowTight text-inkSubtle">
-              Pre-insurance list prices this hospital publishes. Drug rows are
-              normalized to the HCPCS billing unit (per 1 mg, per 10 mg, etc.)
-              so a 100 mg vial sits on the same scale as a 1 mg vial. When a
-              hospital lists the same code multiple times (different settings,
-              bundles, or revisions) the displayed price is the median across
-              those rows, and we surface one sample MRF row beneath it so you
-              can verify against the source file.
-            </caption>
-            <thead>
-              <tr>
-                <SortableTh
-                  active={sortKey === "category"}
-                  asc={asc}
-                  onClick={() => {
-                    if (sortKey === "category") setAsc(!asc);
-                    else {
-                      setSortKey("category");
-                      setAsc(true);
-                    }
-                  }}
-                  className="px-7 py-4"
-                >
-                  Procedure / drug
-                </SortableTh>
-                <SortableTh
-                  active={sortKey === "median"}
-                  asc={asc}
-                  onClick={() => {
-                    if (sortKey === "median") setAsc(!asc);
-                    else {
-                      setSortKey("median");
-                      setAsc(false);
-                    }
-                  }}
-                  className="px-7 py-4 text-right"
-                >
-                  This hospital's price
-                </SortableTh>
-                <th className="px-7 py-4 text-right">Compare nationwide</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visible.slice(0, 800).map((row) => {
-                const cms = cmsByKey.get(`${row.code_system}:${row.code}`);
-                const rowKey = `${row.code_system}:${row.code}`;
-                const items = row.line_items || [];
-                const totalLineItems = row.line_items_total ?? items.length;
-                const hasMultiple = totalLineItems > 1 && items.length > 0;
-                const isOpen = expanded.has(rowKey);
-                return (
-                  <Fragment key={rowKey}>
-                  <tr>
-                    <td className="px-7 py-5 align-top">
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle">
-                        {row.code_system} {row.code}
-                        {row.category ? (
-                          <>
-                            {" · "}
-                            <span className="text-inkMuted">{categoryLabel(row.category)}</span>
-                          </>
-                        ) : null}
-                      </p>
-                      <p className="font-display text-base font-medium text-ink mt-1.5 leading-snug">
-                        {row.display_name}
-                      </p>
-                      {row.line_item?.description ? (
-                        <p className="text-xs text-inkSubtle mt-1.5 leading-snug">
-                          MRF row: {row.line_item.description}
-                        </p>
-                      ) : null}
-                      {row.line_item?.dose && row.billing_unit ? (
-                        <p className="text-xs text-inkSubtle mt-1 leading-snug">
-                          Vial {row.line_item.dose} · billed per {row.billing_unit}
-                        </p>
-                      ) : null}
-                      {cms?.per_billing_unit != null ? (
-                        <p className="text-[11px] text-inkSubtle mt-1 leading-snug">
-                          Medicare allowance: {fmtMoney(cms.per_billing_unit)}
-                          {row.billing_unit ? ` / ${row.billing_unit}` : ""}
-                        </p>
-                      ) : null}
-                      {hasMultiple ? (
-                        <button
-                          type="button"
-                          onClick={() => toggleExpanded(rowKey)}
-                          className="text-[11px] mt-2 text-ink underline underline-offset-2 decoration-ink/40 hover:decoration-ink"
-                        >
-                          {isOpen ? "Hide" : "Show"} all {totalLineItems}
-                          {row.line_items_truncated && totalLineItems > items.length
-                            ? "+"
-                            : ""}
-                          {" "}
-                          line items from this hospital's MRF
-                        </button>
-                      ) : null}
-                    </td>
-                    <td className="px-7 py-5 text-right align-top">
-                      <p className="font-display text-xl font-medium text-ink whitespace-nowrap tracking-[-0.02em]">
-                        {fmtMoney(row.median)}
-                        {row.billing_unit ? (
-                          <span className="ml-1 text-sm font-medium text-inkMuted">
-                            / {row.billing_unit}
-                          </span>
-                        ) : null}
-                      </p>
-                      {row.count != null && row.count > 1 ? (
-                        <p className="text-[11px] text-inkSubtle mt-1 whitespace-nowrap leading-snug">
-                          median across {row.count} rows
-                        </p>
-                      ) : null}
-                      {row.line_item?.gross_charge != null &&
-                      row.line_item?.gross_charge !==
-                        row.line_item?.gross_charge_per_unit ? (
-                        <p className="text-[11px] text-inkSubtle mt-1 whitespace-nowrap leading-snug">
-                          {row.count != null && row.count > 1 ? "Sample row" : "Raw"}:{" "}
-                          {fmtMoney(row.line_item.gross_charge)} gross
-                          {row.line_item.discounted_cash != null
-                            ? ` · ${fmtMoney(row.line_item.discounted_cash)} cash`
-                            : ""}
-                        </p>
-                      ) : null}
-                    </td>
-                    <td className="px-7 py-5 text-right align-top">
-                      <Link
-                        to={`/explore/${row.code_system}/${row.code}`}
-                        className="inline-flex items-center gap-1 text-xs font-medium text-ink underline-offset-4 hover:underline"
-                      >
-                        See all hospitals
-                        <svg
-                          viewBox="0 0 24 24"
-                          className="h-3 w-3"
-                          fill="none"
-                        >
-                          <path
-                            d="M5 12h14m0 0l-6-6m6 6l-6 6"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </Link>
-                    </td>
-                  </tr>
-                  {isOpen && hasMultiple ? (
-                    <tr className="bg-section/30">
-                      <td colSpan={3} className="px-7 py-5 align-top border-t border-line/50">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-inkSubtle mb-3">
-                          All {totalLineItems}
-                          {row.line_items_truncated && totalLineItems > items.length
-                            ? "+"
-                            : ""}{" "}
-                          line items this hospital publishes for {row.code_system} {row.code}
-                          {row.line_items_truncated && totalLineItems > items.length ? (
-                            <span className="normal-case tracking-normal text-inkSubtle">
-                              {" "}
-                              (showing first {items.length}, sorted cheapest first)
-                            </span>
-                          ) : (
-                            <span className="normal-case tracking-normal text-inkSubtle">
-                              {" "}
-                              (sorted cheapest first)
-                            </span>
-                          )}
-                        </p>
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-xs">
-                            <thead className="text-[10px] uppercase tracking-[0.14em] text-inkSubtle">
-                              <tr>
-                                <th className="text-left pb-2 pr-4 font-medium">Description</th>
-                                <th className="text-left pb-2 pr-4 font-medium">Dose</th>
-                                <th className="text-left pb-2 pr-4 font-medium">Setting</th>
-                                <th className="text-right pb-2 pr-4 font-medium">Gross</th>
-                                <th className="text-right pb-2 pr-4 font-medium">Cash</th>
-                                <th className="text-right pb-2 font-medium">
-                                  Per {row.billing_unit || "unit"}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {items.map((li, i) => (
-                                <tr
-                                  key={i}
-                                  className="border-t border-line/40 align-top"
-                                >
-                                  <td className="py-2 pr-4 text-inkMuted">
-                                    {li.description || (
-                                      <span className="text-inkSubtle">(no description)</span>
-                                    )}
-                                  </td>
-                                  <td className="py-2 pr-4 text-inkMuted whitespace-nowrap">
-                                    {li.dose || (
-                                      <span className="text-inkSubtle">—</span>
-                                    )}
-                                  </td>
-                                  <td className="py-2 pr-4 text-inkMuted whitespace-nowrap">
-                                    {li.setting || (
-                                      <span className="text-inkSubtle">—</span>
-                                    )}
-                                  </td>
-                                  <td className="py-2 pr-4 text-right text-inkMuted whitespace-nowrap">
-                                    {li.gross_charge != null
-                                      ? fmtMoney(li.gross_charge)
-                                      : <span className="text-inkSubtle">—</span>}
-                                  </td>
-                                  <td className="py-2 pr-4 text-right text-inkMuted whitespace-nowrap">
-                                    {li.discounted_cash != null
-                                      ? fmtMoney(li.discounted_cash)
-                                      : <span className="text-inkSubtle">—</span>}
-                                  </td>
-                                  <td className="py-2 text-right whitespace-nowrap font-medium text-ink">
-                                    {li.price != null
-                                      ? fmtMoney(li.price)
-                                      : li.gross_charge_per_unit != null
-                                      ? fmtMoney(li.gross_charge_per_unit)
-                                      : <span className="text-inkSubtle">—</span>}
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                        <p className="text-[11px] text-inkSubtle mt-3 leading-snug">
-                          Cheapest and most expensive rows above are real
-                          chargemaster entries the hospital published. The
-                          per-{row.billing_unit || "unit"} column normalizes
-                          vial size differences so a 100 mg row sits on the
-                          same scale as a 10 mg row.
-                        </p>
-                      </td>
-                    </tr>
-                  ) : null}
-                  </Fragment>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {visible.length === 0 && (
-          <p className="px-6 py-12 text-center text-sm text-inkSubtle">
-            No procedures or drugs match those filters.
-          </p>
-        )}
-        {visible.length > 800 && (
-          <p className="px-6 py-3 text-center text-xs text-inkSubtle border-t border-line/70">
-            Showing the first 800 of {visible.length.toLocaleString()} matches.
-          </p>
-        )}
-      </div>
+      {/* FULL CHARGEMASTER SEARCH (primary experience) */}
+      <FullChargemaster
+        hospitalId={detail.hospital_id}
+        hospitalName={detail.name}
+        state={detail.state ? stateName(detail.state) : null}
+        codesByKey={codesByKey}
+        stateStatsByKey={stateStatsByKey}
+        hospitalCodesByKey={hospitalCodesByKey}
+        fallbackRows={fallbackRows}
+      />
     </div>
-  );
-}
-
-function CategoryPill({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 ${
-        active
-          ? "border-ink bg-ink text-bg"
-          : "border-line bg-surface text-inkMuted hover:border-ink hover:text-ink"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function SortableTh({
-  active,
-  asc,
-  onClick,
-  className,
-  children,
-}: {
-  active: boolean;
-  asc: boolean;
-  onClick: () => void;
-  className: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <th className={className}>
-      <button
-        type="button"
-        onClick={onClick}
-        className={`inline-flex items-center gap-1.5 ${
-          active ? "text-ink" : "hover:text-ink"
-        }`}
-      >
-        {children}
-        <span
-          className={`transition-transform text-[10px] ${
-            active ? (asc ? "rotate-180" : "") : "opacity-30"
-          }`}
-        >
-          ▾
-        </span>
-      </button>
-    </th>
   );
 }

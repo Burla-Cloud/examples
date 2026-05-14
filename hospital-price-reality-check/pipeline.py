@@ -287,6 +287,100 @@ def _cleanup_raw(raw_dir: Path) -> None:
         pass
 
 
+FULL_CHARGEMASTER_ROW_CAP: int | None = None
+
+
+def parse_hospital_mrf_full_chargemaster(hospital: dict) -> dict:
+    """Burla worker: download one MRF, extract EVERY priced row (no code
+    filter), and write it to a separate jsonl. When FULL_CHARGEMASTER_ROW_CAP
+    is None, NO cap is applied and every priced row in the MRF is emitted.
+    Otherwise rows are truncated to the cap.
+
+    This is the input to the per-hospital "Full chargemaster" search view
+    on hospital profile pages. The curated 360-code analysis runs from the
+    separate observations/*.jsonl files written by parse_hospital_mrf().
+    """
+    hospital_id = hospital["hospital_id"]
+    root = shared_hpt_root()
+    raw_dir = root / "raw" / hospital_id
+    chm_dir = root / "chargemaster_full"
+    chm_dir.mkdir(parents=True, exist_ok=True)
+    keep_raw = os.environ.get("HPT_KEEP_RAW", "0").lower() in ("1", "true", "yes")
+    out_path = chm_dir / f"{hospital_id}.jsonl"
+    fail_path = chm_dir / f"{hospital_id}.fail"
+
+    if os.environ.get("HPT_SKIP_EXISTING", "1").lower() in ("1", "true", "yes"):
+        if out_path.is_file() and out_path.stat().st_size > 0:
+            try:
+                with open(out_path, "r", encoding="utf-8") as f:
+                    n = sum(1 for line in f if line.strip())
+            except OSError:
+                n = 0
+            return {
+                "hospital_id": hospital_id,
+                "rows": n,
+                "out": str(out_path),
+                "error": None,
+                "cached": True,
+            }
+        if fail_path.is_file() and os.environ.get("HPT_RETRY_FAILED", "0").lower() not in ("1", "true", "yes"):
+            try:
+                err = fail_path.read_text(encoding="utf-8").strip()[:160]
+            except OSError:
+                err = "previously failed"
+            return {
+                "hospital_id": hospital_id,
+                "rows": 0,
+                "error": err,
+                "out": None,
+                "cached": True,
+            }
+
+    try:
+        raw_path = download_streaming(hospital["mrf_url"], raw_dir)
+        sz_mb = raw_path.stat().st_size / 1e6
+        parser = pick_parser(raw_path)
+        truncated = False
+        cap = FULL_CHARGEMASTER_ROW_CAP
+        n_rows = 0
+        tmp_path = out_path.with_suffix(".jsonl.tmp")
+        with open(tmp_path, "w", encoding="utf-8") as fout:
+            for r in parser.iter_priced_items(raw_path, None):
+                fout.write(json.dumps(normalize_row(r, hospital)))
+                fout.write("\n")
+                n_rows += 1
+                if cap is not None and n_rows >= cap:
+                    truncated = True
+                    break
+        if n_rows == 0:
+            tmp_path.write_text("\n", encoding="utf-8")
+        tmp_path.replace(out_path)
+        print(
+            f"{hospital_id}: chargemaster {n_rows} rows"
+            f"{' (truncated)' if truncated else ''} "
+            f"from {raw_path.suffix} ({sz_mb:.1f}MB)"
+        )
+        if not keep_raw:
+            _cleanup_raw(raw_dir)
+        return {
+            "hospital_id": hospital_id,
+            "rows": n_rows,
+            "truncated": truncated,
+            "raw_size_mb": round(sz_mb, 1),
+            "out": str(out_path),
+            "error": None,
+        }
+    except Exception as e:
+        if not keep_raw:
+            _cleanup_raw(raw_dir)
+        try:
+            fail_path.write_text(f"{type(e).__name__}: {e}", encoding="utf-8")
+        except OSError:
+            pass
+        print(f"{hospital_id}: chargemaster ERROR {e}")
+        return {"hospital_id": hospital_id, "rows": 0, "error": str(e), "out": None}
+
+
 def parse_hospital_mrf(hospital: dict) -> dict:
     """Burla worker: download one MRF, extract target code rows, write jsonl."""
     hospital_id = hospital["hospital_id"]

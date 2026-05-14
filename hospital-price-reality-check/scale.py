@@ -33,7 +33,10 @@ def _ensure_ca_bundle() -> None:
 _ensure_ca_bundle()
 
 from hospital_index import load_hospitals  # noqa: E402
-from pipeline import parse_hospital_mrf  # noqa: E402
+from pipeline import (  # noqa: E402
+    parse_hospital_mrf,
+    parse_hospital_mrf_full_chargemaster,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent
 SAMPLES = REPO_ROOT / "samples"
@@ -79,7 +82,21 @@ def main() -> None:
         action="store_true",
         help="Skip hospitals that already have an observations jsonl on disk.",
     )
+    ap.add_argument(
+        "--full-chargemaster",
+        action="store_true",
+        help=(
+            "Run parse_hospital_mrf_full_chargemaster instead of the curated parser. "
+            "Emits EVERY priced row per hospital (capped at 50K) into "
+            "/workspace/shared/hpt/chargemaster/*.jsonl. Used to power the "
+            "per-hospital 'Full chargemaster' search view."
+        ),
+    )
     args = ap.parse_args()
+    worker_fn = (
+        parse_hospital_mrf_full_chargemaster if args.full_chargemaster else parse_hospital_mrf
+    )
+    obs_subdir = "chargemaster_full" if args.full_chargemaster else "observations"
 
     idx = REPO_ROOT / "data" / "hospital_index.json"
     hospitals = load_hospitals(
@@ -100,7 +117,7 @@ def main() -> None:
         hospitals = capped
     if args.skip_existing:
         from pipeline import shared_hpt_root
-        obs_dir = shared_hpt_root() / "observations"
+        obs_dir = shared_hpt_root() / obs_subdir
         kept = []
         skipped_ok = 0
         skipped_failed = 0
@@ -130,13 +147,13 @@ def main() -> None:
     t0 = time.time()
     if use_local:
         if args.local_threads <= 1:
-            results = [parse_hospital_mrf(h) for h in hospitals]
+            results = [worker_fn(h) for h in hospitals]
         else:
             from concurrent.futures import ThreadPoolExecutor
 
             results = []
             with ThreadPoolExecutor(max_workers=args.local_threads) as ex:
-                for r in ex.map(parse_hospital_mrf, hospitals):
+                for r in ex.map(worker_fn, hospitals):
                     results.append(r)
                     if not r.get("error"):
                         print(
@@ -153,11 +170,12 @@ def main() -> None:
         from burla import remote_parallel_map
 
         if args.wipe_shared:
+            wipe_subdir = obs_subdir
             def _wipe_shared(_: int) -> str:
                 import shutil
                 from pathlib import Path as P
 
-                obs = P("/workspace/shared/hpt/observations")
+                obs = P(f"/workspace/shared/hpt/{wipe_subdir}")
                 if obs.is_dir():
                     shutil.rmtree(obs)
                 return "wiped"
@@ -175,11 +193,12 @@ def main() -> None:
             )
 
         results = remote_parallel_map(
-            parse_hospital_mrf,
+            worker_fn,
             hospitals,
             func_cpu=args.func_cpu,
             func_ram=args.func_ram,
             max_parallelism=args.max_parallelism,
+            grow=True,
             spinner=True,
         )
         mode = "REMOTE_OK"
@@ -191,6 +210,7 @@ def main() -> None:
 
     summary = {
         "mode": mode,
+        "pass": "full_chargemaster" if args.full_chargemaster else "curated_targets",
         "elapsed_seconds": round(elapsed, 2),
         "hospitals_submitted": len(hospitals),
         "hospitals_succeeded": len(successes),
@@ -198,7 +218,12 @@ def main() -> None:
         "observation_rows_reported": obs,
     }
     SAMPLES.mkdir(parents=True, exist_ok=True)
-    (SAMPLES / "hpt_scale_summary.json").write_text(
+    summary_name = (
+        "hpt_scale_chargemaster_summary.json"
+        if args.full_chargemaster
+        else "hpt_scale_summary.json"
+    )
+    (SAMPLES / summary_name).write_text(
         json.dumps({**summary, "failures_sample": failures[:20]}, indent=2), encoding="utf-8"
     )
     print(json.dumps(summary, indent=2))

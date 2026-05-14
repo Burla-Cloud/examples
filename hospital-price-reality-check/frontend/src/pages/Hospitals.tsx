@@ -100,13 +100,15 @@ export function Hospitals() {
   return (
     <div className="space-y-14 animate-floatIn">
       <div className="max-w-3xl">
-        <p className="eyebrow">The hospitals in this run</p>
+        <p className="eyebrow">Pick a hospital to search its prices</p>
         <h1 className="display-2 mt-3 text-balance">
-          {fmtNum(summary.total)} real US hospitals.
+          {fmtNum(summary.total)} US hospitals,{" "}
+          <span className="italic text-accent">every priced item.</span>
         </h1>
         <p className="body-lead mt-5 text-pretty">
-          These are the hospitals whose federal price transparency files we
-          read for this dataset. Click any row to open their official MRF.
+          Search by name, filter by state, then open a hospital to look up
+          any procedure, drug, or lab in their federal price transparency
+          file and see how it compares to other hospitals nearby.
         </p>
         <RateBadge variant="inline" plural className="mt-5" />
       </div>

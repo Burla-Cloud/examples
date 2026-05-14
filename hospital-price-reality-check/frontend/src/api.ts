@@ -1,4 +1,5 @@
 import type {
+  ChargemasterDoc,
   CodeEntry,
   HospitalDetail,
   HospitalIndexRow,
@@ -61,5 +62,44 @@ export function loadHospitalDetail(hospitalId: string): Promise<HospitalDetail> 
     pending = loadJson<HospitalDetail>(`hospitals/${hospitalId}.json`);
     hospitalDetailCache.set(hospitalId, pending);
   }
+  return pending;
+}
+
+const chargemasterCache = new Map<string, Promise<ChargemasterDoc>>();
+
+/**
+ * Fetch the per-hospital "Full chargemaster" JSON.gz bundle (every priced row
+ * the hospital published in their MRF, capped at 50K). The file is gzipped
+ * on disk because GitHub Pages doesn't auto-Content-Encoding .gz; we
+ * decompress in the browser with DecompressionStream.
+ */
+export function loadFullChargemaster(
+  hospitalId: string,
+): Promise<ChargemasterDoc> {
+  let pending = chargemasterCache.get(hospitalId);
+  if (pending) return pending;
+  pending = (async () => {
+    const url = dataUrl(`chargemaster/${hospitalId}.json.gz`);
+    const res = await fetch(url, { cache: "force-cache" });
+    if (!res.ok) {
+      if (res.status === 404) {
+        throw new Error(
+          "This hospital's full chargemaster isn't built yet.",
+        );
+      }
+      throw new Error(`Failed to load chargemaster (HTTP ${res.status})`);
+    }
+    if (!res.body) throw new Error("No response body");
+    if (typeof DecompressionStream === "undefined") {
+      throw new Error(
+        "Your browser can't decompress this bundle. Try a recent Chrome/Edge/Firefox/Safari.",
+      );
+    }
+    const ds = new DecompressionStream("gzip");
+    const decompressed = new Response(res.body.pipeThrough(ds));
+    const doc = (await decompressed.json()) as ChargemasterDoc;
+    return doc;
+  })();
+  chargemasterCache.set(hospitalId, pending);
   return pending;
 }
