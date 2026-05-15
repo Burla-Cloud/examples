@@ -134,16 +134,32 @@ export function FullChargemaster({
   // user knows the bigger data is coming.
   const usingFallback = status !== "ready" && (fallbackRows?.length ?? 0) > 0;
   const effectiveDoc: ChargemasterDoc | null = useMemo(() => {
-    if (status === "ready" && doc) return doc;
+    const filterPriced = (rows: ChargemasterRow[]): ChargemasterRow[] =>
+      rows.filter((r) => {
+        // Older bundles include rows with no price (a description + code but
+        // no gross/cash/min/max/per-unit). Drop them client-side so the UI
+        // only shows rows the hospital actually priced.
+        const vals: Array<number | null | undefined> = [r.g, r.ca, r.mn, r.mx, r.p];
+        return vals.some((v) => typeof v === "number" && v > 0);
+      });
+    if (status === "ready" && doc) {
+      const rows = filterPriced(doc.rows);
+      return {
+        ...doc,
+        rows,
+        total: rows.length,
+      };
+    }
     if (fallbackRows && fallbackRows.length > 0) {
+      const rows = filterPriced(fallbackRows);
       return {
         hospital_id: hospitalId,
         name: hospitalName,
         state: state ?? null,
         mrf_url: null,
-        total: fallbackRows.length,
+        total: rows.length,
         truncated: false,
-        rows: fallbackRows,
+        rows,
       };
     }
     return null;
