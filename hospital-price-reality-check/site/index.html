@@ -16,6 +16,23 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Hospital Price Reality Check</title>
+    <script>
+      // SPA fallback for GitHub Pages sub-directory deploys. If a visitor lands
+      // on a deep link like /examples/hospital-price-reality-check/hospitals,
+      // GitHub serves index.html (or 404.html, identical) without that path on
+      // disk. We use a HashRouter, so before React boots we rewrite any
+      // post-base path segments into the URL fragment that the router reads.
+      (function () {
+        try {
+          var base = "/examples/hospital-price-reality-check/";
+          var path = window.location.pathname;
+          if (path.indexOf(base) === 0 && path.length > base.length) {
+            var route = "/" + path.slice(base.length) + window.location.search;
+            window.history.replaceState(null, "", base + "#" + route);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/examples/hospital-price-reality-check/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +40,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/examples/hospital-price-reality-check/assets/index-CYp-YCer.js"></script>
+    <script type="module" crossorigin src="/examples/hospital-price-reality-check/assets/index-D3_1Brjv.js"></script>
     <link rel="stylesheet" crossorigin href="/examples/hospital-price-reality-check/assets/index-BjRWjiJT.css">
   </head>
   <body class="bg-bg text-ink antialiased">

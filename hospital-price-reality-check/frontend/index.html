@@ -16,6 +16,23 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Hospital Price Reality Check</title>
+    <script>
+      // SPA fallback for GitHub Pages sub-directory deploys. If a visitor lands
+      // on a deep link like /examples/hospital-price-reality-check/hospitals,
+      // GitHub serves index.html (or 404.html, identical) without that path on
+      // disk. We use a HashRouter, so before React boots we rewrite any
+      // post-base path segments into the URL fragment that the router reads.
+      (function () {
+        try {
+          var base = "/examples/hospital-price-reality-check/";
+          var path = window.location.pathname;
+          if (path.indexOf(base) === 0 && path.length > base.length) {
+            var route = "/" + path.slice(base.length) + window.location.search;
+            window.history.replaceState(null, "", base + "#" + route);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
