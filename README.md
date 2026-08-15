@@ -197,9 +197,9 @@ binaries, geospatial stacks, and embarrassingly parallel simulation.
       <p>Compute NDVI, clip, or reproject one Sentinel tile per worker with geospatial dependencies ready.</p>
     </td>
     <td width="33%" valign="top">
-      <a href="monte-carlo-simulation/"><img src="assets/readme/monte-carlo-simulation.png" alt="Monte Carlo simulation" width="100%"></a>
-      <h3><a href="monte-carlo-simulation/">Billion-path Monte Carlo</a></h3>
-      <p>Run independent simulations across thousands of workers and return tiny aggregate summaries.</p>
+      <a href="monte-carlo-simulation/"><img src="assets/readme/monte-carlo-simulation.png" alt="Hurricane loss simulation" width="100%"></a>
+      <h3><a href="monte-carlo-simulation/">Hurricane portfolio tail risk</a></h3>
+      <p>Simulate one million hurricane years and combine sparse loss histograms into an annual exceedance curve.</p>
     </td>
   </tr>
 </table>
