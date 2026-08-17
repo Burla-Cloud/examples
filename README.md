@@ -6,7 +6,7 @@ turning the project into a distributed-systems rewrite.
 
 <table>
   <tr>
-    <td align="center"><strong>21 example folders</strong><br>from one-file fan-out to full pipelines</td>
+    <td align="center"><strong>22 example folders</strong><br>from one-file fan-out to full pipelines</td>
     <td align="center"><strong>9 live demos</strong><br>with published findings and artifacts</td>
     <td align="center"><strong>CPU, GPU, Docker</strong><br>changed per function call</td>
     <td align="center"><strong>One Python API</strong><br><code>remote_parallel_map</code></td>
@@ -31,6 +31,7 @@ turning the project into a distributed-systems rewrite.
 | [ML, embeddings, and vision](#ml-embeddings-and-vision) | model-heavy jobs where runtime and hardware choice matter | A100 embeddings, batch inference |
 | [Production data jobs](#production-data-jobs) | the scripts data teams actually need to make fast and reliable | image resize, Parquet, pandas, ETL, APIs, scraping |
 | [Native tools and simulations](#native-tools-and-simulations) | binaries, geospatial dependencies, and massive independent compute | BWA-MEM, GDAL, Monte Carlo |
+| [Benchmarks](#benchmarks) | reproducible full-scale runs with methods, artifacts, and honest limits | GovDocs1 PDF text extraction |
 
 ## Data stories with live sites
 
@@ -204,12 +205,25 @@ binaries, geospatial stacks, and embarrassingly parallel simulation.
   </tr>
 </table>
 
+## Benchmarks
+
+These preserve the runnable workload and the evidence from a real full-scale
+run, including results that fell short of the intended target.
+
+### [GovDocs1 PDF text extraction](govdocs-pdf-ocr/)
+
+**231,231 PDFs, 6.09M pages, and 2,572 vCPUs.** Copy and index all 1,000
+official GovDocs1 archives, extract existing text, OCR image-only pages, and
+write one plain-text object per successful document. The reproduction guide
+includes a small pilot, resumable full-corpus commands, pinned dependencies and
+worker image, measured utilization, and the benchmark's limitations.
+
 ## What Burla Is Showing Off Here
 
 | Capability | Where it shows up |
 | --- | --- |
 | Change hardware per call | CPU photo scoring in Airbnb, A100 embedding in Wikipedia/arXiv/The Met, CPU-only simulation in Kentucky Derby |
-| Change runtime per function | CUDA image for embeddings, GDAL image for raster jobs, BWA/samtools image for genomics |
+| Change runtime per function | CUDA image for embeddings, GDAL image for raster jobs, BWA/samtools image for genomics, OCRmyPDF and pdftotext for GovDocs1 |
 | Keep plain Python control flow | scripts call `remote_parallel_map` directly instead of rewriting into Spark, Ray, Airflow, or Kubernetes objects |
 | Put concurrency in the code | API limits, Postgres protection, website politeness, and cluster quota control live next to the workload |
 | Stream useful artifacts back | generated sites, Parquet shards, vector indexes, JSON outputs, and progress from `generator=True` |

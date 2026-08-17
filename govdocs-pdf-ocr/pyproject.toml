@@ -1,0 +1,14 @@
+[project]
+name = "burla-govdocs-pdf-ocr"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "boto3>=1.43.72",
+    "burla==1.6.6",
+    "pypdf>=6.16.1",
+    "remotezip>=0.12.3",
+    "requests>=2.32.4",
+]
+
+[tool.uv]
+package = false
