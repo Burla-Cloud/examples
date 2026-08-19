@@ -1,0 +1,23 @@
+FROM public.ecr.aws/e2g5l2y4/burla-pdf-ocr-benchmark@sha256:ccd4d8d959e922da7017cfd12e93a0d6ec47a738aea45301aaeeea691ab8d74a
+
+COPY --from=ghcr.io/astral-sh/uv:0.9.5 /uv /uvx /bin/
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssh-client rsync \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN uv pip install --python /app/.venv/bin/python \
+    boto3==1.43.56 \
+    botocore==1.43.56 \
+    burla==1.6.6 \
+    dask==2026.7.1 \
+    distributed==2026.7.1 \
+    prometheus-client==0.26.0 \
+    psutil==7.2.2 \
+    pypdf==6.16.1 \
+    ray[default]==2.57.0 \
+    remotezip==0.12.3 \
+    requests==2.32.4
+
+USER root
+ENTRYPOINT []
