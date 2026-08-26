@@ -321,7 +321,7 @@ def parse_args():
     parser.add_argument("--run-id")
     parser.add_argument("--archives", nargs="*")
     parser.add_argument("--limit", type=int)
-    parser.add_argument("--max-parallelism", type=int, default=8)
+    parser.add_argument("--max-parallelism", type=int)
     parser.add_argument("--image", default=OCR_IMAGE)
     parser.add_argument("--url-expiration-seconds", type=int, default=43_200)
     parser.add_argument("--dashboard-url")
@@ -382,6 +382,11 @@ def main() -> None:
     started = time.perf_counter()
     new_results = []
     if pending_documents:
+        parallelism_options = (
+            {"max_parallelism": args.max_parallelism}
+            if args.max_parallelism is not None
+            else {}
+        )
         result_generator = remote_parallel_map(
             extract_text,
             pending_documents,
@@ -389,9 +394,9 @@ def main() -> None:
             func_ram="dynamic",
             image=args.image,
             grow=True,
-            max_parallelism=args.max_parallelism,
             generator=True,
             spinner=False,
+            **parallelism_options,
         )
         try:
             new_results.extend(result_generator)

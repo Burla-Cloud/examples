@@ -71,12 +71,11 @@ uv run python stage_corpus.py \
 
 uv run python run_burla.py \
   --corpus-run-id govdocs1-v1 \
-  --run-id govdocs1-text-v1 \
-  --max-parallelism 2000
+  --run-id govdocs1-text-v1
 ```
 
-The full invocation can launch more than 2,000 vCPUs. Run the pilot first and
-confirm your cloud quota and budget.
+Without an explicit parallelism cap, Burla can launch up to its 2,560-vCPU grow
+limit. Run the pilot first and confirm your cloud quota and budget.
 
 Interrupted extraction runs save `results.partial.jsonl` and resume only missing
 document IDs. Final records are `results.jsonl` and `summary.json`. Text objects,
