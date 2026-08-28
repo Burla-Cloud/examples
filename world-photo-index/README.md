@@ -40,10 +40,9 @@ user-provided tags put it on the map.
   tags / top cities / per-capita rank / theme vocabulary, and nine
   one-click findings cards.
 - **`FINDINGS.md`** — the full writeup of the nine findings, with citations.
-- **`data/`** — the output artifacts consumed by the frontend
+- **`data/`** contains generated, Git-ignored frontend artifacts
   (`world.json`, `findings.json`, `countries/*.json`, 220 country detail
   files).
-- **`probe.py`** — quick HF + reverse-geocoder verification script.
 - **`pipeline.py`** — one Burla worker: downloads one HF shard, reverse-
   geocodes all lat/lon, writes a JSONL row per photo to
   `/workspace/shared/wpi/shards/`.
@@ -54,8 +53,8 @@ user-provided tags put it on the map.
   rollups).
 - **`analysis.py`** — local: TF-IDF + theme-vocabulary scoring, writes every
   JSON the frontend needs, including the nine findings.
-- **`smoke.py` / `warmup.py` / `scale.py`** — helpers for cluster warm-up
-  and mass dispatch.
+- **`warmup.py` / `scale.py`** — helpers for cluster warm-up and mass
+  dispatch.
 
 ## Top-9 findings (shortlist)
 

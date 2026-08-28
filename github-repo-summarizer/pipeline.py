@@ -416,30 +416,3 @@ def summarize_shard(shard_idx: int, n_shards: int) -> Dict[str, Any]:
         "n_err": n_err,
         "elapsed_s": payload["elapsed_s"],
     }
-
-
-# ---- Local smoke test ------------------------------------------------------
-
-if __name__ == "__main__":
-    # Synthetic test
-    sample = """# Awesome ML Framework
-
-A TensorFlow-style deep learning library for Python. Implements neural networks
-with autograd, convolution layers, and a scikit-learn-compatible API.
-
-## Install
-
-```bash
-pip install awesome-ml
-```
-
-## Usage
-
-```python
-from awesome_ml import Model
-m = Model()
-m.fit(X, y)
-```
-"""
-    s = summarize_row("foo/awesome-ml", "Python", "README.md", len(sample), sample)
-    print(json.dumps(s, indent=2))

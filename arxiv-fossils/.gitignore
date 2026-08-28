@@ -8,3 +8,4 @@ local_shared/
 local_cache/
 results_local/
 *.parquet
+arxiv_fossils_out/

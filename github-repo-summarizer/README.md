@@ -43,7 +43,7 @@ rankings, and TF-IDF distinctive words all come from regex + word counts.
   TF-IDF distinctive words), and a client-side search index over ~6k
   sampled repos.
 - **`FINDINGS.md`** — the full writeup of the nine findings.
-- **`data/`** — the frontend artifacts:
+- **`data/`** contains generated, Git-ignored frontend artifacts:
   - `index.json` — headline stats + top categories / languages / installs
   - `categories.json` — per-category metadata
   - `findings.json` — the nine ranked findings in structured form
@@ -52,7 +52,6 @@ rankings, and TF-IDF distinctive words all come from regex + word counts.
 - **`prepare.py`** — pulls 1.2M READMEs from BigQuery via
   `bigquery-public-data.github_repos`, streams Arrow batches directly to
   a zstd-compressed Parquet file on disk (no in-memory materialization).
-- **`probe.py`** — BigQuery + README access smoke test.
 - **`scale.py`** — uploads the parquet to the Burla shared filesystem via
   a scatter-gather pattern (N parallel workers write chunks → 1 finalizer
   concatenates + decompresses), then fans out `summarize_shard(600)`.

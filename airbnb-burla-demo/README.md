@@ -85,9 +85,10 @@ src/
   lib/               # io, budget, retries, Inside Airbnb client
 site/                # static HTML/CSS/JS, fed by data/outputs
 data/
-  manual_blocklist.json   # human review: dropped IDs + pinned-top order
-  outputs/                # final JSON the site reads (committed)
+  outputs/                # generated JSON consumed by the site
   raw/, interim/          # gitignored
+config/
+  manual_blocklist.json   # human review: dropped IDs + pinned-top order
 scripts/
   apply_manual_blocklist.py   # post-process s06 outputs against the blocklist
   preload_clip_weights.py     # pre-stage CLIP weights to /workspace/shared
@@ -130,7 +131,7 @@ Kubernetes, no orchestration glue.
 
 ## Manual review
 
-`data/manual_blocklist.json` is the human override layer. Two parts:
+`config/manual_blocklist.json` is the human override layer. Two parts:
 
 - **`by_city_name`** - listings flagged as not passing visual review.
   `scripts/apply_manual_blocklist.py` resolves them to listing IDs,

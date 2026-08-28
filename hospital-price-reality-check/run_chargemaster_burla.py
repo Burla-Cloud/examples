@@ -132,7 +132,7 @@ def main() -> None:
     print(f"shipping {len(sources)} source files: {sorted(sources)}")
 
     data_files: dict[str, str] = {}
-    data_paths: list[str] = ["data/code_seeds.csv"]
+    data_paths: list[str] = ["config/code_seeds.csv"]
     for fp in (REPO_ROOT / "data_sources").glob("*"):
         if fp.is_file():
             data_paths.append(f"data_sources/{fp.name}")

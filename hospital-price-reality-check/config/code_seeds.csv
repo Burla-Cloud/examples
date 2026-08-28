@@ -1,0 +1,362 @@
+category,code_system,code,display_name,what_it_is,when_youd_need_it
+surgical,CPT,27447,Total knee replacement,Surgery to replace the knee joint with an implant.,Severe knee arthritis or joint failure when other treatments failed.
+surgical,CPT,27130,Total hip replacement,Surgery to replace the hip joint with an implant.,Advanced hip arthritis or fracture when surgery is the best option.
+surgical,CPT,59510,Cesarean delivery,Surgical delivery of a baby through the abdomen.,When vaginal birth is unsafe or not progressing.
+surgical,CPT,59400,Routine obstetric care vaginal delivery,Prenatal care plus vaginal delivery bundle coding.,Uncomplicated pregnancy ending in vaginal birth.
+surgical,CPT,44970,Laparoscopic appendectomy,Removal of the appendix through small incisions.,Suspected or confirmed appendicitis.
+surgical,CPT,66984,Cataract removal with lens,Removal of clouded lens and replacement with artificial lens.,Vision problems from cataract.
+surgical,CPT,45380,Colonoscopy with biopsy,Colonoscopy with removal of tissue sample.,Abnormal findings or cancer screening when polyp removal needed.
+surgical,CPT,42820,Tonsillectomy,Removal of tonsils.,Recurrent infections or sleep apnea related to tonsils.
+surgical,CPT,47562,Laparoscopic gallbladder removal,Removal of gallbladder through laparoscope.,Gallstones causing pain or complications.
+surgical,CPT,33533,Coronary artery bypass graft,Bypass surgery for blocked heart arteries.,Severe coronary disease not fixable with stents.
+surgical,CPT,64721,Carpal tunnel release,Release of compressed nerve at the wrist.,Numbness and weakness from carpal tunnel.
+surgical,CPT,49505,Inguinal hernia repair,Repair of groin hernia.,Painful or enlarged groin hernia.
+surgical,CPT,29827,Arthroscopic rotator cuff repair,Shoulder repair through small incisions.,Torn rotator cuff causing dysfunction.
+surgical,CPT,22612,Spinal fusion lumbar,Fusion of vertebrae in the low back.,Instability or deformity needing fusion.
+surgical,CPT,58150,Total hysterectomy,Removal of uterus.,"Fibroids, cancer, or other uterine conditions."
+surgical,CPT,29826,Shoulder arthroscopy decompression,Arthroscopic shoulder surgery for impingement.,Shoulder pain from impingement syndrome.
+surgical,CPT,29888,ACL reconstruction,Rebuild of torn knee ligament.,ACL tear in active patients.
+surgical,CPT,29881,Knee arthroscopy meniscectomy,Trim torn meniscus via scope.,Torn meniscus with mechanical symptoms.
+surgical,CPT,43775,Lap sleeve gastrectomy,Weight loss surgery reducing stomach size.,Obesity when surgery is indicated.
+surgical,CPT,43644,Gastric bypass Roux-en-Y,Weight loss surgery rerouting intestines.,Obesity with comorbid conditions.
+surgical,CPT,55250,Vasectomy,Sterilization procedure for male patients.,Permanent contraception choice.
+surgical,CPT,58670,Tubal ligation,Sterilization by closing fallopian tubes.,Permanent contraception choice.
+surgical,CPT,37722,Varicose vein ablation,Closure of diseased leg veins.,Symptomatic varicose veins.
+surgical,CPT,19318,Breast reduction,Surgical reduction of breast tissue.,Symptomatic macromastia.
+surgical,CPT,30520,Septoplasty,Straighten nasal septum.,Blocked airway from deviated septum.
+surgical,CPT,41899,Dental extraction surgical,Surgical tooth removal.,Impacted or damaged teeth.
+surgical,CPT,17311,Mohs surgery stage,Skin cancer layered removal.,Certain skin cancers on visible areas.
+surgical,CPT,27509,Open fracture care,Surgical repair of broken bone with exposure.,Open fractures needing OR fixation.
+surgical,CPT,28285,Hammer toe correction,Toe deformity repair.,Painful fixed hammer toe.
+surgical,CPT,28665,Ankle ligament repair,Repair torn ankle ligaments.,Persistent ankle instability.
+surgical,CPT,23430,Shoulder biceps tenodesis,Reattach biceps tendon.,Biceps tendon pathology.
+surgical,CPT,28292,Bunion correction,Correction of big toe deformity.,Painful bunion.
+surgical,CPT,25515,Forearm fracture ORIF,Open repair of forearm fracture.,Unstable forearm fractures.
+surgical,CPT,27758,Ankle fracture ORIF,Open repair ankle fracture.,Unstable ankle fracture.
+surgical,CPT,21315,Closed nasal bone fracture treatment,Straightening nasal fracture without open approach.,Recent nasal fracture.
+surgical,CPT,30115,Nasal/sinus polypectomy,Removal of nasal polyps.,Chronic polyps blocking airway.
+surgical,CPT,31575,Laryngoscopy diagnostic,Scope of voice box for diagnosis.,Hoarseness or airway concern.
+surgical,CPT,31622,Bronchoscopy diagnostic,Scope of airways.,Lung mass or bleeding evaluation.
+surgical,CPT,32550,Chest tube insertion,Drainage tube for lung space.,Pneumothorax or pleural effusion.
+surgical,CPT,36561,PICC line insertion,Long IV line to large vein.,Long term IV therapy needs.
+imaging,CPT,70551,MRI brain without contrast,Magnetic scan of the brain without dye.,"Headache, neurologic symptoms, or mass workup."
+imaging,CPT,70552,MRI brain with contrast,MRI brain with gadolinium dye.,"Tumor, infection, or MS evaluation."
+imaging,CPT,72148,MRI lumbar spine without contrast,MRI of low back.,"Sciatica, stenosis, or disc evaluation."
+imaging,CPT,73721,MRI knee without contrast,MRI of knee structures.,Internal knee injury suspicion.
+imaging,CPT,71250,CT chest without contrast,CT scan of chest without dye.,"Lung nodule, infection, or trauma."
+imaging,CPT,71260,CT chest with contrast,Chest CT with IV dye.,"Mass, PE, or vascular evaluation."
+imaging,CPT,74177,CT abdomen pelvis with contrast,CT of belly and pelvis with dye.,"Abdominal pain, cancer staging."
+imaging,CPT,77067,Screening mammography bilateral,Routine breast cancer screening.,Age-based breast screening.
+imaging,CPT,77065,Diagnostic mammography,Detailed mammogram for symptom or finding.,Breast lump or abnormal screening.
+imaging,CPT,71046,Chest X-ray 2 views,Two-view chest radiograph.,"Cough, pneumonia suspicion, pre-op."
+imaging,CPT,93306,Echocardiography complete,Ultrasound of heart structure and function.,"Heart murmur, heart failure, valve disease."
+imaging,CPT,77080,DEXA bone density,Low-dose X-ray for bone strength.,Osteoporosis screening or monitoring.
+imaging,CPT,76700,Ultrasound abdomen complete,Ultrasound survey of abdominal organs.,"Liver, gallbladder, kidney symptoms."
+imaging,CPT,76856,Ultrasound pelvis non-OB,Pelvic ultrasound not for pregnancy.,"Pelvic pain, fibroid workup."
+imaging,CPT,76830,Transvaginal ultrasound,Internal pelvic ultrasound.,Early pregnancy or gynecologic detail.
+imaging,CPT,76801,Obstetric ultrasound first trimester,Early pregnancy ultrasound.,Dating or viability screening.
+imaging,CPT,76536,Ultrasound thyroid,Neck ultrasound of thyroid.,Nodule or thyroid disorder.
+imaging,CPT,93880,Carotid duplex ultrasound,Ultrasound of neck arteries.,"Stroke risk, bruit."
+imaging,CPT,78306,Bone scan whole body,Nuclear medicine bone imaging.,"Cancer staging, stress injury."
+imaging,CPT,78452,Nuclear stress test,Heart perfusion imaging with exercise or med stress.,"Chest pain, known CAD."
+imaging,CPT,78815,PET-CT limited,Combined metabolic and CT scan limited area.,Certain cancer evaluations.
+imaging,CPT,70544,MRA head without contrast,MR angiogram of brain vessels.,Aneurysm or vessel abnormality.
+imaging,CPT,75561,Cardiac MRI with contrast,Detailed heart MRI with dye.,"Complex cardiomyopathy, mass."
+imaging,CPT,74176,CT abdomen pelvis without contrast,CT belly/pelvis without dye.,"Kidney stone, trauma."
+imaging,CPT,70470,CT head brain with contrast,Head CT with dye.,"Tumor, infection suspicion."
+er,CPT,99283,ER visit level 3,Moderate complexity emergency visit.,Urgent but stable emergency complaints.
+er,CPT,99284,ER visit level 4,High complexity emergency visit.,Concerning symptoms needing extensive workup.
+er,CPT,99285,ER visit level 5,Highest complexity ER visit.,Life-threatening or complex emergencies.
+er,CPT,99291,Critical care first hour,Intensive physician care in crisis.,"Shock, respiratory failure, acute crisis."
+er,CPT,99224,Observation care high MDM,Physician observation unit complexity.,Short stay needing monitoring.
+er,CPT,96360,IV hydration infusion first hour,IV fluids first hour.,Dehydration in clinical setting.
+er,CPT,12001,Simple wound repair extremity small,Stitches small simple cut.,Laceration needing closure.
+er,CPT,12031,Intermediate wound repair,Deeper or larger repair.,More complex laceration.
+er,CPT,93005,Electrocardiogram tracing only,Heart rhythm strip acquisition.,Chest pain triage in ED.
+er,CPT,36415,Venipuncture routine,Blood draw from vein.,Labs ordered from blood.
+er,CPT,29105,Finger splint application,Splint for finger injury.,Finger fracture or sprain.
+er,CPT,27786,Ankle fracture cast or splint,Immobilization of ankle injury.,Stable ankle fracture.
+er,CPT,28190,Foreign body removal foot subq,Remove embedded object from foot.,Stepped on object wound.
+er,CPT,26605,Closed finger dislocation treatment,Put dislocated finger back in place.,Finger dislocation.
+er,CPT,51702,Foley catheter insertion simple,Bladder drainage catheter placed.,Urinary retention.
+maternity,CPT,01967,Labor epidural anesthesia,Epidural for childbirth pain.,Labor analgesia choice.
+maternity,CPT,76811,OB ultrasound detailed anatomy,Anatomy survey second trimester.,Fetal structural screening.
+maternity,CPT,99460,Newborn care initial hospital,Initial physician care of newborn.,First days of life in hospital.
+maternity,CPT,80053,Comprehensive metabolic panel,Blood chemistry panel including liver and kidney.,Prenatal metabolic screening component.
+maternity,CPT,87651,Group B strep PCR,Test for GBS colonization.,Third trimester screening.
+maternity,CPT,82947,Glucose blood quantitative,Blood sugar test.,Gestational diabetes screening.
+maternity,CPT,59025,Fetal non-stress test,Monitor fetal heart rate pattern.,High-risk pregnancy surveillance.
+maternity,CPT,76815,OB ultrasound limited follow-up,Quick ultrasound check.,Follow-up fetal question.
+maternity,CPT,83020,Hemoglobin electrophoresis,Hemoglobin disorder screening.,Certain genetic carrier screens.
+maternity,CPT,54150,Circumcision newborn,Removal of foreskin in newborn.,Elective newborn procedure.
+maternity,CPT,99465,Neonatal resuscitation,Resuscitation of newborn.,Baby needs help breathing first minutes.
+maternity,CPT,59430,Postpartum care only,Visit after delivery care.,Recovery follow-up visit.
+pediatric,CPT,99392,Well child age 1 year,Preventive visit infant.,Routine checkup and vaccines.
+pediatric,CPT,99393,Well child age 4 years,Preventive visit preschool.,School readiness health.
+pediatric,CPT,99394,Well child age 11 years,Preventive preteen visit.,Middle school age checkup 12-17 often coded adjacent years.
+pediatric,CPT,69436,Myringotomy tubes bilateral,Ear tubes placement.,Chronic ear fluid.
+pediatric,CPT,99213,Office visit established low complexity,Pediatric sick visit example coding.,Mild illness follow-up.
+pediatric,CPT,87880,Strep rapid antigen test,Rapid throat strep test.,Sore throat evaluation.
+pediatric,CPT,90656,Influenza vaccine split,Seasonal flu shot formulation example.,Annual flu prevention.
+pediatric,CPT,90715,Tdap vaccine,Tetanus diphtheria pertussis booster.,Adolescent or adult booster.
+pediatric,CPT,90633,Hepatitis A pediatric vaccine,Hep A immunization.,Routine childhood series.
+pediatric,CPT,90649,HPV vaccine quadrivalent example,HPV cancer prevention vaccine.,Adolescent schedule.
+pediatric,CPT,91320,RSV monoclonal infant,RSV prevention product example.,Infant RSV season per guidance.
+cancer_screening,CPT,45378,Colonoscopy diagnostic,Colonoscopy without polypectomy.,Diagnostic colon evaluation.
+cancer_screening,CPT,88104,Cervical cytology automated,Pap test processing.,Cervical cancer screening.
+cancer_screening,CPT,84153,PSA total,Prostate blood marker.,Prostate cancer monitoring or screening discussion.
+cancer_screening,CPT,19101,Breast biopsy needle,Needle sampling breast lesion.,Suspicious imaging finding.
+cancer_screening,CPT,71271,Lung cancer screening CT,Low-dose lung CT for screening.,High-risk smoker screening.
+cancer_screening,CPT,11102,Skin biopsy tangential,Shave skin biopsy.,Suspicious skin lesion.
+cancer_screening,CPT,58100,Endometrial biopsy,Uterine lining sample.,Abnormal bleeding.
+cancer_screening,CPT,82272,FOBT immunoassay,Stool blood test.,Colon cancer screening.
+cancer_screening,CPT,81528,DNA colorectal screening Cologuard-type,Stool DNA test example.,Non-invasive screening option.
+cancer_screening,CPT,81162,BRCA full sequencing example,Genetic test high penetrance.,Strong family history referral.
+cancer_screening,CPT,88305,Surgical pathology level 4,Tissue exam by pathologist.,Biopsy diagnosis.
+cancer_screening,CPT,77063,Breast tomosynthesis screening,3D mammogram add-on.,Dense breast screening adjunct.
+cancer_screening,CPT,81519,Oncotype DX breast example,Tumor gene expression assay.,Early breast cancer planning.
+cardiovascular,CPT,93458,Left heart cath coronary angiography,Catheterization of heart arteries.,"Chest pain, positive stress test."
+cardiovascular,CPT,75571,CT heart calcium score,CT for coronary calcium.,Risk stratification.
+cardiovascular,CPT,92928,PCI single major coronary artery,Angioplasty with stent one vessel.,Heart attack or critical blockage.
+cardiovascular,CPT,33208,Pacemaker insert transvenous,Implant pacemaker device.,Slow heart rhythm.
+cardiovascular,CPT,33249,ICD insert transvenous,Implant defibrillator.,Life-threatening arrhythmia risk.
+cardiovascular,CPT,93350,Stress echo,Ultrasound heart under stress.,Ischemia evaluation.
+cardiovascular,CPT,93224,Holter monitor 24h,Continuous ECG wear.,"Palpitations, syncope."
+cardiovascular,CPT,93656,A-fib ablation pulmonary vein isolation,Catheter ablation for atrial fibrillation.,Symptomatic AF after meds.
+cardiovascular,CPT,33405,Aortic valve replacement mechanical,Replace diseased aortic valve.,Severe aortic stenosis.
+cardiovascular,CPT,34800,Endovascular AAA repair intro,EVAR introduction coding example.,Abdominal aortic aneurysm repair.
+cardiovascular,CPT,71275,CTA chest with contrast,CT angiogram chest.,PE or aorta imaging.
+cardiovascular,CPT,70547,MRA neck without contrast,Neck vessel MRA.,Stroke vessel evaluation.
+cardiovascular,CPT,92960,Cardioversion elective external,Shock rhythm to normal rhythm.,Certain persistent arrhythmias.
+gi_endoscopy,CPT,43235,EGD diagnostic,Upper endoscopy look only.,"GERD, swallowing trouble."
+gi_endoscopy,CPT,43239,EGD with biopsy,Upper scope with samples.,Inflammation or ulcer evaluation.
+gi_endoscopy,CPT,45385,Colonoscopy lesion removal,Remove polyp during colonoscopy.,Polyp found during scope.
+gi_endoscopy,CPT,43264,ERCP diagnostic,Scope with dye into bile ducts.,Stone or stricture suspicion.
+gi_endoscopy,CPT,43760,H pylori breath test,Breath test for stomach bacteria.,Ulcer symptom evaluation.
+gi_endoscopy,CPT,43202,EGD band ligation,Varices banding upper scope.,Esophageal varices treatment.
+gi_endoscopy,CPT,91110,Capsule endoscopy,Swallow camera pill.,Small bowel bleeding search.
+gi_endoscopy,CPT,47000,Needle liver biopsy percutaneous,Needle sample of liver.,Liver disease diagnosis.
+gi_endoscopy,CPT,43248,EGD guidewire dilation,Dilate stricture during EGD.,Esophageal narrowing.
+gi_endoscopy,CPT,45391,Colonoscopy endoscopic ultrasound,Ultrasound inside colon.,Submucosal lesion detail.
+inpatient_drg,MS-DRG,470,Major joint replacement,Inpatient hospital bundle for hip or knee replacement surgery.,Total joint replacement admission.
+inpatient_drg,MS-DRG,871,Sepsis with prolonged ventilation,Very sick infection patient needing long vent support.,ICU sepsis.
+inpatient_drg,MS-DRG,872,Sepsis with major complication,Seps hospitalization variant.,Severe infection hospital stay.
+inpatient_drg,MS-DRG,291,Heart failure with MCC,Hospital stay for worsening heart failure.,"Fluid overload, low EF flare."
+inpatient_drg,MS-DRG,392,Esophagitis and GI motility disorders,GI problem needing inpatient care.,Severe reflux complication example.
+inpatient_drg,MS-DRG,689,Kidney and UTI with MCC,Kidney infection hospitalization.,Pyelonephritis with complications.
+inpatient_drg,MS-DRG,794,Neonate with significant problems,Newborn hospitalization with issues.,Neonatal complications.
+inpatient_drg,MS-DRG,795,Normal newborn,Healthy baby hospital stay.,Routine delivery newborn days.
+inpatient_drg,MS-DRG,765,Cesarean delivery with complications,C-section hospitalization DRG.,Surgical birth complications.
+inpatient_drg,MS-DRG,313,Chest pain,Chest pain observation admission.,Rule out ACS.
+inpatient_drg,MS-DRG,194,Simple pneumonia with MCC,Pneumonia needing hospital care.,Infection with oxygen needs.
+inpatient_drg,MS-DRG,190,COPD with MCC,COPD flare admission.,"Steroids, oxygen, nebs."
+inpatient_drg,MS-DRG,057,Degenerative nervous system w MCC,Neurodegenerative crisis admission.,ALS/PD complications example.
+inpatient_drg,MS-DRG,280,Acute myocardial infarction,Heart attack hospital bundle.,STEMI care pathway.
+inpatient_drg,MS-DRG,378,GI hemorrhage with MCC,Bleeding from GI tract admission.,"Melena, hematochezia hospital."
+inpatient_drg,MS-DRG,684,Acute kidney failure with MCC,AKI needing inpatient management.,"Creatinine rise, fluids."
+inpatient_drg,MS-DRG,602,Cellulitis with MCC,Skin infection hospitalization.,IV antibiotics for cellulitis.
+inpatient_drg,MS-DRG,196,Interstitial lung disease with CC,ILD exacerbation.,Oxygen worsening.
+inpatient_drg,MS-DRG,314,Syncope and collapse,Fainting workup admission.,Syncope unexplained.
+inpatient_drg,MS-DRG,897,Alcohol drug abuse with rehab,Inpatient detox and therapy.,Substance use crisis.
+inpatient_drg,MS-DRG,885,Psychoses,Inpatient psychiatric psychosis.,Schizophrenia bipolar crisis.
+inpatient_drg,MS-DRG,177,Respiratory infections and inflammations,Bad lung infection admission.,Viral pneumonia severe.
+inpatient_drg,MS-DRG,189,Pulmonary edema and respiratory failure,Lung fluid respiratory failure.,Flash pulmonary edema.
+inpatient_drg,MS-DRG,208,Respiratory system diagnosis ventilator,Ventilator respiratory failure.,ARDS example.
+inpatient_drg,MS-DRG,017,Hypertensive Encephalopathy w MCC,Very high BP brain symptoms.,Hypertensive emergency.
+infused_drug,NDC,00003045141,Infliximab 100mg vial (Remicade reference),Biologic infusion for IBD or arthritis.,IBD or autoimmune infusion plan.
+infused_drug,NDC,00074379702,Adalimumab biosimilar example vial,Injectable biologic anti-TNF.,Autoimmune disease therapy.
+infused_drug,NDC,55513001001,Etanercept Enbrel-similar packaging example,TNF inhibitor injection.,RA or psoriasis biologic.
+infused_drug,NDC,57894050004,Ustekinumab Stelara example,IL12/23 inhibitor.,Psoriasis or Crohn infusion/injection.
+infused_drug,NDC,00078069710,Ocrelizumab Ocrevus example,MS monoclonal infusion.,Relapsing or primary progressive MS.
+infused_drug,NDC,00078077115,Natalizumab Tysabri example,MS infusion therapy.,High efficacy MS therapy.
+infused_drug,NDC,00078050471,Secukinumab Cosentyx example,IL17 inhibitor biologic.,Psoriatic disease.
+infused_drug,NDC,00078071513,Risankizumab Skyrizi example,IL23 inhibitor.,Psoriasis or Crohn.
+infused_drug,NDC,00078073101,Guselkumab Tremfya example,IL23 inhibitor.,Plaque psoriasis.
+infused_drug,NDC,64764050201,Vedolizumab Entyvio example,Gut selective integrin blocker.,IBD biologic.
+infused_drug,NDC,00006043332,Pembrolizumab Keytruda example,Immune checkpoint inhibitor.,Certain cancers immunotherapy.
+infused_drug,NDC,00003257301,Nivolumab Opdivo example,PD1 inhibitor infusion.,Oncology immunotherapy.
+infused_drug,NDC,50242091801,Atezolizumab Tecentriq example,PDL1 inhibitor.,Cancer immunotherapy.
+infused_drug,NDC,00003250959,Ipilimumab Yervoy example,CTLA4 inhibitor.,Melanoma combination therapy.
+infused_drug,NDC,00003188822,Durvalumab Imfinzi example,PDL1 inhibitor.,Certain thoracic cancers.
+infused_drug,NDC,00002313701,Trastuzumab Herceptin example,HER2 targeted therapy.,HER2 breast cancer.
+infused_drug,NDC,50242013401,Bevacizumab Avastin example,Anti-VEGF monoclonal.,Many solid tumors.
+infused_drug,NDC,00069592101,Rituximab Rituxan example,Anti-CD20 monoclonal.,Lymphoma and autoimmune.
+infused_drug,NDC,00003252801,Cetuximab Erbitux example,EGFR monoclonal.,Colorectal and head neck cancer.
+infused_drug,NDC,00069137001,Ranibizumab Lucentis example,Eye injection anti-VEGF.,AMD or diabetic eye disease.
+infused_drug,NDC,00023274001,Aflibercept Eylea example,Eye anti-VEGF injection.,Retinal vascular disease.
+infused_drug,NDC,00006962201,Faricimab Vabysmo example,Bispecific eye injection.,Wet AMD/DME.
+infused_drug,NDC,00073593901,Infliximab biosimilar Inflectra example,Infliximab biosimilar infusion.,IBD biologic.
+infused_drug,NDC,00070020501,Infliximab biosimilar Renflexis example,Another infliximab biosimilar.,IBD or arthritis.
+infused_drug,NDC,00070144101,Infliximab Avsola example,Infliximab biosimilar product.,Infusion center biologic.
+infused_drug,NDC,00004171101,Vancomycin 1g vial,IV antibiotic for serious Gram positive.,MRSA or severe infection.
+infused_drug,NDC,63323066410,Levofloxacin infusion,Broad spectrum IV antibiotic.,Pneumonia inpatient therapy.
+infused_drug,NDC,17089031201,Cefepime 1g vial,IV cephalosporin.,Hospital pneumonia.
+infused_drug,NDC,00002171801,Piperacillin tazobactam vial,Broad spectrum IV combo.,Abdominal or nosocomial infection.
+infused_drug,NDC,63323016210,Dexamethasone IV,Steroid IV anti-inflammatory.,"Brain swelling, allergic crisis."
+infused_drug,NDC,61703033925,Ondansetron IV,IV anti-nausea.,Chemo or post-op nausea.
+infused_drug,NDC,00069794201,Methylprednisolone IV,IV steroid pulse.,"MS relapse, inflammatory crisis."
+infused_drug,NDC,76168004001,IVIG immune globulin,IV antibody replacement.,Immune deficiency or neurological indication.
+infused_drug,NDC,25682001101,Eculizumab Soliris example,Complement inhibitor.,Rare complement mediated disease.
+infused_drug,NDC,00409140401,Albumin human,IV volume protein.,Certain shock or liver cases.
+infused_drug,NDC,00426910101,RBC unit,Red blood cell transfusion unit.,Anemia or bleeding.
+infused_drug,NDC,00002778501,Platelets apheresis,Platelet transfusion product.,Bleeding or low platelets.
+infused_drug,NDC,00002671201,FFP unit,Plasma transfusion.,Coagulation factor replacement.
+infused_drug,NDC,00904380101,Cryoprecipitate AHF,Clotting factor product.,Fibrinogen replacement.
+infused_drug,NDC,00409270101,Granulocytes transfusion,Rare transfusion product listing.,Severe neutropenic infection cases.
+hospital_line_item,HCPCS,J7030,IV normal saline 1000ml,Liter bag of salt water IV.,Hospital IV hydration.
+hospital_line_item,HCPCS,J7060,IV D5W 1000ml,Dextrose IV fluid.,Maintenance IV fluids.
+hospital_line_item,HCPCS,J1100,Diphenhydramine injection,Antihistamine injection.,Allergic reaction.
+hospital_line_item,HCPCS,J2550,Promethazine injection,Antiemetic injection.,Nausea in ED.
+hospital_line_item,HCPCS,J1885,Fentanyl citrate injection,Procedure pain IV.,Sedation or pain.
+hospital_line_item,HCPCS,J2405,Ondansetron hydrochloride injection,Anti-nausea generic.,Chemo or post-op nausea.
+hospital_line_item,HCPCS,J3490,Unclassified drugs,Billing placeholder for drugs.,Misc pharmacy IV.
+hospital_line_item,HCPCS,A4216,Nonneedle IV supply,IV administration supplies.,Each infusion visit.
+hospital_line_item,HCPCS,A4657,Syringe sterile 10cc,Sterile syringe supply.,Injectable medication prep.
+hospital_line_item,CPT,99070,Special supplies may be reported,Supply reporting code.,Separately billed supplies controversy.
+hospital_line_item,HCPCS,A6448,Gauze dressing pad,Wound care dressing.,Daily wound supplies.
+hospital_line_item,HCPCS,A4755,Adult diaper each,Incontinence supply item.,Inpatient commodity charge examples.
+mental_health,CPT,90791,Psych diagnostic evaluation,First psych assessment session.,New mental health evaluation.
+mental_health,CPT,90832,Psychotherapy 30 minutes,Half hour therapy.,Brief therapy visit.
+mental_health,CPT,90834,Psychotherapy 45 minutes,45 minute therapy.,Standard outpatient therapy.
+mental_health,CPT,90837,Psychotherapy 60 minutes,Hour therapy.,Extended therapy session.
+mental_health,CPT,90846,Family therapy without patient,Family session patient absent.,Family systems work.
+mental_health,CPT,90853,Group psychotherapy,Therapy group session.,Peer supported therapy.
+mental_health,CPT,90870,Electroconvulsive therapy,ECT seizure treatment.,Severe depression.
+mental_health,CPT,90868,Therapeutic repetitive transcranial magnetic stimulation,TMS treatment delivery.,Treatment resistant depression.
+mental_health,CPT,90839,Psychotherapy crisis first 60 min,Urgent psychotherapy.,Mental health crisis.
+mental_health,CPT,90845,Psychoanalysis session,Analytic therapy session.,Psychoanalysis care.
+mental_health,HCPCS,H0037,Mental health peer support per 15 min,Certified peer counseling.,Recovery support services.
+mental_health,HCPCS,H0001,Alcohol and drug assessment,Substance use assessment.,Treatment entry evaluation.
+mental_health,HCPCS,H0020,Methadone admin and service,OTP daily methadone service.,Opioid use disorder MAT.
+mental_health,HCPCS,G2086,Office buprenorphine monthly bundle,Office-based opioid treatment bundle.,SUD treatment monthly.
+mental_health,HCPCS,G0470,SBIRT,Screening brief intervention referral.,Primary care SUD screening.
+vaccine,CPT,90688,Influenza vaccine,Seasonal flu immunization.,Annual flu prevention.
+vaccine,CPT,91318,COVID vaccine mRNA example,COVID shot dose example code.,COVID prevention series.
+vaccine,CPT,90670,Pneumococcal conjugate,Pneumonia shot conjugate.,Adult pneumococcal series.
+vaccine,CPT,90736,Zoster vaccine live example,Shingles vaccine related coding.,Shingles prevention subset.
+vaccine,CPT,90634,Hepatitis A adult,Hep A vaccine.,Food or travel risk.
+vaccine,CPT,90740,Hepatitis B high risk,Hep B vaccine indication coding.,Risk-based hep B series.
+vaccine,CPT,90651,HPV vaccine 9-valent,HPV cancer prevention.,Age 9-45 series.
+vaccine,CPT,91321,COVID vaccine additional dose example,Booster coding example.,Updated COVID booster.
+lab,CPT,85025,CBC with automated differential,Blood counts.,Infection or anemia check.
+lab,CPT,80061,Lipid panel,Cholesterol panel.,Heart risk screening.
+lab,CPT,83036,Hemoglobin A1C,3-month glucose average.,Diabetes monitoring.
+lab,CPT,84443,TSH,Thyroid stimulating hormone.,Thyroid screening.
+lab,CPT,82306,Vitamin D 25-OH,Vitamin D level.,Bone health or fatigue workup.
+lab,CPT,81003,Urinalysis auto w/o scope,Urine dipstick automated.,UTI screen.
+lab,CPT,83880,BNP,Heart failure peptide.,Shortness of breath triage.
+lab,CPT,84484,Troponin quant high sens,Heart attack blood test.,Chest pain rule-in-out.
+lab,CPT,85610,Prothrombin time INR,Coumadin monitoring.,Anticoagulation checks.
+lab,CPT,87040,Blood culture,Culture for bloodstream infection.,Fever in inpatient.
+lab,CPT,87635,SARS CoV2 amplified probe,PCR COVID test.,COVID diagnosis.
+infused_drug,CPT,96413,Chemotherapy IV infusion 1 hour,First hour of intravenous chemotherapy infusion administration.,Most chemo regimens given as IV infusion start with this code.
+infused_drug,CPT,96415,Chemotherapy IV infusion each additional hour,Each additional hour of IV chemotherapy beyond the first.,Long infusions like FOLFOX or rituximab require this for hours 2+.
+infused_drug,CPT,96417,Chemotherapy IV push additional drug,IV push administration of an additional chemo agent on the same visit.,When two or more chemo drugs are given in one session.
+infused_drug,CPT,96409,Chemotherapy IV push single drug,Single intravenous push of a chemotherapy drug.,Quick-push chemo agents like vincristine or bortezomib.
+infused_drug,CPT,96401,Chemotherapy injection non-hormonal,Subcutaneous or intramuscular non-hormonal chemotherapy injection.,Drugs like azacitidine given under the skin instead of IV.
+infused_drug,CPT,96402,Chemotherapy injection hormonal,Subcutaneous or intramuscular hormonal antineoplastic injection.,Hormone therapies for prostate or breast cancer like leuprolide.
+infused_drug,CPT,96365,IV infusion therapy 1 hour,First hour of intravenous infusion of a non-chemo therapeutic drug.,"Used for biologics like infliximab, IVIG, and most monoclonal antibodies."
+infused_drug,CPT,96367,IV infusion each additional hour,Each additional hour of an IV infusion beyond the first.,Long biologic infusions and immunotherapy beyond an hour.
+infused_drug,CPT,96361,IV hydration each additional hour,Each additional hour of IV hydration beyond the first.,Extended hydration during or after chemotherapy.
+cancer_treatment,CPT,77280,Therapy radiology simulation simple,Simple simulation to plan a course of radiation therapy.,Required before starting external beam radiation.
+cancer_treatment,CPT,77295,3D radiation therapy plan,Three-dimensional treatment plan for external beam radiation.,Standard planning for most radiation courses today.
+cancer_treatment,CPT,77301,IMRT radiation plan,Intensity-modulated radiation therapy treatment plan.,Complex tumors near sensitive structures like prostate or head and neck.
+cancer_treatment,CPT,77338,Multi-leaf collimator design IMRT,Custom collimator device design used for IMRT delivery.,Required for each IMRT plan to shape the beams.
+cancer_treatment,CPT,77386,IMRT delivery complex,Per-fraction delivery of intensity-modulated radiation therapy.,Each daily IMRT treatment for cancers needing high precision.
+cancer_treatment,CPT,77373,SBRT delivery per fraction,"Stereotactic body radiation therapy delivery, per fraction.","High-dose precise radiation for lung, liver, or spine tumors."
+cancer_treatment,CPT,77427,Radiation treatment management 5 fractions,Physician management of 5 fractions of radiation therapy.,Weekly radiation oncologist oversight during a course of radiation.
+cancer_treatment,CPT,77014,CT guidance for radiation,CT-based image guidance for radiation therapy delivery.,Daily image guidance to align the patient before each treatment.
+cancer_treatment,CPT,77470,Special radiation treatment procedure,Special radiation procedures like hyperthermia or total body radiation.,Used in stem cell transplants and some sarcomas.
+cancer_treatment,CPT,77520,Proton beam delivery simple,Simple proton beam radiation therapy delivery.,Pediatric tumors and some adult cancers near critical organs.
+infused_drug,HCPCS,J9355,Trastuzumab Herceptin per 10mg,"HER2-targeted breast cancer antibody, billed per 10mg.",HER2-positive breast cancer and some gastric cancers.
+infused_drug,HCPCS,J9271,Pembrolizumab Keytruda per 1mg,"PD-1 immunotherapy antibody, billed per 1mg.","Many advanced cancers including melanoma, lung, and head and neck."
+infused_drug,HCPCS,J9299,Nivolumab Opdivo per 1mg,"PD-1 immunotherapy antibody, billed per 1mg.","Melanoma, lung, kidney, bladder, and other advanced cancers."
+infused_drug,HCPCS,J9035,Bevacizumab Avastin per 10mg,"Anti-VEGF antibody used in many cancers, billed per 10mg.","Colorectal, lung, kidney, ovarian, and other advanced cancers."
+infused_drug,HCPCS,J9312,Rituximab Rituxan per 10mg,"Anti-CD20 antibody, billed per 10mg.","B-cell lymphomas, leukemias, and some autoimmune diseases."
+infused_drug,HCPCS,J9145,Daratumumab Darzalex per 10mg,"Anti-CD38 antibody for multiple myeloma, billed per 10mg.",Newly diagnosed and relapsed multiple myeloma.
+infused_drug,HCPCS,J9173,Durvalumab Imfinzi per 10mg,"PD-L1 immunotherapy antibody, billed per 10mg.",Lung cancer and bladder cancer regimens.
+infused_drug,HCPCS,J9119,Cemiplimab Libtayo per 1mg,"PD-1 immunotherapy antibody, billed per 1mg.",Cutaneous squamous cell and basal cell carcinomas.
+infused_drug,HCPCS,J9047,Carfilzomib Kyprolis per 1mg,"Proteasome inhibitor for multiple myeloma, billed per 1mg.",Relapsed or refractory multiple myeloma.
+infused_drug,HCPCS,J9264,Paclitaxel protein-bound Abraxane per 1mg,"Albumin-bound paclitaxel chemotherapy, billed per 1mg.","Breast, lung, and pancreatic cancer regimens."
+infused_drug,HCPCS,J9267,Paclitaxel Taxol per 1mg,"Conventional paclitaxel chemotherapy, billed per 1mg.","Breast, ovarian, lung, and other cancers."
+infused_drug,HCPCS,J9170,Docetaxel Taxotere per 1mg,"Taxane chemotherapy, billed per 1mg.","Breast, prostate, lung, gastric, and head and neck cancers."
+infused_drug,HCPCS,J9305,Pemetrexed Alimta per 10mg,"Antifolate chemotherapy, billed per 10mg.",Non-small cell lung cancer and mesothelioma.
+infused_drug,HCPCS,J9201,Gemcitabine Gemzar per 200mg,"Antimetabolite chemotherapy, billed per 200mg.","Pancreatic, lung, bladder, breast, and ovarian cancers."
+infused_drug,HCPCS,J9263,Oxaliplatin Eloxatin per 0.5mg,"Platinum-based chemotherapy, billed per 0.5mg.",Colorectal cancer regimens like FOLFOX.
+infused_drug,HCPCS,J9045,Carboplatin per 50mg,"Platinum-based chemotherapy, billed per 50mg.","Lung, ovarian, head and neck, and other cancers."
+infused_drug,HCPCS,J9060,Cisplatin per 10mg,"Platinum-based chemotherapy, billed per 10mg.","Many cancers including testicular, lung, and bladder."
+infused_drug,HCPCS,J9070,Cyclophosphamide Cytoxan per 100mg,"Alkylating chemotherapy, billed per 100mg.","Lymphomas, breast cancer, leukemias, and autoimmune disease."
+infused_drug,HCPCS,J9000,Doxorubicin Adriamycin per 10mg,"Anthracycline chemotherapy, billed per 10mg.","Breast, lymphoma, sarcoma, and many other regimens."
+infused_drug,HCPCS,J9100,Cytarabine per 100mg,"Antimetabolite chemotherapy, billed per 100mg.",Acute leukemias and lymphomas.
+infused_drug,HCPCS,J9180,Epirubicin per 2mg,"Anthracycline chemotherapy, billed per 2mg.",Breast cancer regimens and some other tumors.
+infused_drug,HCPCS,J9250,Methotrexate sodium per 5mg,"Antimetabolite chemotherapy, billed per 5mg.","Breast cancer, leukemias, lymphomas, and rheumatologic disease."
+infused_drug,HCPCS,J9217,Leuprolide acetate Lupron per 7.5mg,"GnRH analog hormonal therapy, billed per 7.5mg depot dose.",Prostate cancer and some breast cancer regimens.
+infused_drug,HCPCS,J9395,Fulvestrant Faslodex per 25mg,"Estrogen receptor antagonist injection, billed per 25mg.",Hormone receptor positive metastatic breast cancer.
+infused_drug,HCPCS,J0640,Leucovorin calcium per 50mg,"Folinic acid for chemotherapy rescue, billed per 50mg.",Methotrexate rescue and FOLFOX/FOLFIRI regimens.
+infused_drug,HCPCS,J1626,Granisetron Kytril per 100mcg,"Anti-nausea antiemetic, billed per 100mcg.",Chemotherapy-induced nausea and vomiting.
+infused_drug,HCPCS,J2469,Palonosetron Aloxi per 25mcg,"Long-acting antiemetic, billed per 25mcg.",Highly emetogenic chemotherapy regimens.
+infused_drug,HCPCS,J9043,Cabazitaxel Jevtana per 1mg,"Taxane chemotherapy, billed per 1mg.",Castration-resistant metastatic prostate cancer.
+infused_drug,HCPCS,J9301,Obinutuzumab Gazyva per 10mg,"Anti-CD20 antibody, billed per 10mg.",Chronic lymphocytic leukemia and follicular lymphoma.
+surgical,CPT,19303,Mastectomy simple complete,Simple total mastectomy of the breast.,Breast cancer surgery without lymph node dissection.
+surgical,CPT,19307,Modified radical mastectomy,Mastectomy plus axillary lymph node dissection.,Breast cancer with regional lymph node involvement.
+surgical,CPT,19120,Breast lesion excision,Surgical excision of one or more breast lesions.,Breast biopsy upgrade to lumpectomy or fibroadenoma removal.
+surgical,CPT,19125,Breast lesion excision with marker,Excision of breast lesion identified preoperatively by needle marker.,Removal of non-palpable breast cancer found on imaging.
+surgical,CPT,19357,Breast reconstruction tissue expander,Breast reconstruction using a tissue expander.,First stage reconstruction after mastectomy.
+surgical,CPT,60240,Total thyroidectomy,Surgical removal of the entire thyroid gland.,Thyroid cancer or large goiters.
+surgical,CPT,60500,Parathyroidectomy,Surgical removal of one or more parathyroid glands.,Primary hyperparathyroidism or parathyroid cancer.
+surgical,CPT,32480,Lobectomy lung,Surgical removal of one lobe of the lung.,Localized lung cancer.
+surgical,CPT,32486,Pneumonectomy,Surgical removal of an entire lung.,Larger lung cancers not amenable to lobectomy.
+surgical,CPT,47120,Hepatectomy partial,Partial removal of the liver.,Primary liver cancer or liver metastases.
+surgical,CPT,55840,Radical prostatectomy,Surgical removal of the prostate and seminal vesicles.,Localized prostate cancer.
+surgical,CPT,55866,Robotic radical prostatectomy,Robotic-assisted laparoscopic radical prostatectomy.,Most prostate cancer surgery in the US is now robotic.
+surgical,CPT,58571,Laparoscopic total hysterectomy,Laparoscopic removal of uterus and cervix.,"Endometrial cancer, fibroids, or other gynecologic disease."
+surgical,CPT,58951,Pelvic exenteration ovarian cancer,Extensive pelvic surgery for advanced ovarian or other gyn cancer.,Advanced gynecologic malignancy.
+surgical,CPT,38525,Lymph node biopsy deep axillary,Excisional biopsy of deep axillary lymph node.,Diagnosing breast cancer or lymphoma.
+surgical,CPT,38745,Axillary lymphadenectomy,Removal of axillary lymph nodes.,Breast cancer with positive sentinel nodes.
+surgical,CPT,38500,Lymph node biopsy superficial,Excisional biopsy of a superficial lymph node.,Lymphoma diagnosis or melanoma staging.
+surgical,CPT,44204,Laparoscopic colectomy partial,Laparoscopic partial colon resection with anastomosis.,Colon cancer.
+surgical,CPT,44205,Laparoscopic colectomy with ileostomy,Laparoscopic colectomy and ileostomy.,Colon cancer requiring ostomy or rectal cancer.
+cancer_screening,CPT,88307,Surgical pathology level V,Microscopic exam of complex tissue specimens.,"Lymph node dissections, complex tumor resections, and brain biopsies."
+cancer_screening,CPT,88173,Cytopathology FNA interpretation,Pathologist interpretation of fine needle aspiration cytology.,"Thyroid, breast, and lymph node aspirates."
+cancer_screening,CPT,86304,CA-125 tumor marker,Blood test for CA-125 cancer antigen.,Ovarian cancer screening and monitoring.
+cancer_screening,CPT,86316,Tumor antigen quantitative,Quantitative blood test for various tumor antigens.,Monitoring response to cancer treatment.
+cancer_screening,CPT,86308,Heterophile antibodies screening,"Screening test for heterophile antibodies, often included in cancer workup.",Mononucleosis vs lymphoma differential.
+cancer_screening,HCPCS,G0103,PSA screening,Medicare-coded prostate-specific antigen screening test.,Annual prostate cancer screening for eligible men.
+cancer_screening,HCPCS,G0123,Pap smear screening,Medicare-coded Pap smear cervical cancer screening.,Cervical cancer screening for eligible women.
+cancer_screening,CPT,77066,Diagnostic mammogram bilateral,Bilateral diagnostic mammogram for breast concerns.,Workup of a breast lump or abnormal screening mammogram.
+cancer_screening,CPT,77047,MRI breast bilateral without contrast,Bilateral MRI of the breasts without contrast.,High-risk breast cancer screening or implant evaluation.
+cancer_screening,CPT,76376,3D rendering cross-section imaging,3D reconstruction of cross-sectional imaging.,Often added to CT or MRI for tumor staging.
+imaging,CPT,78813,PET imaging skull to thigh,Positron emission tomography imaging from skull to mid-thigh.,Common cancer staging and restaging scan.
+imaging,CPT,70553,MRI brain with and without contrast,MRI of the brain both with and without contrast.,Detailed evaluation of brain tumors and lesions.
+inpatient_drg,MS-DRG,838,Chemotherapy with acute leukemia as secondary diagnosis,Inpatient stay for chemotherapy in a patient with acute leukemia.,Hospital admission for intensive chemo regimen.
+inpatient_drg,MS-DRG,839,Chemo without acute leukemia w MCC,Chemotherapy admission with major complications.,Inpatient chemo with serious side effects or comorbidities.
+inpatient_drg,MS-DRG,840,Chemo without acute leukemia w/o MCC,Chemotherapy admission without major complications.,Standard inpatient chemo administration.
+inpatient_drg,MS-DRG,542,Pathological fracture w MCC,Pathologic fracture from bone metastases with major complications.,"Bone metastases from breast, prostate, or lung cancer."
+inpatient_drg,MS-DRG,180,Respiratory neoplasms w MCC,Lung cancer admission with major complications.,Advanced lung cancer needing inpatient care.
+inpatient_drg,MS-DRG,181,Respiratory neoplasms w CC,Lung cancer admission with complications.,Lung cancer needing inpatient management.
+inpatient_drg,MS-DRG,374,Digestive malignancy w MCC,"Colon, gastric, or other GI cancer with major complications.",Advanced GI cancer admission.
+inpatient_drg,MS-DRG,375,Digestive malignancy w CC,GI cancer admission with complications.,GI cancer needing inpatient management.
+inpatient_drg,MS-DRG,988,Postop and post-treatment with neoplasm dx,Post-treatment care related to cancer.,Recovery from cancer surgery or other treatment.
+inpatient_drg,MS-DRG,846,Chemo with acute leukemia as secondary w/o CC,"Chemo admission with acute leukemia, no complications.",Standard inpatient chemo for acute leukemia.
+inpatient_drg,MS-DRG,826,Myeloproliferative w/o CC,"Inpatient stay for myeloproliferative disorder, no complications.",Stem cell transplants and lymphoma admissions.
+inpatient_drg,MS-DRG,863,Postop and post-treatment infectious dx,"Post-treatment infections, often after chemo.",Neutropenic fever and other treatment-related infections.
+imaging,CPT,74183,MRI abdomen with and without contrast,MRI of the abdomen both with and without contrast.,"Liver lesions, bile ducts, and pancreas evaluation."
+lab,CPT,85027,Complete blood count without differential,Standard complete blood count without differential.,Routine screening lab.
+lab,CPT,80050,General health panel,"Bundled CBC, CMP, and TSH panel.",Annual physical and general health screening.
+lab,CPT,82607,Vitamin B12 level dup,(Duplicate seed; kept for safety.),Same as existing 82607.
+hospital_line_item,HCPCS,C9132,Prothrombin complex per IU,Hospital outpatient line item for prothrombin complex concentrate.,Reversal of warfarin in bleeding patients.
+infused_drug,HCPCS,J7307,Etonogestrel implant Nexplanon,Subdermal contraceptive implant device.,Long-acting reversible contraception.
+surgical,CPT,63030,Lumbar laminotomy single,Single-level lumbar laminotomy with disc removal.,Sciatica from a herniated disc.
+surgical,CPT,63047,Lumbar laminectomy single,Single-level lumbar laminectomy for spinal stenosis.,Spinal stenosis with leg symptoms.
+surgical,CPT,23472,Total shoulder arthroplasty,Total shoulder joint replacement.,Severe shoulder arthritis or rotator cuff arthropathy.
+infused_drug,HCPCS,J0897,Denosumab Prolia per 1mg,RANKL inhibitor injection for bone density and bone metastases.,Osteoporosis or bone metastases from cancer.
+infused_drug,HCPCS,J2796,Romiplostim per 10mcg,Thrombopoietin receptor agonist injection.,Chronic immune thrombocytopenia.
+infused_drug,HCPCS,J2778,Ranibizumab per 0.1mg,Anti-VEGF eye injection.,Macular degeneration and diabetic retinopathy.
+infused_drug,HCPCS,J0178,Aflibercept per 1mg,Anti-VEGF eye injection.,Macular degeneration and diabetic retinopathy.
+infused_drug,HCPCS,J2350,Ocrelizumab Ocrevus per 1mg,Anti-CD20 antibody for multiple sclerosis.,Relapsing and primary progressive MS.
+infused_drug,HCPCS,J0490,Belimumab Benlysta per 10mg,Anti-BLyS antibody for lupus.,Active SLE not controlled by standard therapy.
+infused_drug,HCPCS,J0717,Certolizumab pegol per 1mg,Anti-TNF antibody for inflammatory disease.,"Crohn disease, RA, ankylosing spondylitis."
+infused_drug,HCPCS,J1745,Infliximab Remicade per 10mg,Anti-TNF antibody for inflammatory disease.,"Crohn disease, ulcerative colitis, RA."
+infused_drug,HCPCS,J3357,Ustekinumab Stelara per 1mg,Anti-IL-12/23 antibody.,"Psoriasis, psoriatic arthritis, Crohn disease."
+infused_drug,HCPCS,J3380,Vedolizumab Entyvio per 1mg,Anti-integrin antibody.,Crohn disease and ulcerative colitis.
+cardiovascular,CPT,33361,TAVR transfemoral,"Transcatheter aortic valve replacement, transfemoral.",Severe aortic stenosis in higher-risk patients.

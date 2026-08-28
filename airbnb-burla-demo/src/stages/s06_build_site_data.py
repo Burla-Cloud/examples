@@ -4,7 +4,7 @@ Runs a single Burla worker that reads listings, CLIP scores, Haiku-validated
 TVs / pets / rooms, reviews, and bootstrap correlations from
 ``/workspace/shared``, computes per-section top-K, and returns everything as
 small JSON-able dicts. The local stage writes those dicts to
-``data/outputs/*.json``, applies ``data/manual_blocklist.json``, mirrors the
+``data/outputs/*.json``, applies ``config/manual_blocklist.json``, mirrors the
 result into ``site/data/``, and merges the runtime log.
 """
 from __future__ import annotations
@@ -417,7 +417,7 @@ def main() -> None:
     write_json(OUTPUT_DIR / "runtime_log.json", runtime_summary)
 
     # Apply the human-curated blocklist on top of whatever Haiku surfaced.
-    # See data/manual_blocklist.json + scripts/apply_manual_blocklist.py.
+    # See config/manual_blocklist.json + scripts/apply_manual_blocklist.py.
     try:
         import subprocess as _sub
         _sub.run(

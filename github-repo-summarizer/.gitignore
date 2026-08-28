@@ -13,3 +13,4 @@ local_cache/
 results_local/
 
 *.parquet
+data/

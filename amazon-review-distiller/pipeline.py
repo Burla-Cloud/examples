@@ -18,7 +18,6 @@ A reduce pass then merges shards, producing a per-pass rollup JSON that
 `analysis.py` turns into the UI artifacts in `data/`.
 
 Reference. no need to re-run. Invoke with `python pipeline.py <stage>`:
-  probe        stream ~4 MB of All_Beauty to verify HF + schema.
   map-main     dispatch the main scoring pass across the cluster.
   map-worst    dispatch the worst-of-worst scoring pass.
   reduce-main  single-worker reduce over main shards.
@@ -526,7 +525,7 @@ def _dispatch_map(worker, jobs, limit: int, max_parallelism: int, label: str,
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=[
-        "probe", "plan",
+        "plan",
         "map-main", "map-worst", "reduce-main", "reduce-worst",
     ])
     ap.add_argument("--chunk-mb", type=int, default=500)
@@ -537,11 +536,6 @@ def main() -> None:
     here = Path(__file__).parent
     samples = here / "samples"
     samples.mkdir(parents=True, exist_ok=True)
-
-    if args.stage == "probe":
-        from probe import probe
-        probe()
-        return
 
     if args.stage == "plan":
         jobs = plan_chunks(args.chunk_mb)

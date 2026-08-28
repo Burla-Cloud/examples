@@ -39,7 +39,6 @@ Run:
     /Users/josephperry/.burla/joeyper23/.venv/bin/python nyc_ghost_neighborhoods.py
 
 Env vars:
-    LOCAL=1            single-month smoke test on the driver, no Burla
     MONTHS_LIMIT=N     only process the N most recent months (per taxi type)
     START_YEAR=YYYY    earliest year to include (default 2011)
     END_YEAR=YYYY      latest year to include (default 2024)
@@ -917,32 +916,7 @@ def _write_outputs(
     ], indent=2))
 
 
-def main_local() -> int:
-    """Smoke path: process a single recent month on the driver."""
-    tasks = build_task_list()
-    tasks = tasks[-2:]
-    print(f"LOCAL: running {len(tasks)} tasks in-process")
-
-    t0 = time.time()
-    results = [process_month(t) for t in tasks]
-    print(f"LOCAL: {len(results)} tasks done in {time.time()-t0:.1f}s")
-
-    zone_lookup = _load_zone_lookup()
-    all_months, zone_series, _, monthly_totals = _build_series_table(results)
-    total_trips = sum(r.get("rows_with_zone", 0) for r in results)
-    _write_outputs(
-        all_months, monthly_totals, zone_series, zone_lookup, results,
-        task_count=len(tasks), total_trips=total_trips, elapsed_s=time.time() - t0,
-    )
-    print("LOCAL done.")
-    print((OUT_DIR / "summary.json").read_text())
-    return 0
-
-
 def main() -> int:
-    if os.environ.get("LOCAL", "").strip() not in ("", "0", "false", "False"):
-        return main_local()
-
     from burla import remote_parallel_map  # type: ignore
 
     tasks = build_task_list()

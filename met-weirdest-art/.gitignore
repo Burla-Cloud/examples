@@ -7,3 +7,4 @@ local_shared/
 *.parquet
 local_cache/
 results_local/
+met_weirdest_out/

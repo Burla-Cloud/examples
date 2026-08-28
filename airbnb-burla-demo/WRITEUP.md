@@ -155,7 +155,7 @@ This was an iteratively-debugged run. Things that bit us:
   without re-doing completed work.
 - **Manual review.** Haiku Vision was good enough to make the photo
   galleries publishable, but a human still had to scroll through them
-  and prune. `data/manual_blocklist.json` is the durable record.
+  and prune. `config/manual_blocklist.json` is the durable record.
 
 ## Reproducing
 

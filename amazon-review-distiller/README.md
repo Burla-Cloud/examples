@@ -43,14 +43,15 @@ real Amazon purchase.
 lexicon.py     word lists + censored-variant regexes + context classifier
 pipeline.py    Burla map/reduce worker + CLI dispatch
 analysis.py    rescore, merge hard+worst corpora, emit data/*.json
-probe.py       stream 4 MB of one category to sanity-check HF access
 
 index.html     the Amazon-parody site
 css/style.css  dark/light themes (flips in Unhinged Mode)
 js/app.js      pure vanilla JS. loads data/*.json, renders, searches
-data/*.json    frontend artifacts: wall, unhinged, search pools,
-               categories, findings
+data/*.json    generated frontend artifacts: wall, unhinged, search
+               pools, categories, findings
 ```
+
+Generated data is ignored by Git.
 
 ## Reproduce
 
@@ -58,7 +59,6 @@ data/*.json    frontend artifacts: wall, unhinged, search pools,
 curl -fsSL https://raw.githubusercontent.com/Burla-Cloud/burla-agent-starter-kit/main/install.sh | sh
 pip install -r requirements.txt
 
-python pipeline.py probe         # streaming sanity check
 python pipeline.py map-main      # main pass across the cluster
 python pipeline.py map-worst     # worst-of-worst pass
 python pipeline.py reduce-main   # merge main shards -> samples/ard_reduced.json

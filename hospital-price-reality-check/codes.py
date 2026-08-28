@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
-SEEDS = REPO_ROOT / "data" / "code_seeds.csv"
+SEEDS = REPO_ROOT / "config" / "code_seeds.csv"
 
 CATEGORY_DEFAULTS: dict[str, dict] = {
     "surgical": {

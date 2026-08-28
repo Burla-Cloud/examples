@@ -23,8 +23,8 @@ build/
 venv/
 env/
 
-# Data files (large/generated — reproducible by running the pipeline)
-derby/data/train_features.csv
+# Generated data
+derby/data/
 
 # Misc
 .DS_Store

@@ -1,4 +1,4 @@
-"""Apply data/manual_blocklist.json to the per-section JSON outputs.
+"""Apply config/manual_blocklist.json to the per-section JSON outputs.
 
 For each (section, city, name) entry, find a matching item in the section's
 JSON, capture its listing_id into ``by_listing_id`` for permanence, then
@@ -21,7 +21,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BLOCKLIST_PATH = REPO_ROOT / "data" / "manual_blocklist.json"
+BLOCKLIST_PATH = REPO_ROOT / "config" / "manual_blocklist.json"
 SITE_DATA = REPO_ROOT / "site" / "data"
 OUT_DATA = REPO_ROOT / "data" / "outputs"
 

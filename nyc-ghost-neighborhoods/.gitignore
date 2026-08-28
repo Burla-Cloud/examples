@@ -7,3 +7,4 @@ local_shared/
 *.parquet
 local_cache/
 results_local/
+nyc_ghost_out/

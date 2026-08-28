@@ -24,7 +24,8 @@ The MRFs are 100 KB to 3 GB each, in five different formats (CMS v3 JSON, tall C
 ## Repo layout
 
 ```
-codes.py              361-code allow list with patient-facing fields
+codes.py              loads the 361-code allow list with patient-facing fields
+config/code_seeds.csv curated code allow-list configuration
 hospital_index.py     dedup index across Oria + TPAFS + Dolthub MRF directories
 parsers_inline.py     JSON / tall-CSV / wide-CSV / XLSX / ZIP parsers
 pipeline.py           worker: download streaming + parse + write jsonl
@@ -37,9 +38,11 @@ requirements.txt      requests, curl_cffi, ijson, pandas, openpyxl, ...
 
 frontend/             Vite + React + Tailwind static site
   src/                routes, components, data loader
-  public/data/*.json  artifacts: code_summary, state_summary, leaderboard,
-                      hospital_index, run_metadata
+  public/data/*.json  generated artifacts: code summary, state summary,
+                      leaderboard, hospital index, and run metadata
 ```
+
+Generated data is ignored by Git.
 
 ## Reproduce
 

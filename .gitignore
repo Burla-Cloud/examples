@@ -1,0 +1,44 @@
+# Local environments and installed dependencies
+.env
+.venv/
+venv/
+env/
+node_modules/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated datasets and outputs
+data/
+data_sources/
+samples/
+*_out/
+burla_results/
+local_shared/
+local_cache/
+results_local/
+
+# Large dataset formats
+*.arrow
+*.csv
+!**/config/*.csv
+*.feather
+*.jsonl
+*.jsonl.gz
+*.npy
+*.npz
+*.parquet
+*.pickle
+*.pkl
+*.tsv
+*.xls
+*.xlsx
+
+# Build and operating system artifacts
+build/
+dist/
+.DS_Store
+Thumbs.db
