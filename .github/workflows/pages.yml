@@ -1,9 +1,7 @@
 name: Deploy example sites
 
 on:
-  push:
-    branches:
-      - main
+  # Generated site data is stored outside Git. Restore it before deploying.
   workflow_dispatch:
 
 permissions:
@@ -24,6 +22,25 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
+      - name: Verify generated site data
+        run: |
+          required_files=(
+            airbnb-burla-demo/site/data/homepage_stats.json
+            amazon-review-distiller/data/index.json
+            arxiv-fossils/arxiv_fossils_out/extinct.html
+            github-repo-summarizer/data/index.json
+            hospital-price-reality-check/site/data/code_summary.json
+            met-weirdest-art/met_weirdest_out/twins.html
+            nyc-ghost-neighborhoods/nyc_ghost_out/index.html
+            world-photo-index/data/index.json
+          )
+          for file in "${required_files[@]}"; do
+            test -f "$file" || {
+              echo "::error::Restore generated site artifact: $file"
+              exit 1
+            }
+          done
 
       - name: Build Pages artifact
         run: |

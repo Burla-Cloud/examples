@@ -155,7 +155,7 @@ kentucky-derby-demo/
 ├── docs/
 │   └── index.html                   # the deployed site (GitHub Pages)
 ├── derby/
-│   ├── data/
+│   ├── data/                         # generated and ignored by Git
 │   │   ├── raw/                     # untouched scrape artifacts
 │   │   │   ├── morning_line.json    # post-scratch 19-horse field
 │   │   │   ├── hrn_2026.json        # HorseRacingNation HRN data

@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+from urllib.request import Request, urlopen
 
 REPO_ROOT = Path(__file__).resolve().parent
 DATA_DIR = REPO_ROOT / "data"
@@ -57,9 +58,31 @@ STATE_CENTROIDS: dict[str, tuple[float, float]] = {
 }
 
 TPAFS_CSV = DATA_SOURCES / "tpafs_machine_readable_links.csv"
+TPAFS_URL = (
+    "https://raw.githubusercontent.com/TPAFS/transparency-data/main/"
+    "price_transparency/hospitals/machine_readable_links.csv"
+)
 CURATED_JSON = DATA_SOURCES / "curated_v3_mrfs.json"
 DOLTHUB_JSON = DATA_SOURCES / "dolthub_v4_mrfs.json"
 ORIA_JSON = DATA_SOURCES / "oria_v3_mrfs.json"
+
+
+def ensure_tpafs_index(csv_path: Path = TPAFS_CSV) -> Path:
+    """Download the public hospital index when it is not cached locally."""
+    if csv_path.is_file():
+        return csv_path
+
+    request = Request(TPAFS_URL, headers={"User-Agent": "burla-examples"})
+    with urlopen(request, timeout=60) as response:
+        payload = response.read()
+    if b"machine_readable_url" not in payload[:2048]:
+        raise RuntimeError(f"Unexpected hospital index response from {TPAFS_URL}")
+
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = csv_path.with_suffix(".tmp")
+    temporary_path.write_bytes(payload)
+    temporary_path.replace(csv_path)
+    return csv_path
 
 
 def _slug(s: str) -> str:
@@ -261,7 +284,7 @@ def load_oria(json_path: Path = ORIA_JSON) -> list[dict]:
 
 def load_hospitals(
     idx_path: Path | None = None,
-    include_tpafs: bool = False,
+    include_tpafs: bool = True,
     include_dolthub: bool = False,
     include_oria: bool = False,
 ) -> list[dict]:
@@ -288,8 +311,9 @@ def load_hospitals(
             if r.get("mrf_url") not in seen_urls:
                 rows.append(r)
                 seen_urls.add(r.get("mrf_url"))
-    if include_tpafs and TPAFS_CSV.is_file():
-        for r in load_real_hospitals_from_tpafs(TPAFS_CSV):
+    if include_tpafs:
+        tpafs_csv = ensure_tpafs_index()
+        for r in load_real_hospitals_from_tpafs(tpafs_csv):
             if r.get("mrf_url") not in seen_urls:
                 rows.append(r)
                 seen_urls.add(r.get("mrf_url"))
@@ -298,7 +322,7 @@ def load_hospitals(
 
 if __name__ == "__main__":
     hospitals = load_hospitals()
-    print(f"loaded {len(hospitals)} hospitals from {'data/hospital_index.json' if (DATA_DIR / 'hospital_index.json').is_file() else 'TPAFS CSV'}")
+    print(f"loaded {len(hospitals)} hospitals")
     by_state: dict[str, int] = {}
     by_format: dict[str, int] = {}
     for h in hospitals:

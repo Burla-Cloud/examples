@@ -29,7 +29,7 @@ kentucky-derby-prediction/
 │   ├── derby_sensitivity.py             # 5,000-Dirichlet weight search
 │   ├── derby_montecarlo.py              # original 1M MC (predecessor of trillion)
 │   ├── update_website.py                # patches docs/index.html with results
-│   └── data/
+│   └── data/                             # generated and ignored by Git
 │       ├── trillion_results.json        # output of derby_trillion.py
 │       ├── audit_results.json           # output of derby_audit.py
 │       ├── model_results.json           # ML + sensitivity outputs

@@ -50,7 +50,7 @@ Generated data is ignored by Git.
 curl -fsSL https://raw.githubusercontent.com/Burla-Cloud/burla-agent-starter-kit/main/install.sh | sh
 pip install -r requirements.txt
 
-python scale.py                  # map across all hospitals
+python scale.py                  # downloads the public hospital index, then maps
 python run_reduce_burla.py       # reduce + analysis on one worker
                                  # writes frontend/public/data/*.json
 

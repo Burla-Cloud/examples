@@ -51,7 +51,7 @@ primary-category tags across the cluster.
 | 9 | 2002 | 37.9 % | hep-ph, nucl-th — *pion electromagnetic form factors* |
 | 10 | 2002 | 38.4 % | hep-th, hep-ph, gr-qc — *pp-wave / AdS-CFT correspondence* |
 
-Full report with sample-paper links: `arxiv_fossils_out/extinct.html`.
+Generated report with sample-paper links: `arxiv_fossils_out/extinct.html`.
 
 ## Top-3 emergent topics (last 24 months concentration)
 
@@ -61,7 +61,7 @@ Full report with sample-paper links: `arxiv_fossils_out/extinct.html`.
 | 2 | 51.9 % | cs.CV, cs.LG — *generative / diffusion models for imagery + video* |
 | 3 | 44.3 % | cs.CL, cs.AI, cs.LO — *LLM reasoning, tool-use, math/code benchmarks* |
 
-Full report: `arxiv_fossils_out/emergent.html`.
+Generated report: `arxiv_fossils_out/emergent.html`.
 
 ## Why arXiv
 
@@ -128,7 +128,7 @@ Artifacts land in `/workspace/shared/arxiv-fossils/out/` on the Burla
 cluster. Copy them down with `fetch_artifacts.py` (TODO) or directly via
 the Burla dashboard.
 
-## Artifacts (in `arxiv_fossils_out/`)
+## Generated artifacts (in `arxiv_fossils_out/`)
 
 | File | Contents |
 |---|---|
@@ -141,7 +141,7 @@ the Burla dashboard.
 
 ```
 arxiv_fossils.py         discover + embed + reduce in one script
-arxiv_fossils_out/       artifacts from the latest run
+arxiv_fossils_out/       generated artifacts from the latest run
 requirements.txt         burla + fastembed + faiss-cpu + pandas + ...
 ```
 

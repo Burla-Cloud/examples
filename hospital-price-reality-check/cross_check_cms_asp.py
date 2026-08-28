@@ -16,6 +16,7 @@ showing the CMS allowance, our median, the ratio, and a verdict.
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import re
@@ -65,8 +66,8 @@ def _parse_dose(s: str) -> tuple[float, str] | None:
     return None
 
 
-def _load_asp() -> dict[str, dict]:
-    text = ASP_CSV.read_text(encoding="latin-1")
+def _load_asp(path: Path) -> dict[str, dict]:
+    text = path.read_text(encoding="latin-1")
     out: dict[str, dict] = {}
     reader = csv.reader(text.splitlines())
     in_data = False
@@ -119,13 +120,19 @@ def _verdict(ratio: float | None, cms_per_unit: float | None) -> str:
 
 
 def main() -> None:
-    if not ASP_CSV.exists():
-        sys.exit(f"CMS ASP CSV not found at {ASP_CSV}. Did you download it?")
-    if not SUMMARY_JSON.exists():
-        sys.exit(f"code_summary.json not found at {SUMMARY_JSON}")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--asp-csv", type=Path, default=ASP_CSV)
+    parser.add_argument("--summary", type=Path, default=SUMMARY_JSON)
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
 
-    asp = _load_asp()
-    summary = json.loads(SUMMARY_JSON.read_text())
+    if not args.asp_csv.exists():
+        sys.exit(f"CMS ASP CSV not found at {args.asp_csv}")
+    if not args.summary.exists():
+        sys.exit(f"code_summary.json not found at {args.summary}")
+
+    asp = _load_asp(args.asp_csv)
+    summary = json.loads(args.summary.read_text())
 
     rows: list[dict] = []
     flagged: list[dict] = []
@@ -208,8 +215,8 @@ def main() -> None:
         if row["verdict"] in ("below_cms_allowance", "implausibly_high"):
             flagged.append(row)
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(rows, indent=2))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(rows, indent=2))
 
     print(f"== CMS ASP cross-check ({len(rows)} drug codes) ==")
     ok = sum(1 for r in rows if r["verdict"] == "ok")
@@ -236,7 +243,7 @@ def main() -> None:
         for r in flagged:
             print(json.dumps(r, indent=2))
 
-    print(f"\nWrote {OUTPUT}")
+    print(f"\nWrote {args.output}")
 
 
 if __name__ == "__main__":

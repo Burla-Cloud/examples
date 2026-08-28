@@ -56,11 +56,20 @@ def main() -> None:
         action="store_true",
         help="Before submission, wipe /workspace/shared/hpt/observations on the cluster (remote runs only).",
     )
-    ap.add_argument(
+    tpafs_group = ap.add_mutually_exclusive_group()
+    tpafs_group.add_argument(
         "--include-tpafs",
+        dest="include_tpafs",
         action="store_true",
-        help="Also include hospitals from the TPAFS public MRF index (data_sources/tpafs_machine_readable_links.csv).",
+        help="Include the public TPAFS hospital index (default).",
     )
+    tpafs_group.add_argument(
+        "--no-tpafs",
+        dest="include_tpafs",
+        action="store_false",
+        help="Do not download or include the public TPAFS hospital index.",
+    )
+    ap.set_defaults(include_tpafs=True)
     ap.add_argument(
         "--include-dolthub",
         action="store_true",
@@ -105,6 +114,8 @@ def main() -> None:
         include_dolthub=args.include_dolthub,
         include_oria=args.include_oria,
     )
+    if not hospitals:
+        ap.error("No hospital inputs found. Enable TPAFS or provide a local hospital index.")
     if args.per_state_cap and args.per_state_cap > 0:
         from collections import defaultdict
         capped: list[dict] = []

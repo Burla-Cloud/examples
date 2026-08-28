@@ -23,10 +23,9 @@ Pipeline shape:
     cosine distance (via FAISS), write three static HTML reports into
     /workspace/shared/arxiv-fossils/out/.
 
-Run on Burla (cluster runs Python 3.12 / burla 1.4.5 per
-~/.burla/joeyper23/user_config.json):
+Run on Burla:
 
-    /Users/josephperry/.burla/joeyper23/.venv/bin/python arxiv_fossils.py
+    python3 arxiv_fossils.py
 
 Env vars:
     ARXIV_MAX_PAPERS   cap the corpus (default: full dataset, ~2.7M)

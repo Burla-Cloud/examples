@@ -37,7 +37,7 @@ Everything was parallelized on **Burla** on a single dynamic cluster:
 ## Quickstart
 
 ```bash
-~/.burla/<your-account>/.venv/bin/pip install -e .
+python3 -m pip install -e .
 
 cp .env.example .env
 # edit .env, drop in ANTHROPIC_API_KEY

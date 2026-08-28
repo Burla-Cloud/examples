@@ -160,7 +160,7 @@ This was an iteratively-debugged run. Things that bit us:
 ## Reproducing
 
 ```bash
-~/.burla/<your-account>/.venv/bin/pip install -e .
+python3 -m pip install -e .
 cp .env.example .env  # add ANTHROPIC_API_KEY
 make all
 ```

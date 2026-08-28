@@ -41,7 +41,7 @@ No tags, no curator metadata. The neighborhoods fall out of the pixels.
   inline with images and metadata, hero diptych, full methodology, honest
   caveats. This is what we link.
 - **`met_weirdest.py`** — one script: discover + fetch + embed + reduce.
-- **`met_weirdest_out/`** — raw artifacts from the latest run (parquet shards,
+- **`met_weirdest_out/`** — generated artifacts from the latest run (parquet shards,
   summary.json, and two HTML subpages: `twins.html` is the standalone gallery
   and `weirdest.html` is a bonus ranking of CLIP outliers).
 
@@ -59,7 +59,8 @@ CRDImages CDN; the Met collection pages are linked off the object IDs.
 | 30 | **0.959** | 41 centuries | 501743 — British Natural Horn, 1790 | 324455 — Hattian sword/dagger, ca. 2300 BCE |
 
 The full gallery of 30 pairs (with images inline) lives at
-`index.html`. A standalone plain version is at `met_weirdest_out/twins.html`.
+`index.html`. A generated standalone version is written to
+`met_weirdest_out/twins.html`.
 
 ## Why these pairs exist
 
@@ -85,8 +86,8 @@ with no metadata, can surface it.
   ~470 K artworks, all cleared for public use by the museum.
 - Every single artwork has a deterministic CDN image URL at
   `https://images.metmuseum.org/CRDImages/{dept}/web-large/{filename}`, so
-  we don't need the Met API (which rate-limits) — just a parquet of the
-  CSV-derived filenames, committed once, re-fetched in parallel.
+  we don't need the Met API. The pipeline derives the filenames from the
+  source CSVs at runtime and fetches them in parallel.
 - The department diversity (arms & armor, European paintings, Egyptian,
   Asian, photography, costume, prints, musical instruments, ...) means the
   twins question actually has interesting answers.
@@ -153,7 +154,7 @@ MET_MAX_OBJECTS=5000 python met_weirdest.py
 ```
 index.html                 single-page shareable gallery (all 30 pairs inline)
 met_weirdest.py            discover + fetch + embed + reduce in one script
-met_weirdest_out/          artifacts from the latest run (parquet, JSON, HTML)
+met_weirdest_out/          generated artifacts (parquet, JSON, HTML)
 requirements.txt           burla + fastembed + Pillow + faiss-cpu + ...
 ```
 

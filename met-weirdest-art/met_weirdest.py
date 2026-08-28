@@ -33,9 +33,9 @@ Pipeline shape:
     candidates, filtered to pairs from different centuries/cultures/departments).
     Writes three static HTML reports into /workspace/shared/met-weirdest/out/.
 
-Run on Burla (cluster runs Python 3.12 / burla 1.4.5):
+Run on Burla:
 
-    /Users/josephperry/.burla/joeyper23/.venv/bin/python met_weirdest.py
+    python3 met_weirdest.py
 
 Env vars:
     MET_MAX_OBJECTS    cap the corpus (default: full joined set, ~213K)

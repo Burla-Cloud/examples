@@ -36,7 +36,7 @@ Pipeline shape:
     three HTML leaderboards with sparkline trajectories.
 
 Run:
-    /Users/josephperry/.burla/joeyper23/.venv/bin/python nyc_ghost_neighborhoods.py
+    python3 nyc_ghost_neighborhoods.py
 
 Env vars:
     MONTHS_LIMIT=N     only process the N most recent months (per taxi type)
@@ -86,7 +86,8 @@ TAXI_TYPES: List[Tuple[str, int, int, Tuple[str, ...]]] = [
 # Column-name soup for the pickup-zone id across schema generations.
 PU_ZONE_COL_CANDIDATES = ("PULocationID", "PUlocationID", "pickup_location_id")
 
-OUT_DIR = Path(os.environ.get("NYC_OUT_DIR", "/Users/josephperry/claude/burla-demos/nyc_ghost_out"))
+HERE = Path(__file__).resolve().parent
+OUT_DIR = Path(os.environ.get("NYC_OUT_DIR", HERE / "nyc_ghost_out"))
 LOCAL_CACHE = Path("/tmp/nyc_ghost_cache")
 
 # How we slice "old" vs "recent".

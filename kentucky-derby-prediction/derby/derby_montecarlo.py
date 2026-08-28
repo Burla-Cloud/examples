@@ -14,6 +14,8 @@ import os
 import sys
 import json
 import math
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 # Ensure UTF-8 output on Windows without replacing the stdout object
@@ -21,8 +23,8 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 DATA_DIR    = os.path.join(os.path.dirname(__file__), "data")
-CANVAS_DIR  = r"C:\Users\Jack Rzucidlo\.cursor\projects\empty-window\canvases"
-CANVAS_FILE = os.path.join(CANVAS_DIR, "kentucky-derby-2026.canvas.tsx")
+CANVAS_DIR = Path(__file__).resolve().parents[1] / "canvases"
+CANVAS_FILE = CANVAS_DIR / "kentucky-derby-2026.canvas.tsx"
 
 # ─── Manually-chosen default weights (overridden by sensitivity results) ──────
 DEFAULT_WEIGHTS = {

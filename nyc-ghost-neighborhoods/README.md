@@ -147,9 +147,10 @@ NYC_TAXI_TYPES=yellow python nyc_ghost_neighborhoods.py
 NYC_START_YEAR=2011 NYC_END_YEAR=2015 python nyc_ghost_neighborhoods.py
 ```
 
-View the report: `open nyc_ghost_out/index.html` (~2 MB single-file).
+After running the pipeline, view the report with
+`open nyc_ghost_out/index.html`.
 
-## Artifacts (in `nyc_ghost_out/`)
+## Generated artifacts (in `nyc_ghost_out/`)
 
 | File | Contents |
 |---|---|
@@ -161,7 +162,7 @@ View the report: `open nyc_ghost_out/index.html` (~2 MB single-file).
 
 ```
 nyc_ghost_neighborhoods.py   map + classify + render (all core logic)
-nyc_ghost_out/               artifacts from the latest run
+nyc_ghost_out/               generated artifacts from the latest run
 requirements.txt             burla + pyarrow + requests + fsspec
 ```
 

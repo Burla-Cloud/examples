@@ -1,6 +1,6 @@
 """Transform wpi_reduced_v2.json into UI-ready artifacts and headline findings.
 
-Outputs (all JSON, written to frontend/data/):
+Outputs (all JSON, written to data/):
   world.json                   — country-level choropleth + top distinctive phrases
   countries/{cc}.json          — per-country detail: top phrases, top admins, top cities, samples
   findings.json                — 10 ranked viral findings
@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Tuple
 
 HERE = Path(__file__).parent
 IN_PATH = HERE / "samples" / "wpi_reduced_v2.json"
-OUT_DIR = HERE / "frontend" / "data"
+OUT_DIR = HERE / "data"
 OUT_COUNTRIES = OUT_DIR / "countries"
 
 

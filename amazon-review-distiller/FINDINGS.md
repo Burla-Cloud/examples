@@ -116,7 +116,7 @@ cd agents/amazon-review-distiller
 /burla                    # authenticate once
 burla run scale.py        # ~3 min at 500+ workers
 burla run reduce.py       # ~10 s
-python analysis.py        # local, builds frontend/data/*
+python analysis.py        # local, builds data/*
 cd frontend && python -m http.server 8765
 ```
 

@@ -1,12 +1,12 @@
 """GRS analysis — turn the reduced shard data into UI-ready findings.
 
 Inputs:  samples/grs_reduced.json
-Outputs: frontend/data/index.json
-         frontend/data/categories.json
-         frontend/data/findings.json
-         frontend/data/search.json
-         frontend/data/langs.json
-         frontend/data/installs.json
+Outputs: data/index.json
+         data/categories.json
+         data/findings.json
+         data/search.json
+         data/langs.json
+         data/installs.json
 
 Nine findings we care about (tune + reorder to taste):
 
@@ -484,6 +484,6 @@ def run(reduced_path: Path, out_dir: Path) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--reduced", default=str(HERE / "samples" / "grs_reduced.json"))
-    ap.add_argument("--out", default=str(HERE / "frontend" / "data"))
+    ap.add_argument("--out", default=str(HERE / "data"))
     args = ap.parse_args()
     run(Path(args.reduced), Path(args.out))

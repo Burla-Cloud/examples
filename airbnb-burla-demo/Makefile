@@ -1,4 +1,4 @@
-PY ?= /Users/josephperry/.burla/joeyper23/.venv/bin/python
+PY ?= python3
 SSL_CERT_FILE := $(shell $(PY) -c 'import certifi; print(certifi.where())' 2>/dev/null)
 ENV := SSL_CERT_FILE=$(SSL_CERT_FILE)
 RUN := $(ENV) $(PY) -m
